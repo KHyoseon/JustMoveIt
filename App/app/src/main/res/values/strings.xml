@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">JustMoveIt</string>
+    <string name="science_fiction" />
+    <string name="december_14_2016" />
 </resources>
