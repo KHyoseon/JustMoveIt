@@ -5,6 +5,6 @@
       username: root
       password: ssafy
     jpa:
-      hibernate:
-        ddl-auto: update
       show-sql: true
+      hibernate:
+        ddl-auto: create

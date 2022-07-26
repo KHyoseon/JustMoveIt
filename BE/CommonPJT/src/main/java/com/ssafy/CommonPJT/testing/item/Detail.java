@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "detail")
 @Getter
 @Builder
 @AllArgsConstructor
@@ -17,5 +16,10 @@ public class Detail {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long detailId;
+    private Long id;
+
+    @OneToOne
+    @JoinColumn(name = "movieId")
+    private Movie movie;
+
 }
