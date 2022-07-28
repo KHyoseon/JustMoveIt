@@ -40,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
 
+        
+
         setupMoviesViewPager();
     }
 
@@ -81,25 +83,25 @@ public class MainActivity extends AppCompatActivity {
 
             Movie passengers = new Movie();
             passengers.img = "https://movie-phinf.pstatic.net/20220509_176/1652081912471yhg3N_JPEG/movie_image.jpg";
-            passengers.name="Passengers";
+            passengers.name="탑건: 매버릭";
             passengers.category = "Science Fiction";
-            passengers.releaseDate = "December 22, 2016";
-            passengers.rating = 4.6f;
+            passengers.releaseDate = "2022-06-29";
+            passengers.rating = 2.9f;
             movies.add(passengers);
 
             Movie theTomorrowWar = new Movie();
             theTomorrowWar.img = "https://movie-phinf.pstatic.net/20220516_144/1652665409592Chvey_JPEG/movie_image.jpg";
-            theTomorrowWar.name="Passengers";
+            theTomorrowWar.name="범죄도시2";
             theTomorrowWar.category = "Science Fiction";
-            theTomorrowWar.releaseDate = "December 22, 2016";
-            theTomorrowWar.rating = 4.6f;
+            theTomorrowWar.releaseDate = "2022-06-15";
+            theTomorrowWar.rating = 3.6f;
             movies.add(theTomorrowWar);
 
             Movie annihilation = new Movie();
             annihilation.img = "https://movie-phinf.pstatic.net/20220607_129/16545872892918GA4h_JPEG/movie_image.jpg";
-            annihilation.name="Passengers";
+            annihilation.name="헤어질 결심";
             annihilation.category = "Science Fiction";
-            annihilation.releaseDate = "December 22, 2016";
+            annihilation.releaseDate = "2022-07-06";
             annihilation.rating = 4.6f;
             movies.add(annihilation);
 

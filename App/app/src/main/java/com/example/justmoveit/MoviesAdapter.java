@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -39,12 +40,21 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
 
     @Override
     public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
-    holder.setMovie(movies.get(position));
+
+        int index = position % movies.size();
+
+        holder.setMovie(movies.get(index));
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(view.getContext(), ""+movies.get(index), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
-        return movies.size();
+        return Integer.MAX_VALUE;
     }
 
     static class MovieViewHolder extends RecyclerView.ViewHolder{

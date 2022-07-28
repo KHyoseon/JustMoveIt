@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:background="@color/white">
+    android:background="#010203">
 
 
     <com.google.android.material.appbar.AppBarLayout
@@ -20,7 +20,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
+            android:background="#A390EE"
             android:elevation="0dp"
             android:minHeight="80dp"
             android:theme="@style/Theme.JustMoveIt" >
@@ -28,7 +28,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white">
+            android:background="#A390EE">
 
             <ImageView
                 android:layout_width="150dp"
@@ -36,7 +36,10 @@
                 android:layout_centerVertical="true"
                 android:contentDescription="@string/app_name"
                 android:scaleType="centerCrop"
-                android:src="@drawable/logo" />
+                android:src="@drawable/logo"
+                android:background="#A390EE"
+
+                />
 
     </RelativeLayout>
         </androidx.appcompat.widget.Toolbar>
@@ -47,7 +50,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="80dp"
-        android:layout_marginBottom="70dp"
+        android:layout_marginBottom="200dp"
         android:paddingStart="@dimen/_50sdp"
         android:paddingEnd="@dimen/_50sdp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -57,5 +60,20 @@
 
 
     </androidx.viewpager2.widget.ViewPager2>
+
+    <com.google.android.material.button.MaterialButton
+        android:layout_width="116dp"
+        android:layout_height="67dp"
+        android:layout_marginTop="8dp"
+        android:width="@dimen/_20sdp"
+        android:height="@dimen/_20sdp"
+        android:background="@drawable/gradient"
+        android:backgroundTintMode="screen"
+        android:text="예매하기"
+        app:backgroundTint="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/moviesViewPager" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
