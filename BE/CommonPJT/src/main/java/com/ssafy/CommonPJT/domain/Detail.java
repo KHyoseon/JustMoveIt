@@ -1,5 +1,6 @@
 package com.ssafy.CommonPJT.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -53,6 +54,7 @@ public class Detail {
     @Column(length = 15)
     private String totalCustomer;
 
+    @JsonManagedReference
     @OneToOne(mappedBy = "detail", fetch = LAZY)
     private Movie movie;
 }

@@ -1,5 +1,6 @@
 package com.ssafy.CommonPJT.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Service;
@@ -49,6 +50,7 @@ public class Movie {
     @Column(length = 15)
     private String movieCode;
 
+    @JsonBackReference
     @OneToOne(fetch = LAZY, cascade = ALL)
     @JoinColumn(name = "detail_id")
     private Detail detail;
