@@ -3,12 +3,14 @@ package com.ssafy.CommonPJT.domain;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
 
+import java.time.LocalDateTime;
+
 import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.FetchType.LAZY;
+
 
 @Entity
 @Getter
@@ -20,38 +22,48 @@ public class Movie {
     @Column(name = "movie_id")
     private Long id;
 
+    @Column(length = 200)
     private String title;
-
-    @Column(length = 10)
-    private String male10;
-    @Column(length = 10)
-    private String male20;
-    @Column(length = 10)
-    private String male30;
-    @Column(length = 10)
-    private String male40;
-    @Column(length = 10)
-    private String male50;
-
-    @Column(length = 10)
-    private String female10;
-    @Column(length = 10)
-    private String female20;
-    @Column(length = 10)
-    private String female30;
-    @Column(length = 10)
-    private String female40;
-    @Column(length = 10)
-    private String female50;
-
-    @Column(length = 5)
-    private String ranking;
 
     @Column(length = 15)
     private String movieCode;
 
-    @JsonBackReference
+    @Column(length = 20)
+    private String country;
+
+    @Column(length = 100)
+    private String genre;
+
+    @Lob
+    private String summary;
+
+    @Column(length = 20)
+    private String runningTime;
+
+    @Column(length = 2000)
+    private String img;
+
+    @Column(length = 20)
+    private String rating;
+
+    @Column(length = 100)
+    private String engTitle;
+
+    @Column(length = 15)
+    private String ageLimit;
+
+    private LocalDateTime releaseDate;
+
+    @Column(length = 200)
+    private String director;
+
+    @Column(length = 200)
+    private String actor;
+
+    @Column(length = 15)
+    private String totalCustomer;
+
     @OneToOne(fetch = LAZY, cascade = ALL)
-    @JoinColumn(name = "detail_id")
-    private Detail detail;
+    @JoinColumn(name = "movieplayinginfo_id")
+    private MoviePlayingInfo moviePlayingInfo;
 }
