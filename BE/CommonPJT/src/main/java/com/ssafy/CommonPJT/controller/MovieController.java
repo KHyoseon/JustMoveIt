@@ -5,22 +5,24 @@ import com.ssafy.CommonPJT.service.MovieService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/movies")
 public class MovieController {
 
     private final MovieService movieService;
 
-    @GetMapping("/movies")
+    @GetMapping("/")
     public List<Movie> getMovieList() {
         return movieService.findMovies();
     }
 
-    @GetMapping("/movies/{id}")
+    @GetMapping("/{id}")
     public Movie getMovieById(@PathVariable Long id) {
         return movieService.findOne(id);
     }
