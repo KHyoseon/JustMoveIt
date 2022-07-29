@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@Api("justmoveit")
+@Api("MovieController") //swagger 컨트롤러 이름
 @RequestMapping("/movies")
 public class MovieController {
 
