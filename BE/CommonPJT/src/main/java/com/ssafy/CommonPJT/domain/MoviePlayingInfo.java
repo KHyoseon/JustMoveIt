@@ -1,5 +1,6 @@
 package com.ssafy.CommonPJT.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -25,9 +26,11 @@ public class MoviePlayingInfo {
 
     private String endTime;
 
+    @JsonBackReference
     @OneToOne(mappedBy = "moviePlayingInfo", fetch = LAZY, cascade = ALL)
     private Movie movie;
 
+    @JsonBackReference
     @OneToMany(mappedBy = "moviePlayingInfo", cascade = ALL)
     private List<Ticket> tickets = new ArrayList<>();
 }

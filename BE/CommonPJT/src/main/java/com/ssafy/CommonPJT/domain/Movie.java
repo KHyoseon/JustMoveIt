@@ -1,6 +1,7 @@
 package com.ssafy.CommonPJT.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -63,7 +64,8 @@ public class Movie {
     @Column(length = 15)
     private String totalCustomer;
 
-    @OneToOne(fetch = LAZY, cascade = ALL)
+    @JsonManagedReference
+    @OneToOne(cascade = ALL)
     @JoinColumn(name = "movieplayinginfo_id")
     private MoviePlayingInfo moviePlayingInfo;
 }
