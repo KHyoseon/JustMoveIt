@@ -1,5 +1,6 @@
 package com.ssafy.CommonPJT.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -19,7 +20,8 @@ public class Ticket {
 
     private String seat;
 
-    @ManyToOne(fetch = LAZY)
+    @JsonManagedReference
+    @ManyToOne
     @JoinColumn(name = "movieplayinginfo_id")
     private MoviePlayingInfo moviePlayingInfo;
 }
