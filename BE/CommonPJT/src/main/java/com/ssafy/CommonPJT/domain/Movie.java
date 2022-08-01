@@ -1,9 +1,7 @@
 package com.ssafy.CommonPJT.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
-import lombok.Setter;
 
 import javax.persistence.*;
 
@@ -15,7 +13,6 @@ import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
-@Setter
 public class Movie {
 
     @Id

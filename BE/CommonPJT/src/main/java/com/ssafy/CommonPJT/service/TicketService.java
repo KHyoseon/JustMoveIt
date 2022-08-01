@@ -1,8 +1,6 @@
 package com.ssafy.CommonPJT.service;
 
-import com.ssafy.CommonPJT.domain.Movie;
 import com.ssafy.CommonPJT.domain.Ticket;
-import com.ssafy.CommonPJT.repository.MovieRepository;
 import com.ssafy.CommonPJT.repository.TicketRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,7 +14,7 @@ public class TicketService {
 
     private final TicketRepository ticketRepository;
 
-    // 영화 추가
+    // 티켓 추가
     @Transactional
     public Long insert(Ticket ticket) {
         validateDuplicateSeat(ticket);
