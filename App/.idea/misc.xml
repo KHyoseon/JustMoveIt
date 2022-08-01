@@ -4,14 +4,21 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/ssafy/App/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.204" />
+        <entry key="..\:/ssafy/App/app/src/main/res/drawable/background_back_button.xml" value="0.1355" />
+        <entry key="..\:/ssafy/App/app/src/main/res/drawable/background_fading_edge.xml" value="0.178" />
+        <entry key="..\:/ssafy/App/app/src/main/res/drawable/background_slider_indicator_active.xml" value="0.109" />
+        <entry key="..\:/ssafy/App/app/src/main/res/drawable/background_slider_indicator_inactive.xml" value="0.109" />
         <entry key="..\:/ssafy/App/app/src/main/res/drawable/background_star_rating.xml" value="0.204" />
         <entry key="..\:/ssafy/App/app/src/main/res/drawable/gradient.xml" value="0.1305" />
+        <entry key="..\:/ssafy/App/app/src/main/res/drawable/ic_back.xml" value="0.1" />
         <entry key="..\:/ssafy/App/app/src/main/res/drawable/ic_face.xml" value="0.204" />
         <entry key="..\:/ssafy/App/app/src/main/res/drawable/ic_launcher_background.xml" value="0.204" />
         <entry key="..\:/ssafy/App/app/src/main/res/drawable/ic_movie.xml" value="0.204" />
         <entry key="..\:/ssafy/App/app/src/main/res/drawable/round_outline.xml" value="0.1145" />
         <entry key="..\:/ssafy/App/app/src/main/res/layout/activity_main.xml" value="0.264" />
-        <entry key="..\:/ssafy/App/app/src/main/res/layout/item_container_movie.xml" value="0.15885416666666666" />
+        <entry key="..\:/ssafy/App/app/src/main/res/layout/activity_show_detail.xml" value="0.11956521739130435" />
+        <entry key="..\:/ssafy/App/app/src/main/res/layout/item_container_movie.xml" value="0.264" />
+        <entry key="..\:/ssafy/App/app/src/main/res/layout/item_container_slider_image.xml" value="0.16847826086956522" />
         <entry key="..\:/ssafy/App/app/src/main/res/layout/slide_item_container.xml" value="0.264" />
         <entry key="..\:/ssafy/App/app/src/main/res/layout/toolbar.xml" value="0.1" />
         <entry key="..\:/ssafy/App/app/src/main/res/menu/custom_menu.xml" value="0.1953125" />
