@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
+    tools:context=".activity.MainActivity"
     android:background="#010203">
 
 
@@ -62,6 +62,7 @@
     </androidx.viewpager2.widget.ViewPager2>
 
     <com.google.android.material.button.MaterialButton
+        android:id="@+id/moveDetail"
         android:layout_width="116dp"
         android:layout_height="67dp"
         android:layout_marginTop="8dp"
@@ -75,5 +76,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/moviesViewPager" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
