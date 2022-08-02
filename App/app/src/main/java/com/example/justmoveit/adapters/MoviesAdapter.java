@@ -1,5 +1,7 @@
 package com.example.justmoveit.adapters;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.example.justmoveit.R;
+import com.example.justmoveit.activity.DetailActivity;
 import com.example.justmoveit.model.Movie;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
@@ -21,6 +24,7 @@ import java.util.List;
 public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewHolder>{
 
     private final List<Movie> movies;
+    Context context;
 
     public MoviesAdapter(List<Movie> movies) {
         this.movies = movies;
@@ -39,6 +43,12 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
     }
 
     @Override
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        context = recyclerView.getContext();
+    }
+
+    @Override
     public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
 
         int index = position % movies.size();
@@ -47,7 +57,10 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(view.getContext(), ""+movies.get(index), Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(context.getApplicationContext(), DetailActivity.class);
+                intent.putExtra("movie",movies.get(index));
+                context.startActivity(intent);
             }
         });
     }
