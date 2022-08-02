@@ -39,7 +39,7 @@ public class DetailActivity extends AppCompatActivity {
     private ImageView imageBack;
     private RoundedImageView imageMoviePoster;
     private Movie movie;
-//    private Handler sliderHandler;
+    private Handler sliderHandler = new Handler();
 
     private void loadMovieDetails(){
         Intent intent =getIntent();
@@ -96,7 +96,6 @@ public class DetailActivity extends AppCompatActivity {
         url.add(movie.getImg5());
         url.add(movie.getImg6());
 
-//        System.out.println("ddd"+url);
 
 
         //Slider Indicator을 바인딩 하기 위한 코드
@@ -108,20 +107,20 @@ public class DetailActivity extends AppCompatActivity {
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
                 setCurrentIndicator(position%5); //5는 배열 사이즈 (실제 배열 사이즈는 무한 스크롤을 위해 무한대임)
-//                sliderHandler.removeCallbacks(sliderRunnable);
-//                sliderHandler.postDelayed(sliderRunnable,2000);//2초마다 슬라이드 바뀜
+                sliderHandler.removeCallbacks(sliderRunnable);
+                sliderHandler.postDelayed(sliderRunnable,2000);//2초마다 슬라이드 바뀜
 
             }
         });
 
 
     }
-//    private Runnable sliderRunnable =new Runnable() {
-//        @Override
-//        public void run() {
-//            sliderViewPager.setCurrentItem(sliderViewPager.getCurrentItem()+1);
-//        }
-//    };
+    private Runnable sliderRunnable =new Runnable() {
+        @Override
+        public void run() {
+            sliderViewPager.setCurrentItem(sliderViewPager.getCurrentItem()+1);
+        }
+    };
     private void setupSliderIndicators(int count){
         ImageView[] indicators = new ImageView[count];
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(

@@ -51,21 +51,7 @@ public class ImageSliderAdapter extends RecyclerView.Adapter<ImageSliderAdapter.
 //            }
 //        });
     }
-//    private Runnable runnable = new Runnable() {
-//        @Override
-//
-//
-//
-//
-//
-//
-//
-////        public void run() {
-////            List<Object> sliderItems;
-////            sliderItems.addAll(sliderItems);
-////            notifyDataSetChanged();
-////        }
-//    };
+
     @Override
     public int getItemCount() {
         return Integer.MAX_VALUE;
