@@ -14,10 +14,11 @@
         <entry key="..\:/ssafy/App/app/src/main/res/drawable/ic_face.xml" value="0.204" />
         <entry key="..\:/ssafy/App/app/src/main/res/drawable/ic_launcher_background.xml" value="0.204" />
         <entry key="..\:/ssafy/App/app/src/main/res/drawable/ic_movie.xml" value="0.204" />
+        <entry key="..\:/ssafy/App/app/src/main/res/drawable/ic_star.xml" value="0.1775" />
         <entry key="..\:/ssafy/App/app/src/main/res/drawable/round_outline.xml" value="0.1145" />
         <entry key="..\:/ssafy/App/app/src/main/res/layout/activity_main.xml" value="0.264" />
-        <entry key="..\:/ssafy/App/app/src/main/res/layout/activity_show_detail.xml" value="0.11956521739130435" />
-        <entry key="..\:/ssafy/App/app/src/main/res/layout/item_container_movie.xml" value="0.264" />
+        <entry key="..\:/ssafy/App/app/src/main/res/layout/activity_show_detail.xml" value="0.264" />
+        <entry key="..\:/ssafy/App/app/src/main/res/layout/item_container_movie.xml" value="0.13179347826086957" />
         <entry key="..\:/ssafy/App/app/src/main/res/layout/item_container_slider_image.xml" value="0.16847826086956522" />
         <entry key="..\:/ssafy/App/app/src/main/res/layout/slide_item_container.xml" value="0.264" />
         <entry key="..\:/ssafy/App/app/src/main/res/layout/toolbar.xml" value="0.1" />

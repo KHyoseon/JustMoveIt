@@ -30,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     Toolbar toolbar;
-    Button button;
 
 
 
@@ -45,16 +44,8 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
 
-        button =(Button) findViewById(R.id.moveDetail);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-                Intent intent = new Intent(getApplicationContext(), DetailActivity.class);
 
-                startActivity(intent);
-            }
-        });
         
 
         setupMoviesViewPager();
@@ -93,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
             moviesViewPager.setAdapter(new MoviesAdapter(getMovies()));
 
         }
+
         private List<Movie> getMovies(){
 
 
@@ -114,8 +106,8 @@ public class MainActivity extends AppCompatActivity {
                     " 1391년 고려 말 소문 속의 신검을 차지하려는 도사들\n" +
                     " \n" +
                     " 시간의 문이 열리고\n" +
-                    " 모든 것이 바뀌기 시작했다!", "142분", "https://movie-phinf.pstatic.net/20220708_75/16572722362230AyHS_JPEG/movie_image.jpg", "https://movie-phinf.pstatic.net/20220616_274/16553440662302SpBU_JPEG/movie_image.jpg?type=m665_443_2",
-                    "https://movie-phinf.pstatic.net/20220617_113/1655427761368j8QHv_JPEG/movie_image.jpg?type=m665_443_2", "https://movie-phinf.pstatic.net/20220620_61/1655692158584QeRHN_JPEG/movie_image.jpg?type=m665_443_2", "\thttps://movie-phinf.pstatic.net/20220622_262/1655880463805ndpvh_JPEG/movie_image.jpg?type=m665_443_2", "https://movie-phinf.pstatic.net/20220622_124/1655880480965Aqu7D_JPEG/movie_image.jpg?type=m665_443_2",
+                    " 모든 것이 바뀌기 시작했다!", "142분", "https://movie-phinf.pstatic.net/20220708_75/16572722362230AyHS_JPEG/movie_image.jpg", "https://movie-phinf.pstatic.net/20220616_274/16553440662302SpBU_JPEG/movie_image.jpg",
+                    "https://movie-phinf.pstatic.net/20220617_113/1655427761368j8QHv_JPEG/movie_image.jpg", "https://movie-phinf.pstatic.net/20220620_61/1655692158584QeRHN_JPEG/movie_image.jpg", "https://movie-phinf.pstatic.net/20220622_262/1655880463805ndpvh_JPEG/movie_image.jpg", "https://movie-phinf.pstatic.net/20220622_124/1655880480965Aqu7D_JPEG/movie_image.jpg",
                     "7.04", "Alienoid, 2022",
                     "12세 관람가", "2022.07.20", "281243", "192151");
             movies.add(mov1);
@@ -124,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
                     " 그의 명성을 모르던 팀원들은 매버릭의 지시를 무시하지만 실전을 방불케 하는 상공 훈련에서 눈으로 봐도 믿기 힘든 전설적인 조종 실력에 모두가 압도된다.\n" +
                     " \n" +
                     " 매버릭의 지휘아래 견고한 팀워크를 쌓아가던 팀원들에게 국경을 뛰어넘는 위험한 임무가 주어지자\n" +
-                    " 매버릭은 자신이 가르친 동료들과 함께 마지막이 될 지 모를 하늘 위 비행에 나서는데…", "130분","https://movie-phinf.pstatic.net/20220509_176/1652081912471yhg3N_JPEG/movie_image.jpg", "https://movie-phinf.pstatic.net/20191219_253/1576735700330webEM_JPEG/movie_image.jpg?type=m665_443_2", "\thttps://movie-phinf.pstatic.net/20191219_176/1576735700763y1rP2_JPEG/movie_image.jpg?type=m665_443_2", "\thttps://movie-phinf.pstatic.net/20220331_153/1648689964919opv47_JPEG/movie_image.jpg?type=m665_443_2", "\thttps://movie-phinf.pstatic.net/20220331_102/1648689986537YrqQP_JPEG/movie_image.jpg?type=m665_443_2", "https://movie-phinf.pstatic.net/20220518_121/1652840771393vLWSH_JPEG/movie_image.jpg?type=m665_443_2",
+                    " 매버릭은 자신이 가르친 동료들과 함께 마지막이 될 지 모를 하늘 위 비행에 나서는데…", "130분","https://movie-phinf.pstatic.net/20220509_176/1652081912471yhg3N_JPEG/movie_image.jpg", "https://movie-phinf.pstatic.net/20191219_253/1576735700330webEM_JPEG/movie_image.jpg", "https://movie-phinf.pstatic.net/20191219_176/1576735700763y1rP2_JPEG/movie_image.jpg", "https://movie-phinf.pstatic.net/20220331_153/1648689964919opv47_JPEG/movie_image.jpg", "https://movie-phinf.pstatic.net/20220331_102/1648689986537YrqQP_JPEG/movie_image.jpg", "https://movie-phinf.pstatic.net/20220518_121/1652840771393vLWSH_JPEG/movie_image.jpg",
                     "9.6", "Top Gun: Maverick, 2021", "12세 관람가", "2022.06.22", "6053414", "81888");
 
             movies.add(mov2);
@@ -139,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
                     " 역대급 범죄를 저지르는 ‘강해상’을 본격적으로 쫓기 시작하는데...\n" +
                     " \n" +
                     " 나쁜 놈들 잡는 데 국경 없다!\n" +
-                    " 통쾌하고 화끈한 범죄 소탕 작전이 다시 펼쳐진다!", "106분", "https://movie-phinf.pstatic.net/20220516_144/1652665409592Chvey_JPEG/movie_image.jpg", "https://movie-phinf.pstatic.net/20220426_19/16509365610560EIGm_JPEG/movie_image.jpg?type=m665_443_2", "https://movie-phinf.pstatic.net/20220426_89/1650936584302EbdIF_JPEG/movie_image.jpg?type=m665_443_2", "https://movie-phinf.pstatic.net/20220426_87/1650936606581h5FqT_JPEG/movie_image.jpg?type=m665_443_2","https://movie-phinf.pstatic.net/20220426_216/1650936633838obfoa_JPEG/movie_image.jpg?type=m665_443_2", "https://movie-phinf.pstatic.net/20220426_184/1650936656952WBd3u_JPEG/movie_image.jpg?type=m665_443_2",
+                    " 통쾌하고 화끈한 범죄 소탕 작전이 다시 펼쳐진다!", "106분", "https://movie-phinf.pstatic.net/20220516_144/1652665409592Chvey_JPEG/movie_image.jpg", "https://movie-phinf.pstatic.net/20220426_19/16509365610560EIGm_JPEG/movie_image.jpg", "https://movie-phinf.pstatic.net/20220426_89/1650936584302EbdIF_JPEG/movie_image.jpg", "https://movie-phinf.pstatic.net/20220426_87/1650936606581h5FqT_JPEG/movie_image.jpg","https://movie-phinf.pstatic.net/20220426_216/1650936633838obfoa_JPEG/movie_image.jpg", "https://movie-phinf.pstatic.net/20220426_184/1650936656952WBd3u_JPEG/movie_image.jpg",
                     "9.03", "the roundup, 2022", "15세 관람가", "2022.05.18", "12675394", "192608");
 
             movies.add(mov3);
