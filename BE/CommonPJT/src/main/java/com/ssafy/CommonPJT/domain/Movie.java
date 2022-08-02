@@ -1,22 +1,29 @@
 package com.ssafy.CommonPJT.domain;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import static javax.persistence.CascadeType.ALL;
-import static javax.persistence.FetchType.LAZY;
 
 
+@Builder
 @Entity
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Movie {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "movie_id")
     private Long id;
 
@@ -50,7 +57,7 @@ public class Movie {
     @Column(length = 15)
     private String ageLimit;
 
-    private LocalDateTime releaseDate;
+    private String releaseDate;
 
     @Column(length = 200)
     private String director;
@@ -61,8 +68,7 @@ public class Movie {
     @Column(length = 15)
     private String totalCustomer;
 
-    @JsonManagedReference
-    @OneToOne(cascade = ALL)
-    @JoinColumn(name = "movieplayinginfo_id")
-    private MoviePlayingInfo moviePlayingInfo;
+    @JsonBackReference
+    @OneToMany(mappedBy = "movie", cascade = ALL)
+    private List<MoviePlayingInfo> moviePlayingInfo = new ArrayList<>();
 }

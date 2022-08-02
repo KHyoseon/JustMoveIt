@@ -1,12 +1,15 @@
 package com.ssafy.CommonPJT.service;
 
 import com.ssafy.CommonPJT.domain.Movie;
+import com.ssafy.CommonPJT.dto.req.MovieDto;
+import com.ssafy.CommonPJT.dto.res.MovieResDto;
 import com.ssafy.CommonPJT.repository.MovieRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -14,30 +17,22 @@ public class MovieService {
 
     private final MovieRepository movieRepository;
 
-    // 영화 추가
     @Transactional
-    public Long insert(Movie movie) {
-        validateDuplicateMovie(movie);
-        movieRepository.save(movie);
-        return movie.getId();
+    public void save(MovieDto requestDto) {
+        Movie saveMovie = requestDto.toEntity();
+        movieRepository.save(saveMovie);
     }
 
-    private void validateDuplicateMovie(Movie movie) {
-        List<Movie> findMovies = movieRepository.findByName(movie.getTitle());
-        if (!findMovies.isEmpty()) {
-            throw new IllegalStateException("Already exist movie!");
-        }
-    }
-
-    // 영화 리스트 조회
     @Transactional(readOnly = true)
-    public List<Movie> findMovies() {
-        return movieRepository.findAll();
+    public List<MovieResDto> findMovies() {
+        List<Movie> movies = movieRepository.findAll();
+        List<MovieResDto> movie1 = movies.stream().map(MovieResDto::new).collect(Collectors.toList());
+        return movie1;
     }
 
-    // 특정 영화 조회
     @Transactional(readOnly = true)
-    public Movie findOne(Long movieId) {
-        return movieRepository.findOne(movieId);
+    public MovieResDto findOne(Long id) {
+        MovieResDto movie1 = new MovieResDto(movieRepository.findById(id).get());
+        return movie1;
     }
 }
