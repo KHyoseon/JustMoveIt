@@ -11,18 +11,7 @@ axios.get('http://localhost/justmoveit/movies/')
     // console.log(response.data);
   })
 
-// document.onkeydown = arrow_keys;
 
-// document.addEventListener("keydown")
-
-// const arrow_keys = function(e, index){
-//   if(e.key == 37 || e.key =="ArrowRight"){
-//     console.log(index)
-//   }
-//   else if(e.key == 39 || e.key =="ArrowLeft"){
-//     console.log(index)
-//   }
-// }
 
 const MovieDetail = () => {
 
