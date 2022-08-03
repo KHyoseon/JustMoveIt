@@ -9,12 +9,11 @@ import javax.persistence.*;
 public class User {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long id;
 
-    @Lob
-    private String kakaoToken;
+    private String isAdmin;
 
     @Column(length = 25)
     private String phoneNumber;
