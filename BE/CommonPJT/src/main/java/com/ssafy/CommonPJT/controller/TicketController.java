@@ -1,8 +1,8 @@
 package com.ssafy.CommonPJT.controller;
 
 import com.ssafy.CommonPJT.domain.Ticket;
-import com.ssafy.CommonPJT.dto.req.TicketDto;
-import com.ssafy.CommonPJT.dto.res.TicketResDto;
+import com.ssafy.CommonPJT.dto.Ticket.TicketSaveDto;
+import com.ssafy.CommonPJT.dto.Ticket.TicketResDto;
 import com.ssafy.CommonPJT.service.TicketService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -26,8 +26,8 @@ public class TicketController {
     * GET 매핑
     */
     @ApiOperation(value = "티켓 목록", notes = "티켓 목록을 반환", response = Ticket.class)
-    @GetMapping("/")
-    public ResponseEntity<?> getTicketList() {
+    @GetMapping
+    public ResponseEntity<List<TicketResDto>> getTicketList() {
         return new ResponseEntity<>(ticketService.findTickets(), HttpStatus.OK);
     }
 
@@ -41,9 +41,9 @@ public class TicketController {
      * POST 매핑
      */
     @ApiOperation(value = "티켓 예매", notes = "티켓을 예매한다.", response = Ticket.class)
-    @PostMapping("/{moviePlayingInfoId}")
-    public void save(@RequestBody TicketDto ticket, @PathVariable Long moviePlayingInfoId) {
-        ticketService.save(ticket, moviePlayingInfoId);
+    @PostMapping
+    public void save(@RequestBody TicketSaveDto ticket) {
+        ticketService.save(ticket);
     }
 
 
