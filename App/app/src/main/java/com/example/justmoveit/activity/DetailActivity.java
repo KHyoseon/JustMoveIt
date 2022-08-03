@@ -16,6 +16,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.CompositePageTransformer;
 import androidx.viewpager2.widget.MarginPageTransformer;
@@ -24,6 +25,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.example.justmoveit.R;
 import com.example.justmoveit.adapters.ImageSliderAdapter;
 import com.example.justmoveit.adapters.MoviesAdapter;
+import com.example.justmoveit.adapters.TimesAdapter;
 import com.example.justmoveit.model.Movie;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
@@ -40,6 +42,7 @@ public class DetailActivity extends AppCompatActivity {
     private RoundedImageView imageMoviePoster;
     private Movie movie;
     private Handler sliderHandler = new Handler();
+    private RecyclerView recyclerView;
 
     private void loadMovieDetails(){
         Intent intent =getIntent();
@@ -65,6 +68,19 @@ public class DetailActivity extends AppCompatActivity {
 
         setImageBack();
         setupSliderIndicators(5);
+
+        //시간 버튼
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        List<String> list= new ArrayList<>();
+        list.add("12:00");
+        list.add("14:00");
+        list.add("16:00");
+        list.add("18:00");
+
+        TimesAdapter timesAdapter = new TimesAdapter();
+        timesAdapter.setTimes(list);
+        recyclerView.setAdapter(timesAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL,false));
     }
     private  void setImageBack(){
         //뒤로가기 버튼 구현

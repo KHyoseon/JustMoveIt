@@ -314,9 +314,25 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@id/textSummary"
                 app:layout_constraintTop_toBottomOf="@id/textSummary" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textReadMore">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_100sdp"
+                    tools:listitem="@layout/item_container_time"></androidx.recyclerview.widget.RecyclerView>
+            </LinearLayout>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <android.support
 
     </ScrollView>
 

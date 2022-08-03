@@ -58,6 +58,4 @@ dependencies {
     //피카소를 사용하여 url 이미지를 불러오기
     implementation 'com.squareup.picasso:picasso:2.71828'
 
-
-
 }

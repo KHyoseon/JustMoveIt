@@ -23,6 +23,8 @@ import java.util.List;
 
 public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewHolder>{
 
+
+
     private final List<Movie> movies;
     Context context;
 
