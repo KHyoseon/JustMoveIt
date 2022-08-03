@@ -1,43 +1,37 @@
 package com.ssafy.CommonPJT.service;
 
 import com.ssafy.CommonPJT.domain.Movie;
+import com.ssafy.CommonPJT.dto.Movie.MovieSaveDto;
+import com.ssafy.CommonPJT.dto.Movie.MovieDetailDto;
 import com.ssafy.CommonPJT.repository.MovieRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class MovieService {
 
     private final MovieRepository movieRepository;
 
-    // 영화 추가
     @Transactional
-    public Long insert(Movie movie) {
-        validateDuplicateMovie(movie);
-        movieRepository.save(movie);
-        return movie.getId();
+    public void save(MovieSaveDto requestDto) {
+        Movie saveMovie = requestDto.toEntity();
+        movieRepository.save(saveMovie);
     }
 
-    private void validateDuplicateMovie(Movie movie) {
-        List<Movie> findMovies = movieRepository.findByName(movie.getTitle());
-        if (!findMovies.isEmpty()) {
-            throw new IllegalStateException("Already exist movie!");
-        }
+    public List<MovieDetailDto> findMovies() {
+        List<Movie> movies = movieRepository.findAll(); // 지양해야되는 습관 >> 리소스가 커졌을 때는 불필요한 데이터까지 다 가져옴
+        List<MovieDetailDto> movie1 = movies.stream().map(MovieDetailDto::new).collect(Collectors.toList());
+        return movie1;
     }
 
-    // 영화 리스트 조회
-    @Transactional(readOnly = true)
-    public List<Movie> findMovies() {
-        return movieRepository.findAll();
-    }
-
-    // 특정 영화 조회
-    @Transactional(readOnly = true)
-    public Movie findOne(Long movieId) {
-        return movieRepository.findOne(movieId);
+    public MovieDetailDto findOne(Long id) {
+        MovieDetailDto movie1 = new MovieDetailDto(movieRepository.findById(id).get());
+        return movie1;
     }
 }
