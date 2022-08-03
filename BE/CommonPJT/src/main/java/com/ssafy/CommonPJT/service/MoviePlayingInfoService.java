@@ -2,8 +2,8 @@ package com.ssafy.CommonPJT.service;
 
 import com.ssafy.CommonPJT.domain.Movie;
 import com.ssafy.CommonPJT.domain.MoviePlayingInfo;
-import com.ssafy.CommonPJT.dto.MoviePlayingInfo.MoviePlayingInfoSaveDto;
 import com.ssafy.CommonPJT.dto.MoviePlayingInfo.MoviePlayingInfoResDto;
+import com.ssafy.CommonPJT.dto.MoviePlayingInfo.MoviePlayingInfoSaveDto;
 import com.ssafy.CommonPJT.repository.MoviePlayingInfoRepository;
 import com.ssafy.CommonPJT.repository.MovieRepository;
 import lombok.RequiredArgsConstructor;

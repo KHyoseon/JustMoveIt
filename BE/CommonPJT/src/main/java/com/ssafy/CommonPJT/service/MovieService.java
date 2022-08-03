@@ -1,8 +1,8 @@
 package com.ssafy.CommonPJT.service;
 
 import com.ssafy.CommonPJT.domain.Movie;
-import com.ssafy.CommonPJT.dto.Movie.MovieSaveDto;
 import com.ssafy.CommonPJT.dto.Movie.MovieDetailDto;
+import com.ssafy.CommonPJT.dto.Movie.MovieSaveDto;
 import com.ssafy.CommonPJT.repository.MovieRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -31,7 +31,9 @@ public class MovieService {
     }
 
     public MovieDetailDto findOne(Long id) {
-        MovieDetailDto movie1 = new MovieDetailDto(movieRepository.findById(id).get());
+        Movie movie = movieRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 영화입니다."));
+        MovieDetailDto movie1 = new MovieDetailDto(movie);
         return movie1;
     }
 }

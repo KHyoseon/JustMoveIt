@@ -1,8 +1,8 @@
 package com.ssafy.CommonPJT.controller;
 
 import com.ssafy.CommonPJT.domain.Movie;
-import com.ssafy.CommonPJT.dto.Movie.MovieSaveDto;
 import com.ssafy.CommonPJT.dto.Movie.MovieDetailDto;
+import com.ssafy.CommonPJT.dto.Movie.MovieSaveDto;
 import com.ssafy.CommonPJT.service.MovieService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
