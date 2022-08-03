@@ -32,7 +32,7 @@ public class Ticket {
     private Classification classification;
 
     @JsonManagedReference
-    @ManyToOne
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "movieplayinginfo_id")
     private MoviePlayingInfo moviePlayingInfo;
 

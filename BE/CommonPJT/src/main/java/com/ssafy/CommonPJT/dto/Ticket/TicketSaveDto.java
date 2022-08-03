@@ -1,4 +1,4 @@
-package com.ssafy.CommonPJT.dto.req;
+package com.ssafy.CommonPJT.dto.Ticket;
 
 import com.ssafy.CommonPJT.domain.Classification;
 import com.ssafy.CommonPJT.domain.MoviePlayingInfo;
@@ -8,15 +8,22 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+import java.util.Date;
+
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class TicketDto {
+public class TicketSaveDto {
 
     private String phoneNumber;
-
     private String seat;
     private Classification classification;
+
+    private Long moviePlayingInfoId;
+
+    private LocalDateTime reservationTime;
+
     @Builder
     public Ticket toEntity(MoviePlayingInfo moviePlayingInfo) {
         return Ticket.builder()
@@ -24,6 +31,7 @@ public class TicketDto {
                 .seat(this.seat)
                 .moviePlayingInfo(moviePlayingInfo)
                 .classification(this.classification)
+                .reservationTime(this.reservationTime)
                 .build();
     }
 }
