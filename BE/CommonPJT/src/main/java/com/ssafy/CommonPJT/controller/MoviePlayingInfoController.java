@@ -1,13 +1,17 @@
 package com.ssafy.CommonPJT.controller;
 
 import com.ssafy.CommonPJT.domain.MoviePlayingInfo;
-import com.ssafy.CommonPJT.dto.req.MoviePlayingInfoDto;
+import com.ssafy.CommonPJT.dto.MoviePlayingInfo.MoviePlayingInfoSaveDto;
+import com.ssafy.CommonPJT.dto.MoviePlayingInfo.MoviePlayingInfoResDto;
 import com.ssafy.CommonPJT.service.MoviePlayingInfoService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -17,13 +21,22 @@ public class MoviePlayingInfoController {
 
     private final MoviePlayingInfoService moviePlayingInfoService;
 
-    @GetMapping("/")
-    public ResponseEntity<?> getInfoList() {
+    @ApiOperation(value = "전체 영화 상영 정보", notes = "전체 영화 상영 정보를 출력한다.", response = List.class)
+    @GetMapping
+    public ResponseEntity<List<MoviePlayingInfoResDto>> getInfoList() {
         return new ResponseEntity<>(moviePlayingInfoService.findInfo(), HttpStatus.OK);
     }
 
-    @PostMapping("/{movieId}")
-    public void saveInfo(@RequestBody MoviePlayingInfoDto moviePlayingInfoDto, @PathVariable Long movieId) {
-        moviePlayingInfoService.save(moviePlayingInfoDto, movieId);
+    @ApiOperation(value = "영화 상영 정보", notes = "영화 상영 정보를 출력한다.", response = MoviePlayingInfo.class)
+    @GetMapping("/{movieplayinginfoId}")
+    public MoviePlayingInfoResDto getInfo(@PathVariable Long movieplayinginfoId) {
+        return moviePlayingInfoService.findById(movieplayinginfoId);
+    }
+
+
+    @ApiOperation(value = "영화 상영 정보 저장", notes = "영화 상영 정보를 저장한다.", response = MoviePlayingInfo.class)
+    @PostMapping
+    public void saveInfo(@RequestBody MoviePlayingInfoSaveDto moviePlayingInfoSaveDto) {
+        moviePlayingInfoService.save(moviePlayingInfoSaveDto);
     }
 }

@@ -1,4 +1,4 @@
-package com.ssafy.CommonPJT.dto.req;
+package com.ssafy.CommonPJT.dto.MoviePlayingInfo;
 
 import com.ssafy.CommonPJT.domain.Movie;
 import com.ssafy.CommonPJT.domain.MoviePlayingInfo;
@@ -11,13 +11,15 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class MoviePlayingInfoDto {
+public class MoviePlayingInfoSaveDto {
 
     private String theaterNo;
 
     private String startTime;
 
     private String endTime;
+
+    private Long movieId;
 
     @Builder
     public MoviePlayingInfo toEntity(Movie movie) {

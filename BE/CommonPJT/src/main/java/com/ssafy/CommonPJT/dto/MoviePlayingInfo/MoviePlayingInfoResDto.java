@@ -1,14 +1,14 @@
-package com.ssafy.CommonPJT.dto.res;
+package com.ssafy.CommonPJT.dto.MoviePlayingInfo;
 
-import com.ssafy.CommonPJT.domain.Movie;
 import com.ssafy.CommonPJT.domain.MoviePlayingInfo;
-import com.ssafy.CommonPJT.domain.Ticket;
+import com.ssafy.CommonPJT.dto.Ticket.TicketResDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @AllArgsConstructor
@@ -18,15 +18,19 @@ public class MoviePlayingInfoResDto {
     private String theaterNo;
     private String startTime;
     private String endTime;
-    private Movie movie;
-    private List<Ticket> tickets = new ArrayList<>();
+    private Long movieId;
+    private String movieTitle;
+    private String ageLimit;
+    private List<TicketResDto> tickets = new ArrayList<>();
 
 
     public MoviePlayingInfoResDto(MoviePlayingInfo moviePlayingInfo) {
         this.theaterNo = moviePlayingInfo.getTheaterNo();
         this.startTime = moviePlayingInfo.getStartTime();
         this.endTime = moviePlayingInfo.getEndTime();
-        this.movie = moviePlayingInfo.getMovie();
-        this.tickets = moviePlayingInfo.getTickets();
+        this.movieId = moviePlayingInfo.getMovie().getId();
+        this.ageLimit = moviePlayingInfo.getMovie().getAgeLimit();
+        this.movieTitle = moviePlayingInfo.getMovie().getTitle();
+        this.tickets = moviePlayingInfo.getTickets().stream().map(TicketResDto::new).collect(Collectors.toList());
     }
 }

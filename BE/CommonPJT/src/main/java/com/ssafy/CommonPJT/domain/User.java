@@ -13,8 +13,7 @@ public class User {
     @Column(name = "user_id")
     private Long id;
 
-    @Lob
-    private String kakaoToken;
+    private String isAdmin;
 
     @Column(length = 25)
     private String phoneNumber;

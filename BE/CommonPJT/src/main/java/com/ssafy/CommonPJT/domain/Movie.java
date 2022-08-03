@@ -1,10 +1,7 @@
 package com.ssafy.CommonPJT.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -13,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static javax.persistence.CascadeType.ALL;
+import static javax.persistence.FetchType.LAZY;
 
 
 @Builder
@@ -48,6 +46,21 @@ public class Movie {
     @Column(length = 2000)
     private String img;
 
+    @Column(length = 2000)
+    private String img2;
+
+    @Column(length = 2000)
+    private String img3;
+
+    @Column(length = 2000)
+    private String img4;
+
+    @Column(length = 2000)
+    private String img5;
+
+    @Column(length = 2000)
+    private String img6;
+
     @Column(length = 20)
     private String rating;
 
@@ -69,6 +82,6 @@ public class Movie {
     private String totalCustomer;
 
     @JsonBackReference
-    @OneToMany(mappedBy = "movie", cascade = ALL)
+    @OneToMany(mappedBy = "movie", cascade = ALL, orphanRemoval = true)
     private List<MoviePlayingInfo> moviePlayingInfo = new ArrayList<>();
 }

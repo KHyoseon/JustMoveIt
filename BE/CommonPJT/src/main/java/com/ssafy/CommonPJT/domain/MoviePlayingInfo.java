@@ -34,11 +34,11 @@ public class MoviePlayingInfo {
     private String endTime;
 
     @JsonManagedReference
-    @ManyToOne
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "movie_id")
     private Movie movie;
 
     @JsonBackReference
-    @OneToMany(mappedBy = "moviePlayingInfo", cascade = ALL)
+    @OneToMany(mappedBy = "moviePlayingInfo", cascade = ALL, orphanRemoval = true)
     private List<Ticket> tickets = new ArrayList<>();
 }
