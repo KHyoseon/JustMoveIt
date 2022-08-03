@@ -118,7 +118,12 @@ const App = () => {
     // </div>
     
     <div className='App'>
-      <Grid>
+       <Grid
+         container
+         direction="column"
+         justifyContent="center"
+         alignItems="center">
+
         <h1>{ movie.title }</h1>
         <img src={ movie.img }></img>
         <h3>{ movie.summary }</h3>
