@@ -1,8 +1,8 @@
 package com.ssafy.CommonPJT.controller;
 
 import com.ssafy.CommonPJT.domain.Ticket;
-import com.ssafy.CommonPJT.dto.Ticket.TicketSaveDto;
 import com.ssafy.CommonPJT.dto.Ticket.TicketResDto;
+import com.ssafy.CommonPJT.dto.Ticket.TicketSaveDto;
 import com.ssafy.CommonPJT.service.TicketService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -23,8 +23,8 @@ public class TicketController {
 
 
     /**
-    * GET 매핑
-    */
+     * GET 매핑
+     */
     @ApiOperation(value = "티켓 목록", notes = "티켓 목록을 반환", response = Ticket.class)
     @GetMapping
     public ResponseEntity<List<TicketResDto>> getTicketList() {
