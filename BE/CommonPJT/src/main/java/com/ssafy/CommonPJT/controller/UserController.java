@@ -27,7 +27,7 @@ public class UserController {
 
     @ApiOperation(value = "회원 로그인", notes = "회원 로그인")
     @PostMapping("/login")
-    public Long signIn(@RequestBody UserLoginDto requestDto) {
+    public UserProfileDto signIn(@RequestBody UserLoginDto requestDto) {
         return userService.signIn(requestDto);
     }
 

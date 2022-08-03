@@ -31,12 +31,13 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public Long signIn(UserLoginDto requestDto) {
+    public UserProfileDto signIn(UserLoginDto requestDto) {
         List<User> userList = userRepository.findAll();
         for (User user : userList) {
             if (user.getUsername().equals(requestDto.getUsername())) {
                 if (user.getPassword().equals(requestDto.getPassword())) {
-                    return user.getId();
+                    UserProfileDto user1 = new UserProfileDto(user);
+                    return user1;
                 }
             }
         }
