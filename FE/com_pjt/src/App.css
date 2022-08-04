@@ -89,19 +89,19 @@ body {
     border-top-right-radius: 10px;
 }
 
-.seat.selected {
+.seatSelected {
     background: #6feaf6;
 }
 
-.seat.occupied {
+.seatOccupied {
     background: #fff;
 }
 
-.seat:nth-of-type(2) {
+.seat:nthOfType(2) {
     margin-right: 18px;
 }
 
-.seat:nth-last-of-type(2) {
+.seat:nthLastOfType(2) {
     margin-left: 18px;
 }
 
@@ -115,7 +115,7 @@ body {
     transform: scale(1);
 }
 
-.showcase {
+.showCase {
     background: rgba(0,0,0, 0.1);
     padding: 5px 10px;
     border-radius: 5px;
@@ -125,14 +125,14 @@ body {
     justify-content: space-between;
 }
 
-.showcase li {
+.showCaseLi {
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 0 10px;
 }
 
-.showcase li small {
+.showCaseLiSmall {
     margin-left: 2px;
 }
 

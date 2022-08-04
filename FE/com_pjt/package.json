@@ -50,5 +50,8 @@
   },
   "devDependencies": {
     "redux-devtools-extension": "^2.13.9"
-  }
+  },
+  "browser":{
+    "child_process": false
+    }  
 }
