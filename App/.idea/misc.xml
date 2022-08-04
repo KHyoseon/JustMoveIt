@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/ssafy/S07P12D207/App/app/src/main/res/drawable-v24/ic_arrow_back_white_24dp.xml" value="0.161" />
+        <entry key="..\:/ssafy/S07P12D207/App/app/src/main/res/drawable/custom_spinner.xml" value="0.161" />
+        <entry key="..\:/ssafy/S07P12D207/App/app/src/main/res/drawable/gradient.xml" value="0.161" />
+        <entry key="..\:/ssafy/S07P12D207/App/app/src/main/res/drawable/ic_back.xml" value="0.161" />
+        <entry key="..\:/ssafy/S07P12D207/App/app/src/main/res/drawable/ic_face.xml" value="0.2005" />
+        <entry key="..\:/ssafy/S07P12D207/App/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2005" />
+        <entry key="..\:/ssafy/S07P12D207/App/app/src/main/res/layout-w936dp/activity_pay.xml" value="0.1" />
+        <entry key="..\:/ssafy/S07P12D207/App/app/src/main/res/layout/activity_login.xml" value="0.1" />
+        <entry key="..\:/ssafy/S07P12D207/App/app/src/main/res/layout/activity_main.xml" value="0.2" />
+        <entry key="..\:/ssafy/S07P12D207/App/app/src/main/res/layout/activity_mytickets_list.xml" value="0.15625" />
+        <entry key="..\:/ssafy/S07P12D207/App/app/src/main/res/layout/activity_payment.xml" value="0.19635416666666666" />
+        <entry key="..\:/ssafy/S07P12D207/App/app/src/main/res/layout/activity_payment_done.xml" value="0.128" />
+        <entry key="..\:/ssafy/S07P12D207/App/app/src/main/res/layout/activity_reserve_done.xml" value="0.11197916666666667" />
+        <entry key="..\:/ssafy/S07P12D207/App/app/src/main/res/layout/ticket_item.xml" value="0.1" />
+        <entry key="..\:/ssafy/S07P12D207/App/app/src/main/res/layout/user_profile.xml" value="0.14673913043478262" />
+        <entry key="..\:/ssafy/S07P12D207/App/app/src/main/res/menu/menu.xml" value="0.264" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK" />
+</project>
