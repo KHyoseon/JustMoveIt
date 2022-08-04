@@ -25,7 +25,6 @@
             android:name="com.kakao.sdk.AppKey"
             android:value="49c6556724f6f52f48324cc25d1aa31c" />
 
-
         <activity
             android:name=".activity.MainActivity"
             android:exported="true"
@@ -54,6 +53,10 @@
             android:theme="@style/FullScreen" />
         <activity
             android:name=".mytickets.TicketInfoActivity"
+            android:exported="true"
+            android:theme="@style/FullScreen" />
+        <activity
+            android:name=".payment.PaymentActivity"
             android:exported="true"
             android:theme="@style/FullScreen" />
     </application>

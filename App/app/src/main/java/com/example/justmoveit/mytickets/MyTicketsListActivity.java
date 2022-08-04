@@ -23,6 +23,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.example.justmoveit.R;
 import com.example.justmoveit.login.User;
+import com.example.justmoveit.payment.PaymentActivity;
 import com.kakao.auth.Session;
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.api.UserApi;
@@ -48,15 +49,22 @@ public class MyTicketsListActivity extends AppCompatActivity {
         TextView tv_name = findViewById(R.id.user_name);
         TextView tv_email = findViewById(R.id.user_email);
 
+        // Todo: kakaoPay
+        iv_profile.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                PaymentActivity paymentActivity = new PaymentActivity("토르", 12000);
+                Intent it = new Intent(getApplicationContext(), paymentActivity.getClass());
+                startActivity(it);
+            }
+        });
+
         // 세션에서 사용자 정보 가져와서 profile_section setText
         SharedPreferencesCache cache = Session.getCurrentSession().getAppCache();
         tv_name.setText(cache.getString("user_name"));
         tv_email.setText(cache.getString("user_email"));
         // 원형 프로필
         Glide.with(this).load(cache.getString("user_img_url")).into(iv_profile);
-
-        Toast.makeText(this, "gender: "+cache.getString("user_gender"), Toast.LENGTH_SHORT).show();
-        Toast.makeText(this, "age: "+cache.getString("user_age_range"), Toast.LENGTH_SHORT).show();
 
         // 사용자가 예매한 티켓 모두 가져오기
         ArrayList<ReservedTicketItem> tickets = new ArrayList<>();
@@ -92,7 +100,7 @@ public class MyTicketsListActivity extends AppCompatActivity {
 
         // 예매 티켓 어댑트
         TicketList adapter = new TicketList(this, tickets);
-        ListView list = (ListView) findViewById(R.id.list);
+        ListView list = findViewById(R.id.list);
         list.setAdapter(adapter);
 
         // 일반 예매 티켓 클릭하면 상세 페이지로 이동
@@ -107,7 +115,7 @@ public class MyTicketsListActivity extends AppCompatActivity {
         });
 
         // 로그아웃
-        TextView logout = (TextView) findViewById(R.id.logout);
+        TextView logout = findViewById(R.id.logout);
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -120,7 +128,6 @@ public class MyTicketsListActivity extends AppCompatActivity {
                         cache.remove("user_email");
                         cache.remove("user_age_range");
                         cache.remove("user_gender");
-                        // 로그아웃 성공시 수행
                         finish(); // 현재 액티비티 종료 -> 메인으로 돌아감
                     }
                 });
