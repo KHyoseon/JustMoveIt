@@ -78,7 +78,7 @@ public class DetailActivity extends AppCompatActivity {
         list.add("18:00");
 
         TimesAdapter timesAdapter = new TimesAdapter();
-        timesAdapter.setTimes(list);
+        timesAdapter.setTimes(list,movie);
         recyclerView.setAdapter(timesAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL,false));
     }

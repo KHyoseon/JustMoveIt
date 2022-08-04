@@ -34,6 +34,9 @@
         <activity android:name=".activity.DetailActivity"
             android:exported="true"
             android:theme="@style/FullScreen"></activity>
+        <activity android:name=".activity.TicketingActivity"
+            android:exported="true"
+            android:theme="@style/FullScreen"></activity>
     </application>
 
 </manifest>

@@ -1,6 +1,7 @@
 package com.example.justmoveit.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,17 +11,22 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.justmoveit.R;
+import com.example.justmoveit.activity.TicketingActivity;
+import com.example.justmoveit.model.Movie;
+
 import java.util.List;
 
 public class TimesAdapter extends RecyclerView.Adapter<TimesAdapter.TimeViewHolder> {
 
     private List<String> times;
+    Movie movie;
 
     Context context;
 
 
-    public void setTimes(List<String> times){
+    public void setTimes(List<String> times,Movie movie){
         this.times=times;
+        this.movie=movie;
         notifyDataSetChanged();
     }
 
@@ -53,9 +59,9 @@ public class TimesAdapter extends RecyclerView.Adapter<TimesAdapter.TimeViewHold
             public void onClick(View view) {
                     //클릭 이벤트
 
-//                Intent intent = new Intent(context.getApplicationContext(), DetailActivity.class);
-//                intent.putExtra("movie",movies.get(index));
-//                context.startActivity(intent);
+                Intent intent = new Intent(context.getApplicationContext(), TicketingActivity.class);
+                intent.putExtra("movie",movie);
+                context.startActivity(intent);
             }
         });
     }
