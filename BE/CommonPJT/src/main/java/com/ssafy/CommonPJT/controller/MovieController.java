@@ -2,6 +2,7 @@ package com.ssafy.CommonPJT.controller;
 
 import com.ssafy.CommonPJT.domain.Movie;
 import com.ssafy.CommonPJT.dto.Movie.MovieDetailDto;
+import com.ssafy.CommonPJT.dto.Movie.MovieRecommedDto;
 import com.ssafy.CommonPJT.dto.Movie.MovieSaveDto;
 import com.ssafy.CommonPJT.service.MovieService;
 import io.swagger.annotations.Api;
@@ -43,4 +44,6 @@ public class MovieController {
         log.info("영화 정보를 조회합니다.");
         return movieService.findOne(id);
     }
+
+
 }
