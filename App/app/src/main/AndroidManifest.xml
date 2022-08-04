@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.justmoveit">
 
-    <!-- 피카소 사용을 위한 인터넷 권한 허가 -->
+    <!-- 인터넷 사용 권한 설정-->
     <uses-permission android:name="android.permission.INTERNET" />
 
     <!-- android:requestLegacyExternalStorage="true" -->
@@ -13,14 +13,19 @@
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
-        android:theme="@style/Theme.JustMoveIt"
-
         android:requestLegacyExternalStorage="true"
-
-
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:usesCleartextTraffic="true"
+        android:supportsRtl="true"
+        android:name=".login.LoginApplication"
+        android:theme="@style/Theme.JustMoveIt"
         tools:targetApi="31">
+
+        <meta-data
+            android:name="com.kakao.sdk.AppKey"
+            android:value="49c6556724f6f52f48324cc25d1aa31c" />
+
+
         <activity
             android:name=".activity.MainActivity"
             android:exported="true"
@@ -31,12 +36,26 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.DetailActivity"
+        <activity
+            android:name=".activity.DetailActivity"
             android:exported="true"
-            android:theme="@style/FullScreen"></activity>
-        <activity android:name=".activity.TicketingActivity"
+            android:theme="@style/FullScreen" />
+        <activity
+            android:name=".activity.TicketingActivity"
             android:exported="true"
-            android:theme="@style/FullScreen"></activity>
+            android:theme="@style/FullScreen" />
+        <activity
+            android:name=".login.LoginActivity"
+            android:exported="true"
+            android:theme="@style/FullScreen" />
+        <activity
+            android:name=".mytickets.MyTicketsListActivity"
+            android:exported="true"
+            android:theme="@style/FullScreen" />
+        <activity
+            android:name=".mytickets.TicketInfoActivity"
+            android:exported="true"
+            android:theme="@style/FullScreen" />
     </application>
 
 </manifest>
