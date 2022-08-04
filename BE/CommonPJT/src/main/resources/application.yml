@@ -21,3 +21,11 @@ server:
   port: 80
   servlet:
     contextPath: /justmoveit
+
+
+logging:
+  file:
+    path: logs
+  level:
+    com.ssafy.CommonPJT.main: warn
+    root: info
