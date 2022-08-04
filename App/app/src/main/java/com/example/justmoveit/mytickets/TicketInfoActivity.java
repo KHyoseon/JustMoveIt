@@ -33,9 +33,9 @@ public class TicketInfoActivity extends AppCompatActivity {
         TextView viewingDate = findViewById(R.id.viewing_date);
         viewingDate.setText(ticket.getViewingTime());
         TextView spectators = findViewById(R.id.spectators);
-        spectators.setText((ticket.getAdult()>0?"성인 "+ticket.getAdult()+"명":"").concat(ticket.getTeen()>0?"청소년 "+ticket.getTeen()+"명":""));
+        spectators.setText((ticket.getAdult()>0?"성인 "+ticket.getAdult()+"명  ":"").concat(ticket.getTeen()>0?"청소년 "+ticket.getTeen()+"명":""));
         TextView reserveSeat = findViewById(R.id.reserve_seat);
-        reserveSeat.setText(ticket.getTitle());
+        reserveSeat.setText(ticket.getSeat());
 
     }
 }

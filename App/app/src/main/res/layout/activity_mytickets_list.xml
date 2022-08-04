@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
     android:gravity="center_horizontal"
+    android:paddingHorizontal="25dp"
     android:orientation="vertical"
 
     tools:context=".mytickets.MyTicketsListActivity">
@@ -15,21 +16,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:padding="25dp"
+        android:paddingVertical="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profile_img"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginHorizontal="10dp"
             android:background="@drawable/user" />
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
             android:layout_centerVertical="true"
             android:layout_marginHorizontal="15dp"
             android:layout_toRightOf="@+id/profile_img">
@@ -41,10 +42,10 @@
                 <TextView
                     android:id="@+id/user_name"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:text="김싸피"
                     android:textColor="@color/white"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -54,7 +55,7 @@
                     android:layout_alignParentEnd="true"
                     android:text="로그아웃"
                     android:textColor="#A5363A"
-                    android:textSize="19sp"
+                    android:textSize="15sp"
                     android:textStyle="bold" />
 
             </RelativeLayout>
@@ -66,7 +67,7 @@
                 android:layout_alignParentBottom="true"
                 android:text="user@gmail.com"
                 android:textColor="@color/white"
-                android:textSize="17sp" />
+                android:textSize="15sp" />
         </RelativeLayout>
     </RelativeLayout>
 
@@ -74,17 +75,19 @@
         android:id="@+id/section"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="20dp"
         android:text="예매 내역"
         android:textColor="@color/white"
-        android:textSize="22sp"
+        android:textSize="18sp"
         android:textStyle="bold" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/section">
 
         <ListView
@@ -92,10 +95,7 @@
             android:layout_width="430dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="15dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/section" />
+            android:layout_marginTop="15dp" />
 
     </RelativeLayout>
 </LinearLayout>

@@ -19,16 +19,4 @@ public class PayApproveParam {
         this.pg_token = pg_token;
         this.total_amount = total_amount;
     }
-
-    @Override
-    public String toString() {
-        return "PayApproveParam{" +
-                "cid='" + cid + '\'' +
-                "\n, tid='" + tid + '\'' +
-                "\n, partner_order_id='" + partner_order_id + '\'' +
-                "\n, partner_user_id='" + partner_user_id + '\'' +
-                "\n, pg_token='" + pg_token + '\'' +
-                "\n, total_amount=" + total_amount +
-                '}';
-    }
 }
