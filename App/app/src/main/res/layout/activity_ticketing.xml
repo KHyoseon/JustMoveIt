@@ -117,11 +117,6 @@
                             android:layout_centerHorizontal="true"
                             android:layout_weight="25"
                             android:layout_marginLeft="@dimen/_10sdp"
-                            android:background="@drawable/custom_spinner"
-                            android:overlapAnchor="false"
-                            android:popupElevation="10dp"
-                            android:popupBackground="#DEDEDE"
-                            android:textColor="@color/black"
 
                             />
 
