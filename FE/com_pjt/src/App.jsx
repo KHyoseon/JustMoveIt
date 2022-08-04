@@ -76,8 +76,11 @@ axios.get('http://localhost/justmoveit/movies/')
       seats_info.push( iterator.seat )
     }
     seats_info.sort()
-    console.log(seats_info)
-    console.log(seats_info[0][0])
+    // console.log(seats_info)
+    // console.log(seats_info[0][0])
+    for (const seat of seats_info) {
+      console.log(seat)
+    }
 
 
     for (const iterator of temp_data) {
@@ -134,19 +137,20 @@ axios.get('http://localhost/justmoveit/movies/')
   }
 
   let seats = []
-  let seat_num = 1
-  for (let index = 0; index < 4; index++) {
-    for (let index1 = 0; index1 < 5; index1++) {
+  const sr = ["A","B","C","D",]
+  const sc = ['1','2','3','4','5']
+
+  for (const row of sr) {
+    for (const col of sc) {
       seats.push(
-        <button> {seat_num} </button>
+        <button id={row + "0" + col}>{row}0{col}</button>
         )
-        seat_num = seat_num + 1
     }
     seats.push(<br></br>)
   }
+  console.log(seats)
+  // console.log(seats[0].props.className)
 
-  const sr = ["A","B","C","D",]
-  const sc = [1,2,3,4,5]
   let sr_info = []
   let sc_info = []
   for (const iterator of sr) {
@@ -167,18 +171,18 @@ const App = () => {
     movieTitle.current.innerText = info_data[index]['title'] 
   }
   
-  const face = function(){
-    const spawn = require('child_process').spawn;
-    const result = spawn('python', ['gad.py']);
+  // const face = function(){
+  //   const spawn = require('child_process').spawn;
+  //   const result = spawn('python', ['gad.py']);
     
-    result.stdout.on('data', function(data) {
-      console.log(data.toString());
-    });
+  //   result.stdout.on('data', function(data) {
+  //     console.log(data.toString());
+  //   });
   
-    result.stderr.on('data', function(data) {
-      console.log(data.toString());
-    });
-  }
+  //   result.stderr.on('data', function(data) {
+  //     console.log(data.toString());
+  //   });
+  // }
   
   return (
     <div className='App'>
@@ -240,11 +244,12 @@ const App = () => {
       </div>
     </div> */}
 
-      <h1> 좌석 선택 </h1>
+      {/* <h1> 좌석 선택 </h1> */}
       {/* {sr_info}
       {sc_info} */}
-      {/* { seats } */}
-      <div className={ styles.screen }></div>
+      { seats }
+
+      {/* <div className={ styles.screen }></div> */}
       
       {/* <ul className={styles.showcase}>
       <li>
