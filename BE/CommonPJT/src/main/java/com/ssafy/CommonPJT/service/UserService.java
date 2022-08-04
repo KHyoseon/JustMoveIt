@@ -6,6 +6,7 @@ import com.ssafy.CommonPJT.dto.User.UserProfileDto;
 import com.ssafy.CommonPJT.dto.User.UserSaveDto;
 import com.ssafy.CommonPJT.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +20,7 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    // 회원가입
     @Transactional
     public void signUp(UserSaveDto requestDto) {
         User user = requestDto.toEntity();
@@ -31,6 +33,8 @@ public class UserService {
         userRepository.save(user);
     }
 
+
+    // 로그인
     public UserProfileDto signIn(UserLoginDto requestDto) {
         List<User> userList = userRepository.findAll();
         for (User user : userList) {
@@ -44,6 +48,8 @@ public class UserService {
         return null;
     }
 
+
+    // 회원 조회
     public UserProfileDto getUser(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("없는 회원입니다."));
@@ -51,6 +57,8 @@ public class UserService {
         return userProfileDto;
     }
 
+
+    // 회원 리스트 조회
     public List<UserProfileDto> getUserList() {
         List<User> userList = userRepository.findAll();
         List<UserProfileDto> userProfileDtoList = userList.stream().map(UserProfileDto::new).collect(Collectors.toList());

@@ -7,6 +7,7 @@ import com.ssafy.CommonPJT.dto.Ticket.TicketSaveDto;
 import com.ssafy.CommonPJT.repository.MoviePlayingInfoRepository;
 import com.ssafy.CommonPJT.repository.TicketRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,14 +30,8 @@ public class TicketService {
         Long moviePlayingInfoId = requestDto.getMoviePlayingInfoId();
         MoviePlayingInfo info = moviePlayingInfoRepository.findById(moviePlayingInfoId)
                 .orElseThrow(() -> new NoSuchElementException("존재하지 않는 값입니다."));
-        List<Ticket> tickets = ticketRepository.findAll();
-        Ticket saveTicket = requestDto.toEntity(info);
-        for (Ticket ticket : tickets) {
-            if (ticket.getSeat().equals(saveTicket.getSeat())) {
-                throw new IllegalArgumentException("이미 예약된 좌석입니다.");
-            }
-        }
-        ticketRepository.save(saveTicket);
+        Ticket toEntity = requestDto.toEntity(info);
+        ticketRepository.save(toEntity);
     }
 
     // 티켓 리스트 조회
@@ -57,6 +52,14 @@ public class TicketService {
         return ticketsByNum.stream().map(TicketResDto::new).collect(Collectors.toList());
     }
 
+    // ticketId로 티켓 조회
+    public TicketResDto findById(Long ticketId) {
+        Ticket ticket = ticketRepository.findById(ticketId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 티켓입니다."));
+        return new TicketResDto(ticket);
+    }
+
+    // 티켓 예매 취소
     @Transactional
     public void delete(Long id) {
         Ticket target = ticketRepository.findById(id)
