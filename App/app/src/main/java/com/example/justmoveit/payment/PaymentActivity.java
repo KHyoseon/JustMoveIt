@@ -107,9 +107,7 @@ public class PaymentActivity extends AppCompatActivity {
             String pg_token = pgToken;
             Integer total_amount = PRODUCT_PRICE;
 
-            PayApproveParam param = new PayApproveParam(cid, tid, partner_order_id, partner_user_id, pg_token, total_amount);
-
-            service.paymentApprove(param).enqueue(new Callback<PayApprove>() {
+            service.paymentApprove(cid, tid, partner_order_id, partner_user_id, pg_token, total_amount).enqueue(new Callback<PayApprove>() {
                 @Override
                 public void onResponse(Call<PayApprove> call, Response<PayApprove> response) {
                     if (response.isSuccessful()) {

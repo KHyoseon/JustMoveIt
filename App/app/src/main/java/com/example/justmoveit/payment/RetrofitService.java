@@ -37,5 +37,11 @@ public interface RetrofitService {
     @Headers ({"Authorization: KakaoAK 50572afa1934558863f2a3be50221aa2",
             "Content-Type:application/x-www-form-urlencoded;charset=utf-8"})
     @POST("v1/payment/approve")
-    Call<PayApprove> paymentApprove(@Body PayApproveParam param);
+    Call<PayApprove> paymentApprove(
+            @Query("cid") String cid,
+            @Query("tid") String tid,
+            @Query("partner_order_id") String partner_order_id,
+            @Query("partner_user_id") String partner_user_id,
+            @Query("pg_token") String pg_token,
+            @Query("total_amount") Integer total_amount);
 }
