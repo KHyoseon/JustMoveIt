@@ -10,16 +10,12 @@ import styles from "./App.css";
 import ReactDOM from "react-dom";
 
 import Seats from "./components/Seats";
-import Dial from "./components/Dial";
+import DialPage from "./components/DialPage";
+import MovieSelect from "./components/MovieSelect";
 
 // function Field() {
   
 // }
-
-let slides = [];
-let text_data = []
-let info_data 
-let movie_title
 
 let movie_detail = []
 
@@ -27,20 +23,6 @@ let movie_detail = []
 
 const axios = require('axios').default;
 
-axios.get('http://localhost/justmoveit/movies/')
-  .catch(function(err){
-    console.log(err,'axios 안되누 ㅡ')
-  })
-  .then(function (response) {
-    // 성공 핸들링
-    // console.log(response.data);
-    info_data = response.data
-    for (const iterator of info_data) {
-
-      slides.push(<img src={ iterator['img'] }></img>)
-      text_data.push(<h1>{iterator['title']}</h1>)
-    }
-  })
   
   // document.onkeydown = arrow_keys;
   
@@ -164,176 +146,17 @@ axios.get('http://localhost/justmoveit/movies/')
   }
 
   
-
-
 const App = () => {
-  const movieTitle = useRef(null)
-  
-  
-  const callback = function(index){
-    movieTitle.current.innerText = info_data[index]['title'] 
-  }
-  
-  // const face = function(){
-  //   const spawn = require('child_process').spawn;
-  //   const result = spawn('python', ['gad.py']);
-    
-  //   result.stdout.on('data', function(data) {
-  //     console.log(data.toString());
-  //   });
-  
-  //   result.stderr.on('data', function(data) {
-  //     console.log(data.toString());
-  //   });
-  // }
-
-
 
   return (
     <div className='App'>
-      {/* <h1>하이하이</h1> */}
       {/* <Seats /> */}
-      <br />
-      <br />
-      <br />
-      <br />
-
-      <Carousel slides={slides} arrows={false} autoplay={false} interval={1000} onSlideChange={callback}/>
-
-      <div>
-        <br></br>
-        <br></br>
-        <br></br>
-
-        <h1 ref={ movieTitle }></h1>'
-
-          <button>영화 선택</button>
-
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-
-        <br></br>
-        <br></br>
-        <br></br>
-      </div>
-
-      {/* <div>
-        <img src={ movie.img }></img>
-        <h1>{ movie.title }</h1>
-        <h3>{ movie.summary }</h3>
-
-        { movie_time }
-        <br></br>
-        <button>좌석 선택</button>
-        <div>
-          
-        </div>
-      </div> */}
-        
+      {/* <MovieSelect /> */}
 
 
 
-      {/* <div className='container'>
-      <div className='row'>
-      <div className='column row-2'></div>
-      <div className='column row-10'></div>
-      <div className='column row2'></div>
-      <div className='column row10'></div>
-      </div>
-    </div> */}
-
-      {/* <h1> 좌석 선택 </h1> */}
-      {/* {sr_info}
-      {sc_info} */}
-      {/* { seats } */}
 
       {/* <div className={ styles.screen }></div> */}
-      
-      {/* <ul className={styles.showcase}>
-      <li>
-      <div className={ styles.seat }></div>
-      <small>N/A</small>
-      </li>
-      <li>
-      <div className={styles.seat.selected}></div>
-      <small>Selected</small>
-      </li>
-      <li>
-      <div className={styles.seat.occupied}></div>
-      <small>Occupied</small>
-      </li>
-      </ul>
-      
-      <div className={styles.container}>
-      <div className={styles.screen}></div>
-      
-      <div className={ styles.row }>
-      <div className={ styles.seat }></div>
-      <div className={ styles.seat }></div>
-      <div className={ styles.seat }></div>
-      <div className={ styles.seat }></div>
-      <div className={ styles.seat }></div>
-      <div className={ styles.seat }></div>
-      <div className={ styles.seat }></div>
-      <div className={ styles.seat }></div>
-      </div>
-      <div className={ styles.row }>
-      <div className={ styles.seat }></div>
-      <div className={ styles.seat }></div>
-      <div className={ styles.seat }></div>
-      <div className={ styles.seat }></div>
-      <div className={ styles.seat.occupied}></div>
-      <div className={ styles.seat.occupied}></div>
-      <div className={ styles.seat }></div>
-      <div className={ styles.seat }></div>
-      </div>
-      <div className={ styles.row }>
-      <div className={ styles.seat }></div>
-      <div className={ styles.seat }></div>
-      <div className={ styles.seat }></div>
-      <div className={ styles.seat }></div>
-      <div className={ styles.seat }></div>
-      <div className={ styles.seat }></div>
-      <div className={ styles.seat.occupied}></div>
-      <div className={ styles.seat.occupied}></div>
-      </div>
-      <div className={ styles.row }>
-      <div className={ styles.seat }></div>
-      <div className={ styles.seat }></div>
-          <div className={ styles.seat }></div>
-          <div className={ styles.seat }></div>
-          <div className={ styles.seat }></div>
-          <div className={ styles.seat }></div>
-          <div className={ styles.seat }></div>
-          <div className={ styles.seat }></div>
-          </div>
-          <div className={ styles.row }>
-          <div className={ styles.seat }></div>
-          <div className={ styles.seat }></div>
-          <div className={ styles.seat }></div>
-          <div className={ styles.seat }></div>
-          <div className={ styles.seat.occupied}></div>
-          <div className={ styles.seat }></div>
-          <div className={ styles.seat.occupied}></div>
-          <div className={ styles.seat }></div>
-          </div>
-          <div className={ styles.row }>
-          <div className={ styles.seat }></div>
-          <div className={ styles.seat }></div>
-          <div className={ styles.seat }></div>
-          <div className={ styles.seat }></div>
-          <div className={ styles.seat }></div>
-          <div className={ styles.seat }></div>
-          <div className={ styles.seat.occupied}></div>
-          <div className={ styles.seat.occupied}></div>
-          </div>
-        </div> */}
-
-      {/* <Button onClick={ face }>하이하이</Button> */}
-
-
 
     </div>
   )
