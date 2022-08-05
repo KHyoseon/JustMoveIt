@@ -17,16 +17,13 @@ import com.example.justmoveit.model.Movie;
 import java.util.List;
 
 public class TimesAdapter extends RecyclerView.Adapter<TimesAdapter.TimeViewHolder> {
-
-    private List<String> times;
     Movie movie;
-
+    private List<String> times;
     Context context;
 
-
-    public void setTimes(List<String> times,Movie movie){
-        this.times=times;
-        this.movie=movie;
+    public void setTimes(List<String> times, Movie movie) {
+        this.movie = movie;
+        this.times = times;
         notifyDataSetChanged();
     }
 
@@ -50,30 +47,27 @@ public class TimesAdapter extends RecyclerView.Adapter<TimesAdapter.TimeViewHold
 
     @Override
     public void onBindViewHolder(@NonNull TimesAdapter.TimeViewHolder holder, int position) {
-
         int index = position % times.size();
 
         holder.setTime(times.get(index));
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                    //클릭 이벤트
+                //클릭 이벤트
 
                 Intent intent = new Intent(context.getApplicationContext(), TicketingActivity.class);
-                intent.putExtra("movie",movie);
+                intent.putExtra("movie", movie);
                 context.startActivity(intent);
             }
         });
     }
+
     @Override
     public int getItemCount() {
         return times.size();
     }
-    static class TimeViewHolder extends RecyclerView.ViewHolder{
 
-
-
-
+    static class TimeViewHolder extends RecyclerView.ViewHolder {
         private final TextView textTime;
 
         public TimeViewHolder(@NonNull View view) {
@@ -81,11 +75,8 @@ public class TimesAdapter extends RecyclerView.Adapter<TimesAdapter.TimeViewHold
             textTime = view.findViewById(R.id.textTime);
         }
 
-        void setTime(String time){
-
+        void setTime(String time) {
             textTime.setText(time);
         }
-
-
     }
 }

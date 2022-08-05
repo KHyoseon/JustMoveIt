@@ -1,8 +1,9 @@
-package com.example.justmoveit.mytickets;
+package com.example.justmoveit.model;
 
 import java.io.Serializable;
+import java.util.Objects;
 
-public class ReservedTicketItem implements Serializable {
+public class ReservedTicket implements Serializable, Comparable<ReservedTicket> {
     private String title;
     private String reservedDate;
     private String viewingDate;
@@ -14,7 +15,7 @@ public class ReservedTicketItem implements Serializable {
     private Long priority;
     private boolean expired;
 
-    public ReservedTicketItem(String title, String reservedDate, String viewingDate, String viewingTime, String theater, int adult, int teen, String seat) {
+    public ReservedTicket(String title, String reservedDate, String viewingDate, String viewingTime, String theater, int adult, int teen, String seat) {
         this.title = title;
         this.reservedDate = reservedDate;
         this.viewingDate = viewingDate;
@@ -98,5 +99,11 @@ public class ReservedTicketItem implements Serializable {
 
     public void setExpired(boolean expired) {
         this.expired = expired;
+    }
+
+    @Override
+    public int compareTo(ReservedTicket ticket2) {
+        if (Objects.equals(this.getPriority(), ticket2.getPriority())) return 0;
+        return (ticket2.getPriority() > this.getPriority() ? 1 : -1);
     }
 }

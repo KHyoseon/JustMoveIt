@@ -1,4 +1,4 @@
-package com.example.justmoveit.model.kakaoDto;
+package com.example.justmoveit.model.kakaopay;
 
 public class PayApprove {
     private String aid;

@@ -17,7 +17,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:usesCleartextTraffic="true"
         android:supportsRtl="true"
-        android:name=".login.LoginApplication"
+        android:name=".application.LoginApplication"
         android:theme="@style/Theme.JustMoveIt"
         tools:targetApi="31">
 
@@ -36,7 +36,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.DetailActivity"
+            android:name=".activity.MovieInfoActivity"
             android:exported="true"
             android:theme="@style/FullScreen" />
         <activity
@@ -44,19 +44,19 @@
             android:exported="true"
             android:theme="@style/FullScreen" />
         <activity
-            android:name=".login.LoginActivity"
+            android:name=".activity.LoginActivity"
             android:exported="true"
             android:theme="@style/FullScreen" />
         <activity
-            android:name=".mytickets.MyTicketsListActivity"
+            android:name=".activity.MyTicketsListActivity"
             android:exported="true"
             android:theme="@style/FullScreen" />
         <activity
-            android:name=".mytickets.TicketInfoActivity"
+            android:name=".activity.TicketInfoActivity"
             android:exported="true"
             android:theme="@style/FullScreen" />
         <activity
-            android:name=".payment.PaymentActivity"
+            android:name=".activity.PaymentActivity"
             android:exported="true"
             android:theme="@style/FullScreen" />
     </application>

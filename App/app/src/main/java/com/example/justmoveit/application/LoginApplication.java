@@ -1,4 +1,4 @@
-package com.example.justmoveit.login;
+package com.example.justmoveit.application;
 
 import android.app.Application;
 import android.content.Context;

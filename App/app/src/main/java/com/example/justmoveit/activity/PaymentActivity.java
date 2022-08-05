@@ -1,4 +1,4 @@
-package com.example.justmoveit.payment;
+package com.example.justmoveit.activity;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -6,19 +6,15 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.justmoveit.R;
-import com.example.justmoveit.model.kakaoDto.PayApprove;
-import com.example.justmoveit.model.kakaoDto.PayApproveParam;
-import com.example.justmoveit.model.kakaoDto.PayReady;
-import com.google.gson.JsonObject;
-
-import java.net.URISyntaxException;
+import com.example.justmoveit.model.kakaopay.PayApprove;
+import com.example.justmoveit.model.kakaopay.PayReady;
+import com.example.justmoveit.service.RetrofitService;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -107,9 +103,7 @@ public class PaymentActivity extends AppCompatActivity {
             String pg_token = pgToken;
             Integer total_amount = PRODUCT_PRICE;
 
-            PayApproveParam param = new PayApproveParam(cid, tid, partner_order_id, partner_user_id, pg_token, total_amount);
-
-            service.paymentApprove(param).enqueue(new Callback<PayApprove>() {
+            service.paymentApprove(cid, tid, partner_order_id, partner_user_id, pg_token, total_amount).enqueue(new Callback<PayApprove>() {
                 @Override
                 public void onResponse(Call<PayApprove> call, Response<PayApprove> response) {
                     if (response.isSuccessful()) {

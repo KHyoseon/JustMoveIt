@@ -1,4 +1,4 @@
-package com.example.justmoveit.model.kakaoDto;
+package com.example.justmoveit.model.kakaopay;
 
 public class CardInfo {
     private String purchase_corp;
