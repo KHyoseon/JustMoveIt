@@ -3,9 +3,7 @@ package com.example.justmoveit.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.PersistableBundle;
 import android.text.TextUtils;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -24,7 +22,6 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.justmoveit.R;
 import com.example.justmoveit.adapters.ImageSliderAdapter;
-import com.example.justmoveit.adapters.MoviesAdapter;
 import com.example.justmoveit.adapters.TimesAdapter;
 import com.example.justmoveit.model.Movie;
 import com.makeramen.roundedimageview.RoundedImageView;
@@ -34,22 +31,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DetailActivity extends AppCompatActivity {
-
-
+    private Movie movie;
     private LinearLayout layoutSliderIndicators;
     private ViewPager2 sliderViewPager;
-    private ImageView imageBack;
-    private RoundedImageView imageMoviePoster;
-    private Movie movie;
     private Handler sliderHandler = new Handler();
-    private RecyclerView recyclerView;
 
-    private void loadMovieDetails(){
-        Intent intent =getIntent();
-
-        movie=(Movie)intent.getSerializableExtra("movie");
-
-    }
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,43 +45,50 @@ public class DetailActivity extends AppCompatActivity {
         loadMovieDetails();
 
         layoutSliderIndicators = findViewById(R.id.layoutSliderIndicators);
+        RoundedImageView imgMoviePoster = findViewById(R.id.imageMoviePoster);
 
-        imageMoviePoster = findViewById(R.id.imageMoviePoster);
-        Picasso.get().load(movie.getImg1()).into(imageMoviePoster);
-
+        // 영화 포스터 등록
+        Picasso.get().load(movie.getMainImg()).into(imgMoviePoster);
+        //영화 디테일 정보 등록
         setDetail();
+        // 뷰 페이저 (서브 이미지) 등록
         setupSliderViewPager();
-
-        setImageBack();
+        // 뷰 페이저 하단 인디케이터 등록
         setupSliderIndicators(5);
+        // 뒤로가기 버튼 등록
+        setImageBack();
 
-        //시간 버튼
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        List<String> list= new ArrayList<>();
-        list.add("12:00");
-        list.add("14:00");
-        list.add("16:00");
-        list.add("18:00");
+        // 영화 상영 시간 버튼
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        List<String> timeList= new ArrayList<>();
+        timeList.add("12:00");
+        timeList.add("14:00");
+        timeList.add("16:00");
+        timeList.add("18:00");
 
         TimesAdapter timesAdapter = new TimesAdapter();
-        timesAdapter.setTimes(list,movie);
+        timesAdapter.setTimes(timeList, movie);
         recyclerView.setAdapter(timesAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL,false));
     }
-    private  void setImageBack(){
-        //뒤로가기 버튼 구현
-        imageBack =  findViewById(R.id.imageBack);
-        imageBack.setOnClickListener(view ->onBackPressed());
 
+    private void loadMovieDetails(){
+        Intent intent =getIntent();
+        movie=(Movie)intent.getSerializableExtra("movie");
     }
+
+    private  void setImageBack(){
+        ImageView imgBack = findViewById(R.id.imageBack);
+        imgBack.setOnClickListener(view ->onBackPressed());
+    }
+
     private void setupSliderViewPager(){
-
-
         sliderViewPager = findViewById(R.id.sliderViewPager);
         sliderViewPager.setClipToPadding(false);
         sliderViewPager.setClipChildren(false);
         sliderViewPager.setOffscreenPageLimit(3);
         sliderViewPager.getChildAt(0).setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
+
         CompositePageTransformer compositePageTransformer = new CompositePageTransformer();
         compositePageTransformer.addTransformer(new MarginPageTransformer(10));
         compositePageTransformer.addTransformer(((page, position) -> {
@@ -104,18 +97,8 @@ public class DetailActivity extends AppCompatActivity {
         }));
         sliderViewPager.setPageTransformer(compositePageTransformer);
 
-        List<String> url=new ArrayList<>();
-
-        url.add(movie.getImg2());
-        url.add(movie.getImg3());
-        url.add(movie.getImg4());
-        url.add(movie.getImg5());
-        url.add(movie.getImg6());
-
-
-
-        //Slider Indicator을 바인딩 하기 위한 코드
-        sliderViewPager.setAdapter(new ImageSliderAdapter(url));
+        // Slider Indicator을 바인딩 하기 위한 코드
+        sliderViewPager.setAdapter(new ImageSliderAdapter(movie.getSubImgs()));
         sliderViewPager.setVisibility(View.VISIBLE);
         sliderViewPager.setOffscreenPageLimit(1);
         sliderViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
@@ -128,22 +111,24 @@ public class DetailActivity extends AppCompatActivity {
 
             }
         });
-
-
     }
-    private Runnable sliderRunnable =new Runnable() {
+
+    private final Runnable sliderRunnable =new Runnable() {
         @Override
         public void run() {
             sliderViewPager.setCurrentItem(sliderViewPager.getCurrentItem()+1);
         }
     };
+
     private void setupSliderIndicators(int count){
         ImageView[] indicators = new ImageView[count];
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT
+                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT
         );
+
         layoutParams.setMargins(8,0,8,0);
-        for(int i=0;i<indicators.length;i++){
+
+        for(int i=0, l=indicators.length; i<l; i++){
             indicators[i] = new ImageView(getApplicationContext());
             indicators[i].setImageDrawable(ContextCompat.getDrawable(
                     getApplicationContext(),
@@ -155,16 +140,18 @@ public class DetailActivity extends AppCompatActivity {
         }
         setCurrentIndicator(0);
     }
+
     private void setCurrentIndicator(int position) {
         int childCount = layoutSliderIndicators.getChildCount();
+
         for (int i = 0; i < childCount; i++) {
             ImageView imageView = (ImageView) layoutSliderIndicators.getChildAt(i);
-            if (i == position) {
+            if (i == position) {    // 활성화 된 인디케이터
                 imageView.setImageDrawable(ContextCompat.getDrawable(
                         this,
                         R.drawable.background_slider_indicator_active
                 ));
-            } else {
+            } else {  // 비활성화된 인디케이터
                 imageView.setImageDrawable(ContextCompat.getDrawable(
                         this,
                         R.drawable.background_slider_indicator_inactive
@@ -172,6 +159,7 @@ public class DetailActivity extends AppCompatActivity {
             }
         }
     }
+
     private void setDetail(){
         TextView textTitle = findViewById(R.id.textTitle);
         TextView textCountry = findViewById(R.id.textCountry);
@@ -195,6 +183,7 @@ public class DetailActivity extends AppCompatActivity {
         textGenre.setText(movie.getGenre());
         textReleaseDate.setText("개봉일자: "+movie.getReleaseDate());
         textSummary.setText(movie.getSummary());
+
         textReadMore.setOnClickListener(view -> {
             if(textReadMore.getText().toString().equals("더보기")){
                 textSummary.setMaxLines(Integer.MAX_VALUE);
@@ -206,11 +195,11 @@ public class DetailActivity extends AppCompatActivity {
                 textReadMore.setText(R.string.read_more);
             }
         });
+
         textEngTitle.setText(movie.getEngTitle());
         textDirector.setText(movie.getDirector());
         textActor.setText(movie.getActor());
         ratingBar.setRating(Float.parseFloat(movie.getRating())/2);
         textRatingBarNum.setText((movie.getRating()));
-
     }
 }

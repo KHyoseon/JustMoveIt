@@ -1,4 +1,4 @@
-package com.example.justmoveit.model.kakaoDto;
+package com.example.justmoveit.model.kakaopay;
 
 public class PayReady {
     // 결제 고유 번호

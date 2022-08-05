@@ -1,13 +1,11 @@
-package com.example.justmoveit.payment;
+package com.example.justmoveit.service;
 
-import com.example.justmoveit.model.kakaoDto.PayApprove;
-import com.example.justmoveit.model.kakaoDto.PayApproveParam;
-import com.example.justmoveit.model.kakaoDto.PayReady;
+import com.example.justmoveit.model.kakaopay.PayApprove;
+import com.example.justmoveit.model.kakaopay.PayReady;
 
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.Body;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Query;

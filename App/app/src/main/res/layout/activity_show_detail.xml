@@ -328,7 +328,7 @@
                     android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_100sdp"
-                    tools:listitem="@layout/item_container_time"></androidx.recyclerview.widget.RecyclerView>
+                    tools:listitem="@layout/item_container_time" />
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

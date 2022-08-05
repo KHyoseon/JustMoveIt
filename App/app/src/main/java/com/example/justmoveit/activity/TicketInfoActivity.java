@@ -1,4 +1,4 @@
-package com.example.justmoveit.mytickets;
+package com.example.justmoveit.activity;
 
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.justmoveit.R;
+import com.example.justmoveit.model.ReservedTicket;
 
 public class TicketInfoActivity extends AppCompatActivity {
     @Override
@@ -19,7 +20,7 @@ public class TicketInfoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_reserve_done);
 
         Intent intent = getIntent();
-        ReservedTicketItem ticket = (ReservedTicketItem) intent.getExtras().getSerializable("ticket");
+        ReservedTicket ticket = (ReservedTicket) intent.getExtras().getSerializable("ticket");
 
         if(ticket.isExpired()){
             ImageView ticketBg = findViewById(R.id.ticket_bg);

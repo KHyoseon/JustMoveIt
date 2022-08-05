@@ -1,4 +1,4 @@
-package com.example.justmoveit.login;
+package com.example.justmoveit.model;
 
 import com.kakao.usermgmt.response.model.AgeRange;
 import com.kakao.usermgmt.response.model.Gender;

@@ -1,14 +1,5 @@
 package com.example.justmoveit.activity;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager2.widget.CompositePageTransformer;
-import androidx.viewpager2.widget.MarginPageTransformer;
-import androidx.viewpager2.widget.ViewPager2;
-
-import android.content.ClipData;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -18,12 +9,18 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.CompositePageTransformer;
+import androidx.viewpager2.widget.MarginPageTransformer;
+import androidx.viewpager2.widget.ViewPager2;
 
-import com.example.justmoveit.adapters.MoviesAdapter;
 import com.example.justmoveit.R;
+import com.example.justmoveit.adapters.MoviesAdapter;
 import com.example.justmoveit.model.Movie;
 import com.kakao.auth.Session;
 
@@ -37,9 +34,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
-
+        // 툴바 등록
         toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
@@ -55,16 +51,18 @@ public class MainActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    // 옵션 클릭 이벤트
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         Intent it = new Intent();
+        // 프로필 클릭시 로그인 페이지 or 티켓 예매 내역 페이지
         if (item.getItemId() == R.id.profile) {
             if (Session.getCurrentSession().isOpened()) {
                 Toast.makeText(this, "CurrentSession is opend ", Toast.LENGTH_SHORT).show();
-                it.setClassName("com.example.justmoveit", "com.example.justmoveit.mytickets.MyTicketsListActivity");
+                it.setClassName("com.example.justmoveit", "com.example.justmoveit.activity.MyTicketsListActivity");
             } else {
                 Toast.makeText(this, "CurrentSession is closed", Toast.LENGTH_SHORT).show();
-                it.setClassName("com.example.justmoveit", "com.example.justmoveit.login.LoginActivity");
+                it.setClassName("com.example.justmoveit", "com.example.justmoveit.activity.LoginActivity");
             }
             startActivity(it);
         }
@@ -73,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupMoviesViewPager() {
-
+        // 메인 페이지 - 영화 목록 (카드)
         ViewPager2 moviesViewPager = findViewById(R.id.moviesViewPager);
         moviesViewPager.setClipToPadding(false);
         moviesViewPager.setClipChildren(false);
@@ -108,10 +106,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     private List<Movie> getMovies() {
-
-
+        // 영화 정보
         List<Movie> movies = new ArrayList<>();
-
 
         Movie mov1 = new Movie(1L, "한국", "최동훈", "류준열, 김우빈, 김태리", "외계+인 1부",
                 "액션, 판타지, SF", "2022년 현재, ‘가드’(김우빈)’와 ‘썬더’는 인간의 몸에 가두어진 외계인 죄수를 관리하며 지구에 살고 있다.\n" +
