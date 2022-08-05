@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import androidx.annotation.Nullable;
@@ -31,11 +30,8 @@ public class TicketingActivity extends AppCompatActivity {
     private Spinner disabledSpinner;
 
     private Integer[] peopleNum = {0, 1, 2, 3, 4, 5};
-    private String cusRes = "";//결제 총 목록
-    private String seatRes = "";//좌석 총 목록
-
     private int[] cntSeat; // 0:성인, 1:어린이, 2:장애인
-    private static Set<String> reservedSeat;
+    private static Set<String> selectedSeat;
 
     private void loadMovie() {
         Intent intent = getIntent();
@@ -52,7 +48,7 @@ public class TicketingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_ticketing);
 
         cntSeat = new int[3];
-        reservedSeat = new HashSet<>();
+        selectedSeat = new HashSet<>();
 
         // 예매할 영화 정보 가져옴
         loadMovie();
@@ -176,10 +172,10 @@ public class TicketingActivity extends AppCompatActivity {
         public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
             if(isChecked){
                 Log.i("checked", compoundButton.getResources().getResourceEntryName(compoundButton.getId()));
-                reservedSeat.add(compoundButton.getResources().getResourceEntryName(compoundButton.getId()));
+                selectedSeat.add(compoundButton.getResources().getResourceEntryName(compoundButton.getId()));
             } else{
                 Log.i("unChecked", compoundButton.getResources().getResourceEntryName(compoundButton.getId()));
-                reservedSeat.remove(compoundButton.getResources().getResourceEntryName(compoundButton.getId()));
+                selectedSeat.remove(compoundButton.getResources().getResourceEntryName(compoundButton.getId()));
             }
         }
     }

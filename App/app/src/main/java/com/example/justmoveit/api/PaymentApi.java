@@ -1,4 +1,4 @@
-package com.example.justmoveit.service;
+package com.example.justmoveit.api;
 
 import com.example.justmoveit.model.kakaopay.PayApprove;
 import com.example.justmoveit.model.kakaopay.PayReady;
@@ -10,7 +10,7 @@ import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
-public interface RetrofitService {
+public interface PaymentApi {
     Retrofit retrofit = new Retrofit.Builder()
             .baseUrl("https://kapi.kakao.com/")
             .addConverterFactory(GsonConverterFactory.create())
