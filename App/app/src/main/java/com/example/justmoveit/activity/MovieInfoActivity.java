@@ -30,7 +30,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DetailActivity extends AppCompatActivity {
+public class MovieInfoActivity extends AppCompatActivity {
     private Movie movie;
     private LinearLayout layoutSliderIndicators;
     private ViewPager2 sliderViewPager;

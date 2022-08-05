@@ -9,7 +9,7 @@
     tools:context=".activity.MainActivity"
     android:paddingHorizontal="@dimen/activity_horizontal_margin"
     android:paddingVertical="@dimen/activity_vertical_margin"
-    android:background="#010203">
+    android:background="@color/colorPrimary">
 
 
     <com.google.android.material.appbar.AppBarLayout

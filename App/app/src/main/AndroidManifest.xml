@@ -36,7 +36,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.DetailActivity"
+            android:name=".activity.MovieInfoActivity"
             android:exported="true"
             android:theme="@style/FullScreen" />
         <activity

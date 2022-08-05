@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.justmoveit.R;
-import com.example.justmoveit.activity.DetailActivity;
+import com.example.justmoveit.activity.MovieInfoActivity;
 import com.example.justmoveit.model.Movie;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
@@ -52,7 +52,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context.getApplicationContext(), DetailActivity.class);
+                Intent intent = new Intent(context.getApplicationContext(), MovieInfoActivity.class);
                 intent.putExtra("movie", movieList.get(index));
                 context.startActivity(intent);
             }
