@@ -8,7 +8,9 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 import static javax.persistence.FetchType.LAZY;
 
@@ -28,13 +30,12 @@ public class Ticket {
 
     private String seat;
 
-    @Enumerated(EnumType.STRING)
-    private Classification classification;
+    private String classification;
 
     @JsonManagedReference
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "movieplayinginfo_id")
     private MoviePlayingInfo moviePlayingInfo;
 
-    private LocalDateTime reservationTime;
+    private Date reservationTime;
 }

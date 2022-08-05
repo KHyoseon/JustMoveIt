@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class MovieRecommedDto {
+public class MovieRecommendDto {
 
     String gender;
 

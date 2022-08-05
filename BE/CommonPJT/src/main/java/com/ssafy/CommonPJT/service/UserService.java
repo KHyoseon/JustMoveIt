@@ -6,7 +6,6 @@ import com.ssafy.CommonPJT.dto.User.UserProfileDto;
 import com.ssafy.CommonPJT.dto.User.UserSaveDto;
 import com.ssafy.CommonPJT.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,28 +23,23 @@ public class UserService {
     @Transactional
     public void signUp(UserSaveDto requestDto) {
         User user = requestDto.toEntity();
-        List<User> userList = userRepository.findAll();
-        for (User user1 : userList) {
-            if (user1.getUsername().equals(user.getUsername())) {
-                throw new IllegalArgumentException("아이디가 중복되었습니다.");
-            }
+        User user1 = userRepository.findUserByUsername(user.getUsername());
+        if (user1 == null) {
+            userRepository.save(user);
+        } else {
+            throw new IllegalArgumentException("아이디가 중복되었습니다.");
         }
-        userRepository.save(user);
     }
 
 
     // 로그인
     public UserProfileDto signIn(UserLoginDto requestDto) {
-        List<User> userList = userRepository.findAll();
-        for (User user : userList) {
-            if (user.getUsername().equals(requestDto.getUsername())) {
-                if (user.getPassword().equals(requestDto.getPassword())) {
-                    UserProfileDto user1 = new UserProfileDto(user);
-                    return user1;
-                }
-            }
+        User user1 = userRepository.findUserByUsername(requestDto.getUsername());
+        if (user1.getPassword().equals(requestDto.getPassword())) {
+            return new UserProfileDto(user1);
+        } else {
+            return null;
         }
-        return null;
     }
 
 
@@ -63,5 +57,10 @@ public class UserService {
         List<User> userList = userRepository.findAll();
         List<UserProfileDto> userProfileDtoList = userList.stream().map(UserProfileDto::new).collect(Collectors.toList());
         return userProfileDtoList;
+    }
+
+    @Transactional
+    public void deleteById(Long userId) {
+        userRepository.deleteById(userId);
     }
 }

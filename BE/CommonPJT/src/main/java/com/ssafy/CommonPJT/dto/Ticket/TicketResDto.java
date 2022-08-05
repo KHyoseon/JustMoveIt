@@ -1,12 +1,11 @@
 package com.ssafy.CommonPJT.dto.Ticket;
 
-import com.ssafy.CommonPJT.domain.Classification;
 import com.ssafy.CommonPJT.domain.Ticket;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Getter
 @AllArgsConstructor
@@ -15,14 +14,14 @@ public class TicketResDto {
 
     private String phoneNumber;
     private String seat;
-    private Classification classification;
+    private String classification;
     private Long moviePlayingInfoId;
     private Long movieId;
     private String movieTitle;
     private String startTime;
     private String endTime;
     private String ageLimit;
-    private LocalDateTime reservationTime;
+    private Date reservationTime;
 
 
     public TicketResDto(Ticket ticket) {
