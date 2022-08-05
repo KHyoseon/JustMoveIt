@@ -7,7 +7,10 @@ import { MovieDetail } from './route/MovieDetail'
 import { BrowserRouter, Route, Switch } from "react-router-dom"
 import { Container } from '@material-ui/core';
 import styles from "./App.css";
+import ReactDOM from "react-dom";
 
+import Seats from "./components/Seats";
+import Dial from "./components/Dial";
 
 // function Field() {
   
@@ -160,7 +163,7 @@ axios.get('http://localhost/justmoveit/movies/')
     sr_info.push(<span>{iterator}</span>)
   }
 
-
+  
 
 
 const App = () => {
@@ -183,10 +186,14 @@ const App = () => {
   //     console.log(data.toString());
   //   });
   // }
-  
+
+
+
   return (
     <div className='App'>
-      {/* <br />
+      {/* <h1>하이하이</h1> */}
+      {/* <Seats /> */}
+      <br />
       <br />
       <br />
       <br />
@@ -210,7 +217,7 @@ const App = () => {
         <br></br>
         <br></br>
         <br></br>
-      </div> */}
+      </div>
 
       {/* <div>
         <img src={ movie.img }></img>
@@ -226,14 +233,7 @@ const App = () => {
       </div> */}
         
 
-      {/* 대충 스크린 모양
-      비어있는 좌석 모양, 선택된 좌석 모양, 예약된 좌석 모양
-              1 2 3 4 5
-            A 
-            B
-            C
-            D
-          */}
+
 
       {/* <div className='container'>
       <div className='row'>
@@ -247,7 +247,7 @@ const App = () => {
       {/* <h1> 좌석 선택 </h1> */}
       {/* {sr_info}
       {sc_info} */}
-      { seats }
+      {/* { seats } */}
 
       {/* <div className={ styles.screen }></div> */}
       
