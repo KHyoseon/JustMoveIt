@@ -14,7 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.justmoveit.R;
 import com.example.justmoveit.model.kakaopay.PayApprove;
 import com.example.justmoveit.model.kakaopay.PayReady;
-import com.example.justmoveit.service.RetrofitService;
+import com.example.justmoveit.api.PaymentApi;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -53,7 +53,7 @@ public class PaymentActivity extends AppCompatActivity {
 
     class MyWebViewClient extends WebViewClient {
 
-        RetrofitService service = RetrofitService.retrofit.create(RetrofitService.class);
+        PaymentApi service = PaymentApi.retrofit.create(PaymentApi.class);
 
         public void readyAndCallPay() {
             String cid = "TC0ONETIME";

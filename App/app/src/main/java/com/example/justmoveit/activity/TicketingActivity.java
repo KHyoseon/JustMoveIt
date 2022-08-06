@@ -4,11 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.Spinner;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -17,33 +15,27 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.justmoveit.R;
-import com.example.justmoveit.model.Movie;
+import com.example.justmoveit.model.MoviePlayingInfo;
+import com.example.justmoveit.model.Ticket;
 
 import java.util.HashSet;
 import java.util.Set;
 
 public class TicketingActivity extends AppCompatActivity {
-    private Movie movie;
-    private TextView textMovieName, textMovieTime, textAdult, textChild, textDisabled, textTotalCost, runningTime;
+    private MoviePlayingInfo moviePlayingInfo;
+    private TextView textAdult, textChild, textDisabled, textTotalCost;
 
-    private Spinner adultSpinner;
-    private Spinner childSpinner;
-    private Spinner disabledSpinner;
-
-    private Integer[] peopleNum = {0, 1, 2, 3, 4, 5};
-    private String cusRes = "";//결제 총 목록
-    private String seatRes = "";//좌석 총 목록
+    private NumberPicker adultPicker;
+    private NumberPicker childPicker;
+    private NumberPicker disabledPicker;
 
     private int[] cntSeat; // 0:성인, 1:어린이, 2:장애인
-    private static Set<String> reservedSeat;
+    private int canSelectedSeat, totalCost;
+    private static Set<String> selectedSeat;
 
     private void loadMovie() {
         Intent intent = getIntent();
-        movie = (Movie) intent.getSerializableExtra("movie");
-    }
-
-    private void setInfo() {
-
+        moviePlayingInfo = (MoviePlayingInfo) intent.getSerializableExtra("moviePlayingInfo");
     }
 
     @Override
@@ -51,100 +43,106 @@ public class TicketingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ticketing);
 
+        canSelectedSeat = 0;
+        totalCost = 0;
         cntSeat = new int[3];
-        reservedSeat = new HashSet<>();
+        selectedSeat = new HashSet<>();
 
         // 예매할 영화 정보 가져옴
         loadMovie();
-        // 영화 정보 뿌림
-        textMovieName = findViewById(R.id.textMovieName);
-        textMovieTime = findViewById(R.id.textMovieTime);
+
+        // 레이아웃 매핑
         textAdult = findViewById(R.id.textAdult);
         textChild = findViewById(R.id.textChild);
         textDisabled = findViewById(R.id.textDisabled);
         textTotalCost = findViewById(R.id.textTotalCost);
-        runningTime = findViewById(R.id.runningTime);
 
-        // 인원 설정 스피너
-        adultSpinner = findViewById(R.id.adultSpinner);
-        childSpinner = findViewById(R.id.childSpinner);
-        disabledSpinner = findViewById(R.id.disabledSpinner);
+        // 데이터 뿌림
+        ((TextView) findViewById(R.id.textMovieName)).setText(moviePlayingInfo.getMovieTitle());
+        ((TextView) findViewById(R.id.textMovieTime)).setText(moviePlayingInfo.getStartTime() + " - " + moviePlayingInfo.getEndTime());
 
-        ArrayAdapter<Integer> adultSpinnerAdapter = new ArrayAdapter<>(
-                this, R.layout.spinner_dropdown_item, peopleNum
-        );
-        ArrayAdapter<Integer> childSpinnerAdapter = new ArrayAdapter<>(
-                this, R.layout.spinner_dropdown_item, peopleNum
-        );
-        ArrayAdapter<Integer> disabledSpinnerAdapter = new ArrayAdapter<>(
-                this, R.layout.spinner_dropdown_item, peopleNum
-        );
+        // 좌석 배치도 - 이미 예매된 좌석 표시
+        for(Ticket t: moviePlayingInfo.getTickets()){
+            for(String seat: t.getSeat().split(",")){
+                int seat_r_id = getResources().getIdentifier(seat, "id", getPackageName());
+                findViewById(seat_r_id).setEnabled(false);
+            }
+        }
 
-        // 스피너 - 레이아웃 적용
-        adultSpinnerAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
-        childSpinnerAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
-        disabledSpinnerAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+        // 인원 설정 넘버 피커
+        adultPicker = findViewById(R.id.adult_picker);
+        childPicker = findViewById(R.id.child_picker);
+        disabledPicker = findViewById(R.id.disabled_picker);
 
-        // 스피너 - 어댑터 적용
-        adultSpinner.setAdapter(adultSpinnerAdapter);
-        childSpinner.setAdapter(childSpinnerAdapter);
-        disabledSpinner.setAdapter(disabledSpinnerAdapter);
+        // 넘버피커 - 기본, 최대, 최소값 설정
+        setNumberPickerValue();
+        // 넘버피커 - 이벤트 리스너 적용
+        setOnAllValueChangeListener();
 
-        // 스피너 - 클릭 이벤트 적용
-        setOnAllSpinnerSelectedListener();
-
+        // 좌석 선택 - 토글 이벤트 리스너 적용
         setAllSeatListener();
 
-        Button paybtn = findViewById(R.id.payment);
-        paybtn.setOnClickListener(new View.OnClickListener(){
+        Button payBtn = findViewById(R.id.payment);
+        payBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PaymentActivity paymentActivity = new PaymentActivity(movie.getTitle(), 18000);
+                PaymentActivity paymentActivity = new PaymentActivity(moviePlayingInfo.getMovieTitle(), totalCost);
                 Intent it = new Intent(getApplicationContext(), paymentActivity.getClass());
                 startActivity(it);
             }
         });
     }
 
-    public void setOnAllSpinnerSelectedListener(){
-        adultSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+    private void setNumberPickerValue() {
+        adultPicker.setMaxValue(5);
+        adultPicker.setMinValue(0);
+        adultPicker.setValue(0);
+
+        childPicker.setMaxValue(5);
+        childPicker.setMinValue(0);
+        childPicker.setValue(0);
+
+        disabledPicker.setMaxValue(5);
+        disabledPicker.setMinValue(0);
+        disabledPicker.setValue(0);
+    }
+
+    public void setOnAllValueChangeListener() {
+        adultPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                textAdult.setText("성인 " + peopleNum[i] + "명");
-                cntSeat[0] = peopleNum[i];
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-                textAdult.setText("");
+            public void onValueChange(NumberPicker numberPicker, int oldValue, int newValue) {
+                textAdult.setText("성인 " + newValue);
+                cntSeat[0] = newValue;
+                canSelectedSeat += (newValue - oldValue);
+                totalCost += (newValue - oldValue) * 12000;
+                textTotalCost.setText(totalCost+"");
             }
         });
 
-        childSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        childPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                textChild.setText("어린이 " + peopleNum[i] + "명");
-                cntSeat[1] = peopleNum[i];
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-                textChild.setText("");
+            public void onValueChange(NumberPicker numberPicker, int oldValue, int newValue) {
+                textChild.setText("어린이 " + newValue);
+                cntSeat[1] = newValue;
+                canSelectedSeat += (newValue - oldValue);
+                totalCost += (newValue - oldValue) * 12000 * (0.8);
+                textTotalCost.setText(totalCost+"");
             }
         });
 
-        disabledSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        disabledPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                textDisabled.setText("장애인 " + peopleNum[i] + "명");
-                cntSeat[2] = peopleNum[i];
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-                textDisabled.setText("");
+            public void onValueChange(NumberPicker numberPicker, int oldValue, int newValue) {
+                textDisabled.setText("장애인 " + newValue);
+                cntSeat[2] = newValue;
+                canSelectedSeat += (newValue - oldValue);
+                totalCost += (newValue - oldValue) * 12000/80;
+                textTotalCost.setText(totalCost+"");
             }
         });
     }
 
-    public void setAllSeatListener(){
+    public void setAllSeatListener() {
         ((ToggleButton) findViewById(R.id.A01)).setOnCheckedChangeListener(new seatSelectListener());
         ((ToggleButton) findViewById(R.id.A02)).setOnCheckedChangeListener(new seatSelectListener());
         ((ToggleButton) findViewById(R.id.A03)).setOnCheckedChangeListener(new seatSelectListener());
@@ -171,15 +169,23 @@ public class TicketingActivity extends AppCompatActivity {
 
     }
 
-    static class seatSelectListener implements CompoundButton.OnCheckedChangeListener{
+    class seatSelectListener implements CompoundButton.OnCheckedChangeListener {
         @Override
         public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-            if(isChecked){
-                Log.i("checked", compoundButton.getResources().getResourceEntryName(compoundButton.getId()));
-                reservedSeat.add(compoundButton.getResources().getResourceEntryName(compoundButton.getId()));
-            } else{
+            if (isChecked) {
+                if (canSelectedSeat == 0) {
+                    Toast.makeText(TicketingActivity.this, "인원을 선택해주세요.", Toast.LENGTH_SHORT).show();
+                    compoundButton.setChecked(false);
+                } else if (canSelectedSeat <= selectedSeat.size()) {
+                    Toast.makeText(TicketingActivity.this, "선택 가능한 좌석 수를 넘었습니다.", Toast.LENGTH_SHORT).show();
+                    compoundButton.setChecked(false);
+                } else {
+                    Log.i("checked", compoundButton.getResources().getResourceEntryName(compoundButton.getId()));
+                    selectedSeat.add(compoundButton.getResources().getResourceEntryName(compoundButton.getId()));
+                }
+            } else {
                 Log.i("unChecked", compoundButton.getResources().getResourceEntryName(compoundButton.getId()));
-                reservedSeat.remove(compoundButton.getResources().getResourceEntryName(compoundButton.getId()));
+                selectedSeat.remove(compoundButton.getResources().getResourceEntryName(compoundButton.getId()));
             }
         }
     }

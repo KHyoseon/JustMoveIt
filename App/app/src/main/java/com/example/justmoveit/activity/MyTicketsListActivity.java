@@ -37,16 +37,6 @@ public class MyTicketsListActivity extends AppCompatActivity {
         TextView userName = findViewById(R.id.user_name);
         TextView userEmail = findViewById(R.id.user_email);
 
-        // Todo: kakaoPay
-        imgProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PaymentActivity paymentActivity = new PaymentActivity("토르", 12000);
-                Intent it = new Intent(getApplicationContext(), paymentActivity.getClass());
-                startActivity(it);
-            }
-        });
-
         // 세션에서 사용자 정보 가져와서 profile_section setText
         SharedPreferencesCache cache = Session.getCurrentSession().getAppCache();
         userName.setText(cache.getString("user_name"));
