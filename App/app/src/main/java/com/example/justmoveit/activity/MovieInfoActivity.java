@@ -36,6 +36,11 @@ public class MovieInfoActivity extends AppCompatActivity {
     private ViewPager2 sliderViewPager;
     private Handler sliderHandler = new Handler();
 
+    private void loadMovieDetails(){
+        Intent intent =getIntent();
+        movie=(Movie)intent.getSerializableExtra("movie");
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,11 +75,6 @@ public class MovieInfoActivity extends AppCompatActivity {
         timesAdapter.setTimes(timeList, movie);
         recyclerView.setAdapter(timesAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL,false));
-    }
-
-    private void loadMovieDetails(){
-        Intent intent =getIntent();
-        movie=(Movie)intent.getSerializableExtra("movie");
     }
 
     private  void setImageBack(){

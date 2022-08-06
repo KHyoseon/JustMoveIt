@@ -21,8 +21,9 @@ public class Movie implements Serializable {
     private String releaseDate;
     private String totalCustomer;
     private String movieCode;
+    private MoviePlayingInfo moviePlayingInfo;
 
-    public Movie(Long id, String country, String director, String actor, String title, String genre, String summary, String runningTime, String mainImg, String img1, String img2, String img3, String img4, String img5, String rating, String engTitle, String ageLimit, String releaseDate, String totalCustomer, String movieCode) {
+    public Movie(Long id, String country, String director, String actor, String title, String genre, String summary, String runningTime, String mainImg, String img1, String img2, String img3, String img4, String img5, String rating, String engTitle, String ageLimit, String releaseDate, String totalCustomer, String movieCode, MoviePlayingInfo moviePlayingInfo) {
         this.id = id;
         this.country = country;
         this.director = director;
@@ -46,6 +47,8 @@ public class Movie implements Serializable {
         this.releaseDate = releaseDate;
         this.totalCustomer = totalCustomer;
         this.movieCode = movieCode;
+
+        this.moviePlayingInfo = moviePlayingInfo;
     }
 
     public Long getId() {
@@ -174,5 +177,13 @@ public class Movie implements Serializable {
 
     public void setMovieCode(String movieCode) {
         this.movieCode = movieCode;
+    }
+
+    public MoviePlayingInfo getMoviePlayingInfo() {
+        return moviePlayingInfo;
+    }
+
+    public void setMoviePlayingInfo(MoviePlayingInfo moviePlayingInfo) {
+        this.moviePlayingInfo = moviePlayingInfo;
     }
 }
