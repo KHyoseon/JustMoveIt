@@ -18,6 +18,7 @@ import com.example.justmoveit.R;
 import com.example.justmoveit.model.MoviePlayingInfo;
 import com.example.justmoveit.model.Ticket;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -72,6 +73,10 @@ public class TicketingActivity extends AppCompatActivity {
         // 인원 설정 넘버 피커
         adultPicker = findViewById(R.id.adult_picker);
         childPicker = findViewById(R.id.child_picker);
+        if(moviePlayingInfo.getAgeLimit().equals("만 19세 이상")){
+            childPicker.setVisibility(View.INVISIBLE);
+            // Todo: 안내 모달창??
+        }
         disabledPicker = findViewById(R.id.disabled_picker);
 
         // 넘버피커 - 기본, 최대, 최소값 설정
@@ -86,7 +91,15 @@ public class TicketingActivity extends AppCompatActivity {
         payBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PaymentActivity paymentActivity = new PaymentActivity(moviePlayingInfo.getMovieTitle(), totalCost);
+                if(canSelectedSeat != selectedSeat.size()){
+                    Toast.makeText(TicketingActivity.this, "선택한 좌석이 인원과 다릅니다.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                String classification = "";
+                String seat = "";
+                Ticket ticket = new Ticket(1L, 1L, 1L, moviePlayingInfo.getMovieTitle(), "12세",
+                        moviePlayingInfo.getStartTime(), moviePlayingInfo.getEndTime(), "01012345678", classification, new Date().toString(), seat, 3);
+                PaymentActivity paymentActivity = new PaymentActivity(ticket, totalCost);
                 Intent it = new Intent(getApplicationContext(), paymentActivity.getClass());
                 startActivity(it);
             }

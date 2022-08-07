@@ -1,6 +1,6 @@
 package com.example.justmoveit.api;
 
-import com.example.justmoveit.model.ReservedTicket;
+import com.example.justmoveit.model.Ticket;
 import com.google.gson.JsonArray;
 
 import retrofit2.Call;
@@ -38,7 +38,7 @@ public interface UserTicketApi {
 
     // 티켓 예매하기
     @POST("/justmoveit/tickets")
-    Call<Void> reserveTicket(@Body ReservedTicket ticket);
+    Call<Void> reserveTicket(@Body Ticket ticket);
     // Todo: classification 어떻게 바꾼다고 햇더라..? 가격 정보도 넣어야할 듯?
     /*
     body {

@@ -16,6 +16,9 @@ import com.bumptech.glide.Glide;
 import com.example.justmoveit.R;
 import com.example.justmoveit.adapters.TicketListAdapter;
 import com.example.justmoveit.model.ReservedTicket;
+import com.example.justmoveit.model.Ticket;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.kakao.auth.Session;
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
@@ -25,6 +28,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.TimeZone;
 
 public class MyTicketsListActivity extends AppCompatActivity {
@@ -46,51 +50,66 @@ public class MyTicketsListActivity extends AppCompatActivity {
 
         // 사용자가 예매한 티켓 모두 가져오기
         ArrayList<ReservedTicket> tickets = new ArrayList<>();
-        // dump
-        tickets.add(new ReservedTicket("미니언즈", "2022-05-22", "2022-06-22", "13:00", "5관", 2, 0, "E3, E4, E5"));
-        tickets.add(new ReservedTicket("토르", "2022-06-01", "2022-09-23", "11:40", "6관", 1, 0, "D2"));
-        tickets.add(new ReservedTicket("탑건", "2022-07-27", "2022-07-30", "16:10", "2관", 1, 0, "H12"));
-        tickets.add(new ReservedTicket("헤어질 결심", "2022-06-30", "2022-07-02", "15:50", "3관", 1, 1, "H2, H3"));
-        tickets.add(new ReservedTicket("외계+인", "2022-07-30", "2022-08-25", "15:50", "3관", 0, 1, "G2"));
+        Gson gson = new Gson();
+        String json = cache.getString("mytickets");
 
-        // 예매 이력이 없을 경우
-        if (tickets.size() == 0) {
-            Log.i("ticket list", "no ticket");
-            // Todo: 예매 이력 없음 컴포넌트 만들기
+        if(json != null){
+            tickets = gson.fromJson(json, TypeToken.getParameterized(List.class, Ticket.class).getType());
+        } else {
+            // Todo: 서버 통신
+            // dump
+            ArrayList<Ticket> t1 = new ArrayList<>();
+            t1.add(new Ticket(1L, 1L, 1L, "미니언즈", "13:00", "13:00", "15:10",
+                    "01012345678", "ADULT,ADULT,ADULT", "2022-06-22", "E3, E4, E5", 1));
+            t1.add(new Ticket(2L, 2L, 2L, "토르", "11:40", "11:40", "13:00",
+                    "01012345678", "ADULT,ADULT,CHILD", "2022-09-23", "E3, E4, E5", 2));
+            t1.add(new Ticket(3L, 3L, 3L, "탑건", "16:10", "16:10", "17:50",
+                    "01012345678", "ADULT,ADULT,CHILD", "2022-07-30", "E3, E4, E5", 3));
+            t1.add(new Ticket(4L, 4L, 4L, "헤어질 결심", "15:50", "15:50", "16:10",
+                    "01012345678", "ADULT,CHILD,CHILD", "2022-07-02", "E3, E4, E5", 4));
+            t1.add(new Ticket(5L, 5L, 5L, "외계+인", "15:50", "15:50", "16:30",
+                    "01012345678", "CHILD,CHILD,CHILD", "2022-08-25", "E3, E4, E5", 5));
+
+            for(Ticket t2: t1){
+                tickets.add(new ReservedTicket(t2));
+            }
         }
 
-        for (ReservedTicket t : tickets) {
-            // 현재 시간 기준으로 예매한 티켓과 만료된 티켓을 구분
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmm");
-            simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
-            Long nowPriority = Long.parseLong(simpleDateFormat.format(new Date()));
-            Log.i(t.getTitle(), t.getPriority() + " vs " + nowPriority);
-            if (t.getPriority() <= nowPriority) {
-                t.setExpired(true);
-            } else {
-                t.setExpired(false);
+        if(tickets != null) {
+            for (ReservedTicket t : tickets) {
+                // 현재 시간 기준으로 예매한 티켓과 만료된 티켓을 구분
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmm");
+                simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+                Long nowPriority = Long.parseLong(simpleDateFormat.format(new Date()));
+                Log.i(t.getTitle(), t.getPriority() + " vs " + nowPriority);
+                if (t.getPriority() <= nowPriority) {
+                    t.setExpired(true);
+                } else {
+                    t.setExpired(false);
+                }
+                Log.i(t.getTitle(), t.isExpired() ? "expired" : "not expired");
             }
-            Log.i(t.getTitle(), t.isExpired() ? "expired" : "not expired");
+
+            // 상영일 내림차 순으로 정렬 (최근 것이 위에 오도록)
+            Collections.sort(tickets);
+
+            // 예매 티켓 어댑트
+            TicketListAdapter adapter = new TicketListAdapter(this, tickets);
+            ListView list = findViewById(R.id.list);
+            list.setAdapter(adapter);
+
+            // 일반 예매 티켓 클릭하면 상세 페이지로 이동
+            ArrayList<ReservedTicket> finalTickets = tickets;
+            list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Intent it = new Intent();
+                    it.setClassName("com.example.justmoveit", "com.example.justmoveit.activity.TicketInfoActivity");
+                    it.putExtra("ticket", finalTickets.get(position));
+                    startActivity(it);
+                }
+            });
         }
-
-        // 상영일 내림차 순으로 정렬 (최근 것이 위에 오도록)
-        Collections.sort(tickets);
-
-        // 예매 티켓 어댑트
-        TicketListAdapter adapter = new TicketListAdapter(this, tickets);
-        ListView list = findViewById(R.id.list);
-        list.setAdapter(adapter);
-
-        // 일반 예매 티켓 클릭하면 상세 페이지로 이동
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent it = new Intent();
-                it.setClassName("com.example.justmoveit", "com.example.justmoveit.activity.TicketInfoActivity");
-                it.putExtra("ticket", tickets.get(position));
-                startActivity(it);
-            }
-        });
 
         // 로그아웃
         TextView logout = findViewById(R.id.logout);
@@ -111,6 +130,7 @@ public class MyTicketsListActivity extends AppCompatActivity {
                 });
             }
         });
+
 
     }
 }

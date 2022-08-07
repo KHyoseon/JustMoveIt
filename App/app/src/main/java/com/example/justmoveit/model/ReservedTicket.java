@@ -5,28 +5,43 @@ import java.util.Objects;
 
 public class ReservedTicket implements Serializable, Comparable<ReservedTicket> {
     private String title;
-    private String reservedDate;
     private String viewingDate;
-    private String viewingTime;
-    private String theater;
-    private int adult;
-    private int teen;
     private String seat;
+    private int adult, child, disabled;
+
+    private String viewingTime;
+    private int theaterNo;
+
     private Long priority;
     private boolean expired;
 
-    public ReservedTicket(String title, String reservedDate, String viewingDate, String viewingTime, String theater, int adult, int teen, String seat) {
-        this.title = title;
-        this.reservedDate = reservedDate;
-        this.viewingDate = viewingDate;
-        this.viewingTime = viewingTime;
-        this.theater = theater;
-        this.adult = adult;
-        this.teen = teen;
-        this.seat = seat;
+    public ReservedTicket(Ticket ticket) {
+        this.title = ticket.getMovieTitle();
+        this.viewingDate = ticket.getReservationTime().substring(0, 10);
+
+        this.viewingTime = ticket.getStartTime();
+        this.theaterNo = ticket.getTheaterNo();
+
+        adult = child = disabled = 0;
+        getParseClassification(ticket);
+        this.seat = ticket.getSeat();
 
         String temp = viewingDate + viewingTime;
         this.priority = Long.parseLong(temp.replace("-", "").replace(":", ""));
+    }
+
+    private void getParseClassification(Ticket ticket) {
+        String[] parsed = ticket.getClassification().split(",");
+        for(String s: parsed){
+            switch (s){
+                case "ADULT":
+                    ++adult; break;
+                case "CHILD":
+                    ++child; break;
+                case "DISABLED":
+                    ++disabled; break;
+            }
+        }
     }
 
     public String getTitle() {
@@ -45,22 +60,6 @@ public class ReservedTicket implements Serializable, Comparable<ReservedTicket> 
         this.viewingDate = viewingDate;
     }
 
-    public String getViewingTime() {
-        return viewingTime;
-    }
-
-    public void setViewingTime(String viewingTime) {
-        this.viewingTime = viewingTime;
-    }
-
-    public String getTheater() {
-        return theater;
-    }
-
-    public void setTheater(String theater) {
-        this.theater = theater;
-    }
-
     public String getSeat() {
         return seat;
     }
@@ -77,12 +76,36 @@ public class ReservedTicket implements Serializable, Comparable<ReservedTicket> 
         this.adult = adult;
     }
 
-    public int getTeen() {
-        return teen;
+    public int getChild() {
+        return child;
     }
 
-    public void setTeen(int teen) {
-        this.teen = teen;
+    public void setChild(int child) {
+        this.child = child;
+    }
+
+    public int getDisabled() {
+        return disabled;
+    }
+
+    public void setDisabled(int disabled) {
+        this.disabled = disabled;
+    }
+
+    public String getViewingTime() {
+        return viewingTime;
+    }
+
+    public void setViewingTime(String viewingTime) {
+        this.viewingTime = viewingTime;
+    }
+
+    public int getTheaterNo() {
+        return theaterNo;
+    }
+
+    public void setTheaterNo(int theaterNo) {
+        this.theaterNo = theaterNo;
     }
 
     public Long getPriority() {

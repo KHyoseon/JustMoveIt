@@ -107,7 +107,7 @@
                     android:text="관람인원   |   " />
 
                 <TextView
-                    android:id="@+id/spectators"
+                    android:id="@+id/classification"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/black"
@@ -136,6 +136,16 @@
             </LinearLayout>
 
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/reserve_cancel_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:text="예매 취소"
+            android:textColor="@color/colorThemeExtra"
+            android:textSize="15sp"
+            android:textStyle="bold"/>
 
     </LinearLayout>
 
