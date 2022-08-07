@@ -32,9 +32,9 @@ public class MoviePlayingInfoController {
 
     @ApiOperation(value = "영화 상영 정보", notes = "영화 상영 정보를 출력한다.")
     @GetMapping("/{movieplayinginfoId}")
-    public MoviePlayingInfoResDto getInfo(@PathVariable Long movieplayinginfoId) {
+    public ResponseEntity<MoviePlayingInfoResDto> getInfo(@PathVariable Long movieplayinginfoId) {
         log.info("영화 상영 정보를 조회합니다.");
-        return moviePlayingInfoService.findById(movieplayinginfoId);
+        return new ResponseEntity<>(moviePlayingInfoService.findById(movieplayinginfoId), HttpStatus.OK);
     }
 
 
