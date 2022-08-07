@@ -1,6 +1,7 @@
 package com.example.justmoveit.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -19,10 +20,8 @@ import com.example.justmoveit.model.ReservedTicket;
 import com.example.justmoveit.model.Ticket;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.kakao.auth.Session;
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
-import com.kakao.util.helper.SharedPreferencesCache;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -32,43 +31,50 @@ import java.util.List;
 import java.util.TimeZone;
 
 public class MyTicketsListActivity extends AppCompatActivity {
+    private SharedPreferences.Editor editor;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mytickets_list);
+
+        SharedPreferences sharedPref = getPreferences(MODE_PRIVATE);
+        editor = sharedPref.edit();
 
         ImageView imgProfile = findViewById(R.id.profile_img);
         TextView userName = findViewById(R.id.user_name);
         TextView userEmail = findViewById(R.id.user_email);
 
         // 세션에서 사용자 정보 가져와서 profile_section setText
-        SharedPreferencesCache cache = Session.getCurrentSession().getAppCache();
-        userName.setText(cache.getString("user_name"));
-        userEmail.setText(cache.getString("user_email"));
+        userName.setText(sharedPref.getString("user_name", ""));
+        userEmail.setText(sharedPref.getString("user_email", ""));
         // 원형 프로필
-        Glide.with(this).load(cache.getString("user_img_url")).into(imgProfile);
+        Glide.with(this).load(sharedPref.getString("user_img_url", "")).into(imgProfile);
 
         // 사용자가 예매한 티켓 모두 가져오기
+
+        // 1. 앱캐시에 저장된 데이터 불러오기
         ArrayList<ReservedTicket> tickets = new ArrayList<>();
         Gson gson = new Gson();
-        String json = cache.getString("mytickets");
+        String json = sharedPref.getString("mytickets", "");
 
         if(json != null){
             tickets = gson.fromJson(json, TypeToken.getParameterized(List.class, Ticket.class).getType());
         } else {
+            // 2. 서버에서 가져오기
             // Todo: 서버 통신
             // dump
             ArrayList<Ticket> t1 = new ArrayList<>();
             t1.add(new Ticket(1L, 1L, 1L, "미니언즈", "13:00", "13:00", "15:10",
-                    "01012345678", "ADULT,ADULT,ADULT", "2022-06-22", "E3, E4, E5", 1));
+                    "01012345678", "ADULT,ADULT,ADULT", "2022-06-22", "E3, E4, E5", 1, 12900));
             t1.add(new Ticket(2L, 2L, 2L, "토르", "11:40", "11:40", "13:00",
-                    "01012345678", "ADULT,ADULT,CHILD", "2022-09-23", "E3, E4, E5", 2));
+                    "01012345678", "ADULT,ADULT,CHILD", "2022-09-23", "E3, E4, E5", 2, 12900));
             t1.add(new Ticket(3L, 3L, 3L, "탑건", "16:10", "16:10", "17:50",
-                    "01012345678", "ADULT,ADULT,CHILD", "2022-07-30", "E3, E4, E5", 3));
+                    "01012345678", "ADULT,ADULT,CHILD", "2022-07-30", "E3, E4, E5", 3, 12900));
             t1.add(new Ticket(4L, 4L, 4L, "헤어질 결심", "15:50", "15:50", "16:10",
-                    "01012345678", "ADULT,CHILD,CHILD", "2022-07-02", "E3, E4, E5", 4));
+                    "01012345678", "ADULT,CHILD,CHILD", "2022-07-02", "E3, E4, E5", 4, 12900));
             t1.add(new Ticket(5L, 5L, 5L, "외계+인", "15:50", "15:50", "16:30",
-                    "01012345678", "CHILD,CHILD,CHILD", "2022-08-25", "E3, E4, E5", 5));
+                    "01012345678", "CHILD,CHILD,CHILD", "2022-08-25", "E3, E4, E5", 5, 12900));
 
             for(Ticket t2: t1){
                 tickets.add(new ReservedTicket(t2));
@@ -119,12 +125,12 @@ public class MyTicketsListActivity extends AppCompatActivity {
                 UserManagement.getInstance().requestLogout(new LogoutResponseCallback() {
                     @Override
                     public void onCompleteLogout() {
-                        SharedPreferencesCache cache = Session.getCurrentSession().getAppCache();
-                        cache.remove("user_name");
-                        cache.remove("user_img_url");
-                        cache.remove("user_email");
-                        cache.remove("user_age_range");
-                        cache.remove("user_gender");
+                        editor.remove("user_name");
+                        editor.remove("user_img_url");
+                        editor.remove("user_email");
+                        editor.remove("user_age_range");
+                        editor.remove("user_gender");
+                        editor.apply();
                         finish(); // 현재 액티비티 종료 -> 메인으로 돌아감
                     }
                 });

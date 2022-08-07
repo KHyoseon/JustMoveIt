@@ -111,14 +111,13 @@ public class MainActivity extends AppCompatActivity {
         // 영화 정보
         List<Movie> movies = new ArrayList<>();
 
-        Ticket ticket = new Ticket(1L,
-                1L, 1L, "탑건", "12세", "12:30", "14:10",
-                "01012345678", "성인2", "2022-08-07", "C01,C02", 3);
+        Ticket ticket = new Ticket(1L, 1L, "탑건", "12세", "12:30", "14:10",
+                "01012345678", "성인2", "2022-08-07", "C01,C02", 3, 42000);
 
         Ticket[] tickets = new Ticket[1];
         tickets[0] = ticket;
 
-        MoviePlayingInfo moviePlayingInfo = new MoviePlayingInfo(1L, "movieTitle", "12세",
+        MoviePlayingInfo moviePlayingInfo = new MoviePlayingInfo(1L, 1L,"movieTitle", "12세",
                 "12:30", "14:10", 2, tickets);
 
         Movie mov1 = new Movie(1L, "한국", "최동훈", "류준열, 김우빈, 김태리", "외계+인 1부",

@@ -18,6 +18,8 @@ import com.example.justmoveit.R;
 import com.example.justmoveit.model.MoviePlayingInfo;
 import com.example.justmoveit.model.Ticket;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -91,15 +93,40 @@ public class TicketingActivity extends AppCompatActivity {
         payBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // 선택 인원과 선택 좌석 수가 다른 경우 return
                 if(canSelectedSeat != selectedSeat.size()){
-                    Toast.makeText(TicketingActivity.this, "선택한 좌석이 인원과 다릅니다.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(TicketingActivity.this, "선택한 좌석 수가 인원 수와 다릅니다.", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                String classification = "";
-                String seat = "";
-                Ticket ticket = new Ticket(1L, 1L, 1L, moviePlayingInfo.getMovieTitle(), "12세",
-                        moviePlayingInfo.getStartTime(), moviePlayingInfo.getEndTime(), "01012345678", classification, new Date().toString(), seat, 3);
-                PaymentActivity paymentActivity = new PaymentActivity(ticket, totalCost);
+
+                // classification 저장
+                StringBuilder sb = new StringBuilder();
+                for(int i=0; i<cntSeat[0]; i++) {
+                    sb.append("ADULT,");
+                }
+                for(int i=0; i<cntSeat[1]; i++) {
+                    sb.append("CHILD,");
+                }
+                for(int i=0; i<cntSeat[2]; i++){
+                    sb.append("DISABLED,");
+                }
+                sb.setLength(sb.length()-1);
+                String classification = sb.toString();
+
+                // seat 저장
+                sb.setLength(0);
+                ArrayList<String> al = new ArrayList<>(selectedSeat);
+                Collections.sort(al);
+                for(String seat: al){
+                    sb.append(seat + ",");
+                }
+                sb.setLength(sb.length()-1);
+                String seat = sb.toString();
+
+                // 티켓 객체 생성 후 paymentActivity로 넘겨줌
+                Ticket ticket = new Ticket(moviePlayingInfo.getMoviePlayingInfoId(), moviePlayingInfo.getMovieId(), moviePlayingInfo.getMovieTitle(), "12세",
+                        moviePlayingInfo.getStartTime(), moviePlayingInfo.getEndTime(), "01012345678", classification, new Date().toString(), seat, moviePlayingInfo.getTheaterNo(), 12000);
+                PaymentActivity paymentActivity = new PaymentActivity(ticket);
                 Intent it = new Intent(getApplicationContext(), paymentActivity.getClass());
                 startActivity(it);
             }

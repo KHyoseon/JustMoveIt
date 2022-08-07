@@ -1,31 +1,32 @@
 package com.example.justmoveit.activity;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import android.content.Intent;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.justmoveit.R;
 import com.example.justmoveit.api.UserTicketApi;
-import com.example.justmoveit.model.MoviePlayingInfo;
 import com.example.justmoveit.model.Ticket;
 import com.example.justmoveit.model.kakaopay.PayApprove;
 import com.example.justmoveit.model.kakaopay.PayReady;
 import com.example.justmoveit.api.PaymentApi;
+import com.google.gson.Gson;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class PaymentActivity extends AppCompatActivity {
+    private SharedPreferences.Editor editor;
+
     private WebView webView;
-    private MyWebViewClient myWebViewClient;
     private Ticket ticket;
 
     private String tidPin; //결제 고유 번호
@@ -36,10 +37,10 @@ public class PaymentActivity extends AppCompatActivity {
     public PaymentActivity() {
     }
 
-    public PaymentActivity(Ticket ticket, Integer productPrice) {
+    public PaymentActivity(Ticket ticket) {
         this.ticket = ticket;
         PRODUCT_NAME = ticket.getMovieTitle();
-        PRODUCT_PRICE = productPrice;
+        PRODUCT_PRICE = ticket.getTotalCost();
     }
 
     @Override
@@ -47,18 +48,23 @@ public class PaymentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment);
 
+        SharedPreferences sharedPref = getPreferences(MODE_PRIVATE);
+        editor = sharedPref.edit();
+
         webView = findViewById(R.id.webView);
         webView.getSettings().setJavaScriptEnabled(true);
 
-        myWebViewClient = new MyWebViewClient();
+        MyWebViewClient myWebViewClient = new MyWebViewClient();
         webView.setWebViewClient(myWebViewClient);
         myWebViewClient.readyAndCallPay();
     }
 
+    // 카카오페이 결제
     class MyWebViewClient extends WebViewClient {
 
         PaymentApi service = PaymentApi.retrofit.create(PaymentApi.class);
 
+        // 1단계: 결제 준비
         public void readyAndCallPay() {
             String cid = "TC0ONETIME";
             String partner_order_id = "1001";
@@ -97,6 +103,7 @@ public class PaymentActivity extends AppCompatActivity {
             });
         }
 
+        // 2단계: 결제 승인
         public void approvePayment() {
             String cid = "TC0ONETIME";
             String tid = tidPin;
@@ -113,15 +120,25 @@ public class PaymentActivity extends AppCompatActivity {
 
                         // Todo: 서버에 등록
                         UserTicketApi ticketService = UserTicketApi.retrofit.create(UserTicketApi.class);
-                        ticketService.reserveTicket(ticket).enqueue(new Callback<Void>() {
+                        ticketService.reserveTicket(ticket).enqueue(new Callback<Ticket>() {
                             @Override
-                            public void onResponse(Call<Void> call, Response<Void> response) {
+                            public void onResponse(Call<Ticket> call, Response<Ticket> response) {
+                                // 성공시 앱 캐시에도 저장
+                                Ticket ticket = response.body();
+                                Gson gson = new Gson();
+                                String json = gson.toJson(ticket);
+                                editor.putString("mytickets", json);
+                                editor.apply();
 
+                                Log.i("paymentApprove", "success");
+                                finish();
                             }
 
                             @Override
-                            public void onFailure(Call<Void> call, Throwable t) {
-
+                            public void onFailure(Call<Ticket> call, Throwable t) {
+                                // 실패시
+                                Log.i("paymentApprove", "fail");
+                                finish();
                             }
                         });
                     } else {

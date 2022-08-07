@@ -1,6 +1,7 @@
 package com.example.justmoveit.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -21,11 +22,13 @@ import com.kakao.usermgmt.callback.MeV2ResponseCallback;
 import com.kakao.usermgmt.response.MeV2Response;
 import com.kakao.usermgmt.response.model.UserAccount;
 import com.kakao.util.exception.KakaoException;
-import com.kakao.util.helper.SharedPreferencesCache;
 
 import java.util.Objects;
 
 public class LoginActivity extends AppCompatActivity {
+    SharedPreferences sharedPref;
+    private SharedPreferences.Editor editor;
+
     private final ISessionCallback mSessionCallback = new ISessionCallback() {
         @Override
         public void onSessionOpened() {
@@ -50,17 +53,17 @@ public class LoginActivity extends AppCompatActivity {
                 public void onSuccess(MeV2Response result) {
                     // 로그인 성공
                     Intent intent = new Intent(LoginActivity.this, MyTicketsListActivity.class);
-
                     UserAccount account = result.getKakaoAccount();
-                    SharedPreferencesCache cache = Session.getCurrentSession().getAppCache();
 
-                    cache.put("user_name", account.getProfile().getNickname());
-                    cache.put("user_img_url", account.getProfile().getProfileImageUrl());
-                    cache.put("user_email", account.getEmail());
-                    cache.put("user_age_range", account.getAgeRange().getValue());
-                    cache.put("user_gender", Objects.requireNonNull(account.getGender()).getValue());
+                    editor.putString("user_name", account.getProfile().getNickname());
+                    editor.putString("user_img_url", account.getProfile().getProfileImageUrl());
+                    editor.putString("user_email", account.getEmail());
+                    editor.putString("user_age_range", account.getAgeRange().getValue());
+                    editor.putString("user_gender", Objects.requireNonNull(account.getGender()).getValue());
+                    editor.apply();
 
                     startActivity(intent);
+                    finish();
                 }
             });
         }
@@ -75,6 +78,9 @@ public class LoginActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        sharedPref = getPreferences(MODE_PRIVATE);
+        editor = sharedPref.edit();
 
         Session.getCurrentSession().addCallback(mSessionCallback);
         Session.getCurrentSession().checkAndImplicitOpen();// 자동 로그인
