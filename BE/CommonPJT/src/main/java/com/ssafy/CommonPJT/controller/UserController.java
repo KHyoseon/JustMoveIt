@@ -8,6 +8,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,23 +32,23 @@ public class UserController {
 
     @ApiOperation(value = "회원 로그인", notes = "회원 로그인")
     @PostMapping("/login")
-    public UserProfileDto signIn(@RequestBody UserLoginDto requestDto) {
+    public ResponseEntity<UserProfileDto> signIn(@RequestBody UserLoginDto requestDto) {
         log.info("로그인을 진행합니다.");
-        return userService.signIn(requestDto);
+        return new ResponseEntity<>(userService.signIn(requestDto), HttpStatus.OK);
     }
 
     @ApiOperation(value = "회원 조회", notes = "특정 회원을 조회한다.")
     @GetMapping("/{userId}")
-    public UserProfileDto getUser(@PathVariable Long userId) {
+    public ResponseEntity<UserProfileDto> getUser(@PathVariable Long userId) {
         log.info("회원을 조회합니다.");
-        return userService.getUser(userId);
+        return new ResponseEntity<>(userService.getUser(userId), HttpStatus.OK);
     }
 
     @ApiOperation(value = "전체 회원 조회", notes = "전체 회원을 조회한다.")
     @GetMapping
-    public List<UserProfileDto> getUserList() {
+    public ResponseEntity<List<UserProfileDto>> getUserList() {
         log.info("회원 리스트를 조회합니다");
-        return userService.getUserList();
+        return new ResponseEntity<>(userService.getUserList(), HttpStatus.OK);
     }
 
     @ApiOperation(value = "회원 정보 삭제", notes = "회원 정보를 삭제합니다.")
