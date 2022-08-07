@@ -24,12 +24,13 @@ public class TicketService {
 
     // 티켓 추가
     @Transactional
-    public void save(TicketSaveDto requestDto) {
+    public TicketResDto save(TicketSaveDto requestDto) {
         Long moviePlayingInfoId = requestDto.getMoviePlayingInfoId();
         MoviePlayingInfo info = moviePlayingInfoRepository.findById(moviePlayingInfoId)
                 .orElseThrow(() -> new NoSuchElementException("존재하지 않는 값입니다."));
         Ticket toEntity = requestDto.toEntity(info);
         ticketRepository.save(toEntity);
+        return new TicketResDto(toEntity);
     }
 
     // 티켓 리스트 조회
@@ -38,7 +39,7 @@ public class TicketService {
         return tickets.stream().map(TicketResDto::new).collect(Collectors.toList());
     }
 
-    // 특정 티켓 조회
+    // 휴대폰 번호로 티켓 조회
     public List<TicketResDto> findByNum(String phoneNumber) {
         List<Ticket> ticketsByNum = ticketRepository.findTicketsByPhoneNumber(phoneNumber);
         return ticketsByNum.stream().map(TicketResDto::new).collect(Collectors.toList());

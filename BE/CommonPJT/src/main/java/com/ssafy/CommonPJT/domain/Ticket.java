@@ -32,6 +32,8 @@ public class Ticket {
 
     private String classification;
 
+    private String totalCost;
+
     @JsonManagedReference
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "movieplayinginfo_id")

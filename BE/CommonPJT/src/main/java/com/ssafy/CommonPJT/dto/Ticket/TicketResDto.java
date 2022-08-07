@@ -12,6 +12,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class TicketResDto {
 
+    private Long id;
     private String phoneNumber;
     private String seat;
     private String classification;
@@ -22,9 +23,12 @@ public class TicketResDto {
     private String endTime;
     private String ageLimit;
     private Date reservationTime;
+    private String totalCost;
+    private String theaterNo;
 
 
     public TicketResDto(Ticket ticket) {
+        this.id = ticket.getId();
         this.phoneNumber = ticket.getPhoneNumber();
         this.seat = ticket.getSeat();
         this.classification = ticket.getClassification();
@@ -35,5 +39,7 @@ public class TicketResDto {
         this.endTime = ticket.getMoviePlayingInfo().getEndTime();
         this.ageLimit = ticket.getMoviePlayingInfo().getMovie().getAgeLimit();
         this.reservationTime = ticket.getReservationTime();
+        this.totalCost = ticket.getTotalCost();
+        this.theaterNo = ticket.getMoviePlayingInfo().getTheaterNo();
     }
 }
