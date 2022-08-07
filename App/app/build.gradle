@@ -23,7 +23,6 @@ android {
     //데이터 바인딩
     buildFeatures {
         dataBinding true
-        // viewBinding true ???
     }
     buildTypes {
         release {
@@ -50,32 +49,24 @@ dependencies {
 
     //ViewPager2
     implementation "androidx.viewpager2:viewpager2:1.0.0"
-
     // RoundedImageView
     implementation 'com.makeramen:roundedimageview:2.3.0'
-
     // Scalable Size Units
     implementation 'com.intuit.sdp:sdp-android:1.0.6'
     implementation 'com.intuit.ssp:ssp-android:1.0.6'
-
     //피카소를 사용하여 url 이미지를 불러오기
     implementation 'com.squareup.picasso:picasso:2.71828'
 
 
-    // ~~~~~~~~~~~~~~~ 카카오 로그인
+    /* 카카오 로그인 */
     implementation group: 'com.kakao.sdk', name: 'usermgmt', version: '1.29.0'
-    // pending intent update
-//    implementation 'androidx.work:work-runtime:2.7.1'
-
     // Glide 이미지 로드 라이브러리
     implementation 'com.github.bumptech.glide:glide:4.13.2'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.13.2'
-
     // Circle ImageView
     implementation 'de.hdodenhof:circleimageview:3.1.0'
-    // ~~~~~~~~~~~~~~~ 카카오 로그인
 
-    // ~~~~~~~~~~~~~~~~~~ 카카오페이
+    /* 카카오페이 */
     // Retrofit 라이브러리
     implementation 'com.squareup.retrofit2:retrofit:2.6.4'
     // Gson 변환기 라이브러리
@@ -89,6 +80,5 @@ dependencies {
     implementation 'com.android.volley:volley:1.2.1'
     // Json 파싱 라이브러리리
     implementation 'com.google.code.gson:gson:2.8.9'
-    // ~~~~~~~~~~~~~~~~~~ 카카오페이
 
 }

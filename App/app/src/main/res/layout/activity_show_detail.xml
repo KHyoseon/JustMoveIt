@@ -8,8 +8,7 @@
     android:layout_width="match_parent"
     android:animateLayoutChanges="true"
     android:background="@color/colorPrimary"
-    tools:context=".activity.DetailActivity"
-    >
+    tools:context=".activity.MovieInfoActivity">
 
     <ScrollView
         android:id="@+id/scrollView2"
@@ -328,14 +327,11 @@
                     android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_100sdp"
-                    tools:listitem="@layout/item_container_time"></androidx.recyclerview.widget.RecyclerView>
+                    tools:listitem="@layout/item_container_time" />
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-
     </ScrollView>
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,7 +2,7 @@
 <CheckedTextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@android:id/text1"
     style="?android:attr/spinnerDropDownItemStyle"
-    android:background="@drawable/background_spinner_item"
+    android:background="@color/colorTextSecondary"
     android:layout_gravity="center"
     android:maxLines="1"
     android:paddingTop="4dp"
@@ -13,4 +13,4 @@
     android:gravity="center"
     android:textAlignment="center"
     android:textSize="13sp"
-    android:textColor="#22436F"/>
+    android:textColor="@color/bottom_bar_icon_tint"/>

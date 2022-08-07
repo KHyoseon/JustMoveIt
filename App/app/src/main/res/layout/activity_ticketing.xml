@@ -4,13 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingHorizontal="@dimen/activity_horizontal_margin"
+    android:paddingVertical="@dimen/activity_vertical_margin"
+    android:background="@color/colorPrimary"
     tools:context=".activity.TicketingActivity">
 
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#512da8"
         android:theme="@style/AppTheme.AppBarOverlay"
         app:elevation="0dp">
 
@@ -18,8 +20,8 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:popupTheme="@style/AppTheme.PopupOverlay"
-            app:theme="@style/AppTheme.Toolbar">
+            android:theme="@style/AppTheme.Toolbar"
+            app:popupTheme="@style/AppTheme.PopupOverlay">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -33,7 +35,6 @@
                     android:layout_alignParentTop="true"
                     android:src="@drawable/ic_arrow_back_white_24dp" />
 
-
             </RelativeLayout>
 
         </androidx.appcompat.widget.Toolbar>
@@ -43,7 +44,6 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="-16dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <ScrollView
@@ -55,663 +55,232 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <RelativeLayout
+                <LinearLayout
+                    android:id="@+id/count_people"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="260dp"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/city_img" />
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/textView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
-                        android:layout_centerHorizontal="true"
                         android:layout_marginTop="16dp"
                         android:fontFamily="@font/print_clearly"
-                        android:text="Select your seat!"
+                        android:text="인원을 선택하세요"
                         android:textAlignment="center"
                         android:textColor="#FFFFFF"
                         android:textSize="18sp" />
 
                     <LinearLayout
-                        android:id="@+id/linearLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/textView"
-                        android:layout_marginTop="8dp"
-                        android:orientation="horizontal"
-                        android:weightSum="100"
-                        android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"
+                        android:layout_marginTop="20dp"
                         android:gravity="center"
-                        >
+                        android:orientation="horizontal"
+                        android:weightSum="100">
 
-                        <androidx.appcompat.widget.AppCompatSpinner
-                            android:id="@+id/adultSpinner"
+                        <TextView
                             android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_centerHorizontal="true"
-                            android:layout_weight="25"
-                            android:layout_marginLeft="@dimen/_10sdp"
+                            android:layout_height="wrap_content"
+                            android:text="어른"
+                            android:textColor="@color/white"
+                            android:textAlignment="center"
+                            android:layout_weight="30"/>
 
-                            />
-
-                        <androidx.appcompat.widget.AppCompatSpinner
-                            android:id="@+id/childSpinner"
+                        <TextView
                             android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_centerHorizontal="true"
-                            android:layout_weight="25"
-                            android:layout_marginLeft="@dimen/_10sdp"
+                            android:layout_height="wrap_content"
+                            android:text="아이"
+                            android:textColor="@color/white"
+                            android:textAlignment="center"
+                            android:layout_weight="30"/>
 
-                            />
-                        <androidx.appcompat.widget.AppCompatSpinner
-                            android:id="@+id/disabledSpinner"
+                        <TextView
                             android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_centerHorizontal="true"
-                            android:layout_weight="25"
-                            android:layout_marginLeft="@dimen/_10sdp"
-
-                            />
-
+                            android:layout_height="wrap_content"
+                            android:text="장애인"
+                            android:textColor="@color/white"
+                            android:textAlignment="center"
+                            android:layout_weight="30"/>
 
                     </LinearLayout>
 
-
-                    <TextView
-                        android:id="@+id/textNowDate"
+                    <LinearLayout
+                        android:id="@+id/num_picker"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/linearLayout"
                         android:layout_marginTop="8dp"
-                        android:fontFamily="@font/print_clearly"
-                        android:text="12th - Feb - 2019 | Tuesday"
-                        android:textAlignment="center"
-                        android:textColor="#FFFFFF"
-                        android:textSize="18sp" />
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:weightSum="100">
+
+                        <NumberPicker
+                            android:id="@+id/adult_picker"
+                            android:layout_width="0dp"
+                            android:layout_height="140dp"
+                            android:theme="@style/NumberPickerStyle"
+                            android:layout_weight="30"/>
+
+                        <NumberPicker
+                            android:id="@+id/child_picker"
+                            android:layout_width="0dp"
+                            android:layout_height="140dp"
+                            android:theme="@style/NumberPickerStyle"
+                            android:layout_weight="30"/>
+
+                        <NumberPicker
+                            android:id="@+id/disabled_picker"
+                            android:layout_width="0dp"
+                            android:layout_height="140dp"
+                            android:theme="@style/NumberPickerStyle"
+                            android:layout_weight="30"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:id="@+id/seat_section"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="30dp">
 
                     <androidx.cardview.widget.CardView
-                        android:id="@+id/cardView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/textNowDate"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginTop="24dp"
-                        android:layout_marginRight="8dp"
-                        android:clickable="true"
-                        android:foreground="?android:attr/selectableItemBackground"
+                        android:layout_marginHorizontal="8dp"
                         app:cardCornerRadius="4dp"
                         app:cardUseCompatPadding="true"
-                        app:contentPadding="16dp"
-                        android:focusable="true">
+                        app:contentPadding="8dp">
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:weightSum="100">
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_weight="60"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:id="@+id/textMovieTime"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:fontFamily="@font/calibri"
-                                    android:text="9:00AM - 12:30PM"
-                                    android:textColor="#000000"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:id="@+id/textMovieName"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="4dp"
-                                    android:layout_marginBottom="4dp"
-                                    android:fontFamily="@font/calibri"
-                                    android:text="탑건 메버릭"
-                                    android:textColor="#4b4b4b"
-                                    android:textStyle="bold" />
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="90"
-                                    android:orientation="horizontal">
-                                    <TextView
-                                        android:id="@+id/textAdult"
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:fontFamily="@font/calibri"
-                                        android:text="어른 2"
-                                        android:layout_weight="30"
-                                        android:textColor="#8a8a8a" />
-                                    <TextView
-                                        android:id="@+id/textChild"
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:fontFamily="@font/calibri"
-                                        android:text="어린이 2"
-                                        android:layout_weight="30"
-                                        android:textColor="#8a8a8a" />
-                                    <TextView
-                                        android:id="@+id/textDisabled"
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:fontFamily="@font/calibri"
-                                        android:layout_weight="30"
-                                        android:text="장애인 2"
-                                        android:textColor="#8a8a8a" />
-                                </LinearLayout>
-
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_weight="40"
-                                android:gravity="center"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:id="@+id/textTotalCost"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:fontFamily="@font/calibri"
-                                    android:text="15000원"
-                                    android:textAlignment="textEnd"
-                                    android:textColor="#f5a622"
-                                    android:textSize="24sp"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:id="@+id/runningTime"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="4dp"
-                                    android:layout_marginBottom="4dp"
-                                    android:fontFamily="@font/calibri"
-                                    android:text="3.30 Hour"
-                                    android:textAlignment="textEnd"
-                                    android:textColor="#b3b3b3" />
-                            </LinearLayout>
-                        </LinearLayout>
+                        <include layout="@layout/seat_chart" />
 
                     </androidx.cardview.widget.CardView>
 
                 </RelativeLayout>
 
-
-                <androidx.cardview.widget.CardView
+                <TextView
+                    android:id="@+id/label"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="-36dp"
-                    android:layout_marginRight="8dp"
+                    android:layout_margin="20dp"
+                    android:text="총 결제 금액"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/spinner_layout"
+                    android:layout_marginHorizontal="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
                     app:cardCornerRadius="4dp"
                     app:cardUseCompatPadding="true"
-                    app:contentPadding="8dp">
-
+                    app:contentPadding="20dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:orientation="horizontal"
+                        android:weightSum="100">
 
                         <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginBottom="16dp"
-                            android:orientation="horizontal"
-                            android:weightSum="100">
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="60"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/textMovieTime"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/calibri"
+                                android:text="9:00 - 12:30"
+                                android:textColor="#4b4b4b" />
+
+                            <TextView
+                                android:id="@+id/textMovieName"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginVertical="8dp"
+                                android:fontFamily="@font/calibri"
+                                android:text="탑건 메버릭"
+                                android:textColor="@color/black"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
 
                             <LinearLayout
-                                android:layout_width="0dp"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="33.3"
-                                android:gravity="center">
-
-                                <ImageView
-                                    android:layout_width="16dp"
-                                    android:layout_height="16dp"
-                                    android:layout_marginEnd="4dp"
-                                    android:src="@drawable/booked_img" />
+                                android:orientation="horizontal">
 
                                 <TextView
+                                    android:id="@+id/textAdult"
                                     android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:fontFamily="@font/ng"
-                                    android:text="예약석"
-                                    android:textAlignment="center"
-                                    android:textColor="#b2b2b2" />
-
-
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="33.3"
-                                android:gravity="center">
-
-                                <ImageView
-                                    android:layout_width="16dp"
-                                    android:layout_height="16dp"
-                                    android:layout_marginEnd="4dp"
-                                    android:src="@drawable/available_img" />
+                                    android:layout_height="match_parent"
+                                    android:layout_marginEnd="20dp"
+                                    android:fontFamily="@font/calibri"
+                                    android:text="성인 0"
+                                    android:textColor="#8a8a8a" />
 
                                 <TextView
+                                    android:id="@+id/textChild"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:fontFamily="@font/ng"
-                                    android:text="빈 좌석"
-                                    android:textAlignment="center"
-                                    android:textColor="#b2b2b2" />
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="33.3"
-                                android:gravity="center">
-
-                                <ImageView
-                                    android:layout_width="16dp"
-                                    android:layout_height="16dp"
-                                    android:layout_marginEnd="4dp"
-                                    android:src="@drawable/your_seat_img" />
+                                    android:layout_marginEnd="20dp"
+                                    android:fontFamily="@font/calibri"
+                                    android:text="어린이 0"
+                                    android:textColor="#8a8a8a" />
 
                                 <TextView
+                                    android:id="@+id/textDisabled"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:fontFamily="@font/ng"
-                                    android:text="선택한 좌석"
-                                    android:textAlignment="center"
-                                    android:textColor="#b2b2b2" />
+                                    android:fontFamily="@font/calibri"
+                                    android:text="장애인 0"
+                                    android:textColor="#8a8a8a" />
                             </LinearLayout>
 
                         </LinearLayout>
 
                         <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="4dp"
-                            android:layout_weight="100"
-                            android:orientation="horizontal">
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="40"
+                            android:gravity="center"
+                            android:orientation="vertical">
 
-                            <LinearLayout
-                                android:layout_width="0dp"
+                            <TextView
+                                android:id="@+id/textTotalCost"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="50"
-                                android:gravity="center">
-
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginEnd="16dp"
-                                    android:fontFamily="@font/print_clearly"
-                                    android:text="1"
-                                    android:textColor="#c3c3c3"
-                                    android:textSize="18sp"
-                                    android:textStyle="bold"
-                                    android:visibility="invisible" />
-
-                                <TextView
-                                    android:layout_width="36dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginEnd="4dp"
-                                    android:fontFamily="@font/print_clearly"
-                                    android:text="1"
-                                    android:textAlignment="center"
-                                    android:textColor="#c3c3c3"
-                                    android:textSize="18sp"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:layout_width="36dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="4dp"
-                                    android:fontFamily="@font/print_clearly"
-                                    android:text="2"
-                                    android:textAlignment="center"
-                                    android:textColor="#c3c3c3"
-                                    android:textSize="18sp"
-                                    android:textStyle="bold" />
-
-
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="50"
-                                android:gravity="center">
-
-                                <TextView
-                                    android:layout_width="36dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginEnd="4dp"
-                                    android:fontFamily="@font/print_clearly"
-                                    android:text="3"
-                                    android:textAlignment="center"
-                                    android:textColor="#c3c3c3"
-                                    android:textSize="18sp"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:layout_width="36dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="4dp"
-                                    android:fontFamily="@font/print_clearly"
-                                    android:text="4"
-                                    android:textAlignment="center"
-                                    android:textColor="#c3c3c3"
-                                    android:textSize="18sp"
-                                    android:textStyle="bold" />
-                                <TextView
-                                    android:layout_width="36dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="4dp"
-                                    android:fontFamily="@font/print_clearly"
-                                    android:text="5"
-                                    android:textAlignment="center"
-                                    android:textColor="#c3c3c3"
-                                    android:textSize="18sp"
-                                    android:textStyle="bold" />
-                            </LinearLayout>
+                                android:fontFamily="@font/calibri"
+                                android:text="15000원"
+                                android:textAlignment="textEnd"
+                                android:textColor="#f5a622"
+                                android:textSize="24sp"
+                                android:textStyle="bold" />
 
                         </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="8dp"
-                            android:layout_weight="100"
-                            android:orientation="horizontal">
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="50"
-                                android:gravity="center">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginEnd="16dp"
-                                    android:fontFamily="@font/print_clearly"
-                                    android:text="A"
-                                    android:textColor="#c3c3c3"
-                                    android:textSize="18sp"
-                                    android:textStyle="bold" />
-
-                                <ImageView
-                                    android:id="@+id/A01"
-                                    android:layout_width="36dp"
-                                    android:layout_height="36dp"
-                                    android:layout_marginEnd="4dp"
-                                    android:src="@drawable/booked_img" />
-
-                                <ImageView
-                                    android:id="@+id/A02"
-                                    android:layout_width="36dp"
-                                    android:layout_height="36dp"
-                                    android:layout_marginStart="4dp"
-                                    android:src="@drawable/available_img" />
-
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="50"
-                                android:gravity="center">
-
-                                <ImageView
-                                    android:id="@+id/A03"
-                                    android:layout_width="36dp"
-                                    android:layout_height="36dp"
-                                    android:layout_marginEnd="4dp"
-                                    android:src="@drawable/booked_img" />
-
-                                <ImageView
-                                    android:id="@+id/A04"
-                                    android:layout_width="36dp"
-                                    android:layout_height="36dp"
-                                    android:layout_marginStart="4dp"
-                                    android:src="@drawable/available_img" />
-                                <ImageView
-                                    android:id="@+id/A05"
-                                    android:layout_width="36dp"
-                                    android:layout_height="36dp"
-                                    android:layout_marginStart="4dp"
-                                    android:src="@drawable/available_img" />
-                            </LinearLayout>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="8dp"
-                            android:layout_weight="100"
-                            android:orientation="horizontal">
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="50"
-                                android:gravity="center"
-                                tools:ignore="NestedWeights">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginEnd="16dp"
-                                    android:fontFamily="@font/print_clearly"
-                                    android:text="B"
-                                    android:textColor="#c3c3c3"
-                                    android:textSize="18sp"
-                                    android:textStyle="bold" />
-
-                                <ImageView
-                                    android:id="@+id/B01"
-                                    android:layout_width="36dp"
-                                    android:layout_height="36dp"
-                                    android:layout_marginEnd="4dp"
-                                    android:src="@drawable/available_img" />
-
-                                <ImageView
-                                    android:id="@+id/B02"
-                                    android:layout_width="36dp"
-                                    android:layout_height="36dp"
-                                    android:layout_marginStart="4dp"
-                                    android:src="@drawable/booked_img" />
-
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="50"
-                                android:gravity="center">
-
-                                <ImageView
-                                    android:id="@+id/B03"
-                                    android:layout_width="36dp"
-                                    android:layout_height="36dp"
-                                    android:layout_marginEnd="4dp"
-                                    android:src="@drawable/booked_img" />
-
-                                <ImageView
-                                    android:id="@+id/B04"
-                                    android:layout_width="36dp"
-                                    android:layout_height="36dp"
-                                    android:layout_marginStart="4dp"
-                                    android:src="@drawable/available_img" />
-                                <ImageView
-                                    android:id="@+id/B05"
-                                    android:layout_width="36dp"
-                                    android:layout_height="36dp"
-                                    android:layout_marginStart="4dp"
-                                    android:src="@drawable/available_img" />
-                            </LinearLayout>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="8dp"
-                            android:layout_weight="100"
-                            android:orientation="horizontal">
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="50"
-                                android:gravity="center">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginEnd="16dp"
-                                    android:fontFamily="@font/print_clearly"
-                                    android:text="C"
-                                    android:textColor="#c3c3c3"
-                                    android:textSize="18sp"
-                                    android:textStyle="bold" />
-
-                                <ImageView
-                                    android:id="@+id/C01"
-                                    android:layout_width="36dp"
-                                    android:layout_height="36dp"
-                                    android:layout_marginEnd="4dp"
-                                    android:src="@drawable/available_img" />
-
-                                <ImageView
-                                    android:id="@+id/C02"
-                                    android:layout_width="36dp"
-                                    android:layout_height="36dp"
-                                    android:layout_marginStart="4dp"
-                                    android:src="@drawable/available_img" />
-
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="50"
-                                android:gravity="center">
-
-                                <ImageView
-                                    android:id="@+id/C03"
-                                    android:layout_width="36dp"
-                                    android:layout_height="36dp"
-                                    android:layout_marginEnd="4dp"
-                                    android:src="@drawable/available_img" />
-
-                                <ImageView
-                                    android:id="@+id/C04"
-                                    android:layout_width="36dp"
-                                    android:layout_height="36dp"
-                                    android:layout_marginStart="4dp"
-                                    android:src="@drawable/booked_img" />
-                                <ImageView
-                                    android:id="@+id/C05"
-                                    android:layout_width="36dp"
-                                    android:layout_height="36dp"
-                                    android:layout_marginStart="4dp"
-                                    android:src="@drawable/booked_img" />
-                            </LinearLayout>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="8dp"
-                            android:layout_weight="100"
-                            android:orientation="horizontal">
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="50"
-                                android:gravity="center">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginEnd="16dp"
-                                    android:fontFamily="@font/print_clearly"
-                                    android:text="D"
-                                    android:textColor="#c3c3c3"
-                                    android:textSize="18sp"
-                                    android:textStyle="bold" />
-
-                                <ImageView
-                                    android:id="@+id/D01"
-                                    android:layout_width="36dp"
-                                    android:layout_height="36dp"
-                                    android:layout_marginEnd="4dp"
-                                    android:src="@drawable/available_img" />
-
-                                <ImageView
-                                    android:id="@+id/D02"
-                                    android:layout_width="36dp"
-                                    android:layout_height="36dp"
-                                    android:layout_marginStart="4dp"
-                                    android:src="@drawable/booked_img" />
-
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="50"
-                                android:gravity="center">
-
-                                <ImageView
-                                    android:id="@+id/D03"
-                                    android:layout_width="36dp"
-                                    android:layout_height="36dp"
-                                    android:layout_marginEnd="4dp"
-                                    android:src="@drawable/available_img" />
-
-                                <ImageView
-                                    android:id="@+id/D04"
-                                    android:layout_width="36dp"
-                                    android:layout_height="36dp"
-                                    android:layout_marginStart="4dp"
-                                    android:src="@drawable/available_img" />
-                                <ImageView
-                                    android:id="@+id/D05"
-                                    android:layout_width="36dp"
-                                    android:layout_height="36dp"
-                                    android:layout_marginStart="4dp"
-                                    android:src="@drawable/available_img" />
-                            </LinearLayout>
-
-                        </LinearLayout>
-
-
                     </LinearLayout>
-
 
                 </androidx.cardview.widget.CardView>
 
+                <Button
+                    android:id="@+id/payment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginTop="40dp"
+                    android:backgroundTint="@color/colorPrimaryLight"
+                    android:paddingVertical="14dp"
+                    android:text="결제" />
 
             </LinearLayout>
 

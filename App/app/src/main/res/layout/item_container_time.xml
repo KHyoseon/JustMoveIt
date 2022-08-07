@@ -10,11 +10,10 @@
 
     <RelativeLayout
         android:id="@+id/background_color"
-        android:layout_width="100dp"
-        android:layout_height="75dp"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:background="@drawable/gradient"
-        android:padding="5dp"
+        android:background="@drawable/time_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -27,9 +26,9 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:text="@string/read_more"
-            android:textColor="@color/black"
-            android:textSize="25sp" />
+            android:text="12:00"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
 
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
