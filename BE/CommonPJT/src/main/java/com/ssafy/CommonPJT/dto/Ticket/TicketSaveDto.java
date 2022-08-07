@@ -27,6 +27,9 @@ public class TicketSaveDto {
     @Schema(description = "영화상영정보 ID")
     private Long moviePlayingInfoId;
 
+    @Schema(description = "결제 금액")
+    private String totalCost;
+
     @Builder
     public Ticket toEntity(MoviePlayingInfo moviePlayingInfo) {
         return Ticket.builder()
@@ -35,6 +38,7 @@ public class TicketSaveDto {
                 .moviePlayingInfo(moviePlayingInfo)
                 .classification(this.classification)
                 .reservationTime(new Date())
+                .totalCost(this.totalCost)
                 .build();
     }
 }

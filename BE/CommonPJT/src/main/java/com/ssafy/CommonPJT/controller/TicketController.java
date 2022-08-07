@@ -54,9 +54,9 @@ public class TicketController {
      */
     @ApiOperation(value = "티켓 예매", notes = "티켓을 예매한다.")
     @PostMapping
-    public void save(@RequestBody TicketSaveDto ticket) {
-        ticketService.save(ticket);
+    public TicketResDto save(@RequestBody TicketSaveDto ticket) {
         log.info("티켓 정보를 저장합니다.");
+        return ticketService.save(ticket);
     }
 
 
