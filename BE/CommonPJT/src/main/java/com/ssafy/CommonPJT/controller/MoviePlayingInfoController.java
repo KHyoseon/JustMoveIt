@@ -44,4 +44,10 @@ public class MoviePlayingInfoController {
         moviePlayingInfoService.save(moviePlayingInfoSaveDto);
         log.info("영화 상영 정보를 저장합니다.");
     }
+
+    @ApiOperation(value = "영화 상영 정보 삭제", notes = "영화 상영 정보를 삭제합니다.")
+    @DeleteMapping("/{movieInfoId}")
+    public void deleteInfoById(@PathVariable Long movieInfoId) {
+        moviePlayingInfoService.deleteById(movieInfoId);
+    }
 }

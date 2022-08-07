@@ -48,4 +48,10 @@ public class UserController {
         log.info("회원 리스트를 조회합니다");
         return userService.getUserList();
     }
+
+    @ApiOperation(value = "회원 정보 삭제", notes = "회원 정보를 삭제합니다.")
+    @DeleteMapping("/{userId}")
+    public void deleteUserById(@PathVariable Long userId) {
+        userService.deleteById(userId);
+    }
 }

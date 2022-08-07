@@ -2,7 +2,7 @@ package com.ssafy.CommonPJT.controller;
 
 import com.ssafy.CommonPJT.domain.Movie;
 import com.ssafy.CommonPJT.dto.Movie.MovieDetailDto;
-import com.ssafy.CommonPJT.dto.Movie.MovieRecommedDto;
+import com.ssafy.CommonPJT.dto.Movie.MovieRecommendDto;
 import com.ssafy.CommonPJT.dto.Movie.MovieSaveDto;
 import com.ssafy.CommonPJT.service.MovieService;
 import io.swagger.annotations.Api;
@@ -45,5 +45,9 @@ public class MovieController {
         return movieService.findOne(id);
     }
 
-
+    @ApiOperation(value = "영화 정보 삭제", notes = "영화 정보를 삭제합니다.")
+    @DeleteMapping("/{movieId}")
+    public void deleteMovieById(@PathVariable Long movieId) {
+        movieService.deleteById(movieId);
+    }
 }

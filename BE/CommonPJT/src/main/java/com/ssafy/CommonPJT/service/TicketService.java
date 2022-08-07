@@ -7,11 +7,9 @@ import com.ssafy.CommonPJT.dto.Ticket.TicketSaveDto;
 import com.ssafy.CommonPJT.repository.MoviePlayingInfoRepository;
 import com.ssafy.CommonPJT.repository.TicketRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -42,13 +40,7 @@ public class TicketService {
 
     // 특정 티켓 조회
     public List<TicketResDto> findByNum(String phoneNumber) {
-        List<Ticket> tickets = ticketRepository.findAll();
-        List<Ticket> ticketsByNum = new ArrayList<>();
-        for (Ticket ticket : tickets) {
-            if (ticket.getPhoneNumber().equals(phoneNumber)) {
-                ticketsByNum.add(ticket);
-            }
-        }
+        List<Ticket> ticketsByNum = ticketRepository.findTicketsByPhoneNumber(phoneNumber);
         return ticketsByNum.stream().map(TicketResDto::new).collect(Collectors.toList());
     }
 
@@ -62,8 +54,6 @@ public class TicketService {
     // 티켓 예매 취소
     @Transactional
     public void delete(Long id) {
-        Ticket target = ticketRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("잘못된 티켓번호입니다."));
-        ticketRepository.delete(target);
+        ticketRepository.deleteById(id);
     }
 }
