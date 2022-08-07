@@ -17,8 +17,6 @@ import com.example.justmoveit.R;
 import com.example.justmoveit.model.ReservedTicket;
 
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Objects;
 
 public class TicketListAdapter extends ArrayAdapter {
 
@@ -42,7 +40,7 @@ public class TicketListAdapter extends ArrayAdapter {
         title.setText(ticket.getTitle());
         date.setText(ticket.getViewingDate());
         time.setText(ticket.getViewingTime());
-        theater.setText(ticket.getTheater());
+        theater.setText(ticket.getTheaterNo()+"관");
         seat.setText(ticket.getSeat());
 
         if(ticket.isExpired()){

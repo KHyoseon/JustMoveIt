@@ -55,7 +55,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:text="로그아웃"
-                    android:textColor="#A5363A"
+                    android:textColor="@color/colorThemeExtra"
                     android:textSize="15sp"
                     android:textStyle="bold" />
 

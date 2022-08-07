@@ -2,7 +2,9 @@ package com.example.justmoveit.model;
 
 import java.io.Serializable;
 
+// 서버 통신 dto
 public class Ticket implements Serializable {
+    private Long ticketId;
     private Long moviePlayingInfoId;
     private Long movieId;
     private String movieTitle;
@@ -13,8 +15,10 @@ public class Ticket implements Serializable {
     private String classification;
     private String reservationTime;
     private String seat;
+    private int theaterNo;
 
-    public Ticket(Long moviePlayingInfoId, Long movieId, String movieTitle, String ageLimit, String startTime, String endTime, String phoneNumber, String classification, String reservationTime, String seat) {
+    public Ticket(Long ticketId, Long moviePlayingInfoId, Long movieId, String movieTitle, String ageLimit, String startTime, String endTime, String phoneNumber, String classification, String reservationTime, String seat, int theaterNo) {
+        this.ticketId = ticketId;
         this.moviePlayingInfoId = moviePlayingInfoId;
         this.movieId = movieId;
         this.movieTitle = movieTitle;
@@ -25,6 +29,23 @@ public class Ticket implements Serializable {
         this.classification = classification;
         this.reservationTime = reservationTime;
         this.seat = seat;
+        this.theaterNo = theaterNo;
+    }
+
+    public Long getTicketId() {
+        return ticketId;
+    }
+
+    public void setTicketId(Long ticketId) {
+        this.ticketId = ticketId;
+    }
+
+    public int getTheaterNo() {
+        return theaterNo;
+    }
+
+    public void setTheaterNo(int theaterNo) {
+        this.theaterNo = theaterNo;
     }
 
     public Long getMoviePlayingInfoId() {

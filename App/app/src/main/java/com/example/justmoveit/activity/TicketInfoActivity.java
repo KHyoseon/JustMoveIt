@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -33,10 +34,21 @@ public class TicketInfoActivity extends AppCompatActivity {
         reserveDate.setText(ticket.getViewingDate());
         TextView viewingDate = findViewById(R.id.viewing_date);
         viewingDate.setText(ticket.getViewingTime());
-        TextView spectators = findViewById(R.id.spectators);
-        spectators.setText((ticket.getAdult()>0?"성인 "+ticket.getAdult()+"명  ":"").concat(ticket.getTeen()>0?"청소년 "+ticket.getTeen()+"명":""));
+        TextView classification = findViewById(R.id.classification);
+        classification.setText((ticket.getAdult()>0?"성인 "+ticket.getAdult()+"명  ":"")
+                .concat(ticket.getChild()>0?"어린이 "+ticket.getChild()+"명":"")
+                .concat(ticket.getDisabled()>0?"장애인 "+ticket.getDisabled()+"명":""));
         TextView reserveSeat = findViewById(R.id.reserve_seat);
         reserveSeat.setText(ticket.getSeat());
+
+
+        TextView reserveCancel = findViewById(R.id.reserve_cancel_button);
+        reserveCancel.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                // Todo: 서버 취소 요청
+            }
+        });
 
     }
 }

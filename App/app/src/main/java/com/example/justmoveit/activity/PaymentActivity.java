@@ -12,6 +12,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.justmoveit.R;
+import com.example.justmoveit.api.UserTicketApi;
+import com.example.justmoveit.model.MoviePlayingInfo;
+import com.example.justmoveit.model.Ticket;
 import com.example.justmoveit.model.kakaopay.PayApprove;
 import com.example.justmoveit.model.kakaopay.PayReady;
 import com.example.justmoveit.api.PaymentApi;
@@ -23,6 +26,8 @@ import retrofit2.Response;
 public class PaymentActivity extends AppCompatActivity {
     private WebView webView;
     private MyWebViewClient myWebViewClient;
+    private Ticket ticket;
+
     private String tidPin; //결제 고유 번호
     private String pgToken; //결제 요청 토큰
     private static String PRODUCT_NAME; //상품 이름
@@ -31,8 +36,9 @@ public class PaymentActivity extends AppCompatActivity {
     public PaymentActivity() {
     }
 
-    public PaymentActivity(String productName, Integer productPrice) {
-        PRODUCT_NAME = productName;
+    public PaymentActivity(Ticket ticket, Integer productPrice) {
+        this.ticket = ticket;
+        PRODUCT_NAME = ticket.getMovieTitle();
         PRODUCT_PRICE = productPrice;
     }
 
@@ -40,8 +46,6 @@ public class PaymentActivity extends AppCompatActivity {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment);
-
-        Toast.makeText(this, "PaymentActivity 진입", Toast.LENGTH_SHORT).show();
 
         webView = findViewById(R.id.webView);
         webView.getSettings().setJavaScriptEnabled(true);
@@ -73,13 +77,11 @@ public class PaymentActivity extends AppCompatActivity {
                 public void onResponse(Call<PayReady> call, Response<PayReady> response) {
                     PayReady ready = response.body();
                     if(!response.isSuccessful()){
-                        Log.e("Retrofit onResponse", "response was not successful");
+                        Log.i("Retrofit onResponse", "response was not successful");
                     } else {
                         if (ready != null) {
                             String url = ready.getNext_redirect_mobile_url();
                             String tid = ready.getTid();
-
-                            Log.i(">>>>>>>>>>>>> redirect_mobile_url", url);
                             webView.loadUrl(url);
                             tidPin = tid;
                         } else {
@@ -107,7 +109,21 @@ public class PaymentActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<PayApprove> call, Response<PayApprove> response) {
                     if (response.isSuccessful()) {
-                        Log.e("Debug", "payment approve success");
+                        Log.i("Debug", "payment approve success");
+
+                        // Todo: 서버에 등록
+                        UserTicketApi ticketService = UserTicketApi.retrofit.create(UserTicketApi.class);
+                        ticketService.reserveTicket(ticket).enqueue(new Callback<Void>() {
+                            @Override
+                            public void onResponse(Call<Void> call, Response<Void> response) {
+
+                            }
+
+                            @Override
+                            public void onFailure(Call<Void> call, Throwable t) {
+
+                            }
+                        });
                     } else {
                         Log.e("Debug", "response is not successful");
                     }
