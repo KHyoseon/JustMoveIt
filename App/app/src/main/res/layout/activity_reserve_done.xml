@@ -24,7 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="300dp"
+        android:layout_marginTop="260dp"
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
@@ -34,13 +34,13 @@
             android:layout_height="wrap_content"
             android:text="토르: 러브 앤 썬더"
             android:textStyle="bold"
-            android:textSize="25sp"
+            android:textSize="20sp"
             android:textColor="@color/black"/>
 
         <ImageView
             android:id="@+id/movie_poster"
-            android:layout_width="200dp"
-            android:layout_height="310dp"
+            android:layout_width="180dp"
+            android:layout_height="280dp"
             android:background="@drawable/poster"
             android:layout_marginVertical="20dp"/>
 
@@ -60,15 +60,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/black"
-                    android:textSize="18dp"
-                    android:text="예매날짜 | " />
+                    android:textSize="14dp"
+                    android:text="예매날짜   |   " />
 
                 <TextView
                     android:id="@+id/reserve_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/black"
-                    android:textSize="18dp"
+                    android:textSize="14dp"
                     android:text="2022.07.26" />
 
             </LinearLayout>
@@ -82,15 +82,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/black"
-                    android:textSize="18dp"
-                    android:text="관람일시 | " />
+                    android:textSize="14dp"
+                    android:text="관람일시   |   " />
 
                 <TextView
                     android:id="@+id/viewing_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/black"
-                    android:textSize="18dp"
+                    android:textSize="14dp"
                     android:text="2022.07.26 14:20" />
             </LinearLayout>
 
@@ -103,15 +103,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/black"
-                    android:textSize="18dp"
-                    android:text="관람인원 | " />
+                    android:textSize="14dp"
+                    android:text="관람인원   |   " />
 
                 <TextView
-                    android:id="@+id/spectators"
+                    android:id="@+id/classification"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/black"
-                    android:textSize="18dp"
+                    android:textSize="14dp"
                     android:text="성인 2명" />
             </LinearLayout>
 
@@ -123,19 +123,29 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/black"
-                    android:textSize="18dp"
-                    android:text="관람좌석 | " />
+                    android:textSize="14dp"
+                    android:text="관람좌석   |   " />
 
                 <TextView
                     android:id="@+id/reserve_seat"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/black"
-                    android:textSize="18dp"
+                    android:textSize="14dp"
                     android:text="G4, G5" />
             </LinearLayout>
 
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/reserve_cancel_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:text="예매 취소"
+            android:textColor="@color/colorThemeExtra"
+            android:textSize="15sp"
+            android:textStyle="bold"/>
 
     </LinearLayout>
 

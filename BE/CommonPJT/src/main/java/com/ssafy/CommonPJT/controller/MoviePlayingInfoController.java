@@ -32,9 +32,9 @@ public class MoviePlayingInfoController {
 
     @ApiOperation(value = "영화 상영 정보", notes = "영화 상영 정보를 출력한다.")
     @GetMapping("/{movieplayinginfoId}")
-    public MoviePlayingInfoResDto getInfo(@PathVariable Long movieplayinginfoId) {
+    public ResponseEntity<MoviePlayingInfoResDto> getInfo(@PathVariable Long movieplayinginfoId) {
         log.info("영화 상영 정보를 조회합니다.");
-        return moviePlayingInfoService.findById(movieplayinginfoId);
+        return new ResponseEntity<>(moviePlayingInfoService.findById(movieplayinginfoId), HttpStatus.OK);
     }
 
 
@@ -43,5 +43,11 @@ public class MoviePlayingInfoController {
     public void saveInfo(@RequestBody MoviePlayingInfoSaveDto moviePlayingInfoSaveDto) {
         moviePlayingInfoService.save(moviePlayingInfoSaveDto);
         log.info("영화 상영 정보를 저장합니다.");
+    }
+
+    @ApiOperation(value = "영화 상영 정보 삭제", notes = "영화 상영 정보를 삭제합니다.")
+    @DeleteMapping("/{movieInfoId}")
+    public void deleteInfoById(@PathVariable Long movieInfoId) {
+        moviePlayingInfoService.deleteById(movieInfoId);
     }
 }

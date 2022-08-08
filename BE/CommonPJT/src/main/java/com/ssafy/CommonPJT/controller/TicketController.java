@@ -36,16 +36,16 @@ public class TicketController {
 
     @ApiOperation(value = "티켓 조회(휴대폰)", notes = "휴대폰 번호로 티켓 정보를 출력한다.")
     @GetMapping("/{phoneNumber}")
-    public List<TicketResDto> getTicketByNum(@PathVariable String phoneNumber) {
+    public ResponseEntity<List<TicketResDto>> getTicketByNum(@PathVariable String phoneNumber) {
         log.info("티켓 정보를 휴대폰 번호로 조회합니다.");
-        return ticketService.findByNum(phoneNumber);
+        return new ResponseEntity<>(ticketService.findByNum(phoneNumber), HttpStatus.OK);
     }
 
     @ApiOperation(value = "티켓 조회(id)", notes = "ticketId로 티켓 정보를 출력한다.")
     @GetMapping("/ticket/{ticketId}")
-    public TicketResDto getTicketById(@PathVariable Long ticketId) {
+    public ResponseEntity<TicketResDto> getTicketById(@PathVariable Long ticketId) {
         log.info("티켓 정보를 ticketId로 조회합니다.");
-        return ticketService.findById(ticketId);
+        return new ResponseEntity<>(ticketService.findById(ticketId), HttpStatus.OK);
     }
 
 
@@ -54,9 +54,9 @@ public class TicketController {
      */
     @ApiOperation(value = "티켓 예매", notes = "티켓을 예매한다.")
     @PostMapping
-    public void save(@RequestBody TicketSaveDto ticket) {
-        ticketService.save(ticket);
+    public ResponseEntity<TicketResDto> save(@RequestBody TicketSaveDto ticket) {
         log.info("티켓 정보를 저장합니다.");
+        return new ResponseEntity<>(ticketService.save(ticket), HttpStatus.OK);
     }
 
 

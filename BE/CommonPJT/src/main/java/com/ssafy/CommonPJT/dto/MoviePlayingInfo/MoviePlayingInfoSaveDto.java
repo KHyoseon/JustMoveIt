@@ -20,18 +20,15 @@ public class MoviePlayingInfoSaveDto {
     @Schema(description = "시작 시간")
     private String startTime;
 
-    @Schema(description = "종료 시간")
-    private String endTime;
-
     @Schema(description = "영화 ID")
     private Long movieId;
 
     @Builder
-    public MoviePlayingInfo toEntity(Movie movie) {
+    public MoviePlayingInfo toEntity(Movie movie, String endTime) {
         return MoviePlayingInfo.builder()
                 .theaterNo(this.theaterNo)
                 .startTime(this.startTime)
-                .endTime(this.endTime)
+                .endTime(endTime)
                 .movie(movie)
                 .build();
     }

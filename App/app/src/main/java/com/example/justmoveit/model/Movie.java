@@ -1,9 +1,10 @@
 package com.example.justmoveit.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Movie implements Serializable {
-
     private Long id;
     private String country;
     private String director;
@@ -12,20 +13,17 @@ public class Movie implements Serializable {
     private String genre;
     private String summary;
     private String runningTime;
-    private String img1;
-    private String img2;
-    private String img3;
-    private String img4;
-    private String img5;
-    private String img6;
+    private String mainImg;
+    private List<String> subImgs;
     private String rating;
     private String engTitle;
     private String ageLimit;
     private String releaseDate;
     private String totalCustomer;
     private String movieCode;
+    private MoviePlayingInfo moviePlayingInfo;
 
-    public Movie(Long id, String country, String director, String actor, String title, String genre, String summary, String runningTime, String img1, String img2, String img3, String img4, String img5, String img6, String rating, String engTitle, String ageLimit, String releaseDate, String totalCustomer, String movieCode) {
+    public Movie(Long id, String country, String director, String actor, String title, String genre, String summary, String runningTime, String mainImg, String img1, String img2, String img3, String img4, String img5, String rating, String engTitle, String ageLimit, String releaseDate, String totalCustomer, String movieCode, MoviePlayingInfo moviePlayingInfo) {
         this.id = id;
         this.country = country;
         this.director = director;
@@ -34,18 +32,23 @@ public class Movie implements Serializable {
         this.genre = genre;
         this.summary = summary;
         this.runningTime = runningTime;
-        this.img1 = img1;
-        this.img2 = img2;
-        this.img3 = img3;
-        this.img4 = img4;
-        this.img5 = img5;
-        this.img6 = img6;
+        this.mainImg = mainImg;
+
+        this.subImgs = new ArrayList<>(5);
+        this.subImgs.add(img1);
+        this.subImgs.add(img2);
+        this.subImgs.add(img3);
+        this.subImgs.add(img4);
+        this.subImgs.add(img5);
+
         this.rating = rating;
         this.engTitle = engTitle;
         this.ageLimit = ageLimit;
         this.releaseDate = releaseDate;
         this.totalCustomer = totalCustomer;
         this.movieCode = movieCode;
+
+        this.moviePlayingInfo = moviePlayingInfo;
     }
 
     public Long getId() {
@@ -112,52 +115,20 @@ public class Movie implements Serializable {
         this.runningTime = runningTime;
     }
 
-    public String getImg1() {
-        return img1;
+    public String getMainImg() {
+        return mainImg;
     }
 
-    public void setImg1(String img1) {
-        this.img1 = img1;
+    public void setMainImg(String mainImg) {
+        this.mainImg = mainImg;
     }
 
-    public String getImg2() {
-        return img2;
+    public List<String> getSubImgs() {
+        return subImgs;
     }
 
-    public void setImg2(String img2) {
-        this.img2 = img2;
-    }
-
-    public String getImg3() {
-        return img3;
-    }
-
-    public void setImg3(String img3) {
-        this.img3 = img3;
-    }
-
-    public String getImg4() {
-        return img4;
-    }
-
-    public void setImg4(String img4) {
-        this.img4 = img4;
-    }
-
-    public String getImg5() {
-        return img5;
-    }
-
-    public void setImg5(String img5) {
-        this.img5 = img5;
-    }
-
-    public String getImg6() {
-        return img6;
-    }
-
-    public void setImg6(String img6) {
-        this.img6 = img6;
+    public void setSubImgs(List<String> subImgs) {
+        this.subImgs = subImgs;
     }
 
     public String getRating() {
@@ -208,29 +179,11 @@ public class Movie implements Serializable {
         this.movieCode = movieCode;
     }
 
-    @Override
-    public String toString() {
-        return "Movie{" +
-                "id=" + id +
-                ", country='" + country + '\'' +
-                ", director='" + director + '\'' +
-                ", actor='" + actor + '\'' +
-                ", title='" + title + '\'' +
-                ", genre='" + genre + '\'' +
-                ", summary='" + summary + '\'' +
-                ", runningTime='" + runningTime + '\'' +
-                ", img1='" + img1 + '\'' +
-                ", img2='" + img2 + '\'' +
-                ", img3='" + img3 + '\'' +
-                ", img4='" + img4 + '\'' +
-                ", img5='" + img5 + '\'' +
-                ", img6='" + img6 + '\'' +
-                ", rating='" + rating + '\'' +
-                ", engTitle='" + engTitle + '\'' +
-                ", ageLimit='" + ageLimit + '\'' +
-                ", releaseDate='" + releaseDate + '\'' +
-                ", totalCustomer='" + totalCustomer + '\'' +
-                ", movieCode='" + movieCode + '\'' +
-                '}';
+    public MoviePlayingInfo getMoviePlayingInfo() {
+        return moviePlayingInfo;
+    }
+
+    public void setMoviePlayingInfo(MoviePlayingInfo moviePlayingInfo) {
+        this.moviePlayingInfo = moviePlayingInfo;
     }
 }
