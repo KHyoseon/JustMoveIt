@@ -4,30 +4,32 @@ import java.io.Serializable;
 import java.util.Objects;
 
 public class ReservedTicket implements Serializable, Comparable<ReservedTicket> {
+    private Long ticketId;
     private String title;
     private String viewingDate;
     private String seat;
-    private int adult, child, disabled;
+    private int adult, child;
 
     private String viewingTime;
     private int theaterNo;
 
-    private Long priority;
+    private String priority;
     private boolean expired;
 
     public ReservedTicket(Ticket ticket) {
+        this.ticketId = ticket.getTicketId();
         this.title = ticket.getMovieTitle();
-        this.viewingDate = ticket.getReservationTime().substring(0, 10);
+        this.viewingDate = ticket.getReservationTime().replace("-", "");
 
         this.viewingTime = ticket.getStartTime();
         this.theaterNo = ticket.getTheaterNo();
 
-        adult = child = disabled = 0;
+        adult = child = 0;
         getParseClassification(ticket);
         this.seat = ticket.getSeat();
 
         String temp = viewingDate + viewingTime;
-        this.priority = Long.parseLong(temp.replace("-", "").replace(":", ""));
+        this.priority = temp.replace("-", "").replace(":", "");
     }
 
     private void getParseClassification(Ticket ticket) {
@@ -38,10 +40,16 @@ public class ReservedTicket implements Serializable, Comparable<ReservedTicket> 
                     ++adult; break;
                 case "CHILD":
                     ++child; break;
-                case "DISABLED":
-                    ++disabled; break;
             }
         }
+    }
+
+    public Long getTicketId() {
+        return ticketId;
+    }
+
+    public void setTicketId(Long ticketId) {
+        this.ticketId = ticketId;
     }
 
     public String getTitle() {
@@ -84,14 +92,6 @@ public class ReservedTicket implements Serializable, Comparable<ReservedTicket> 
         this.child = child;
     }
 
-    public int getDisabled() {
-        return disabled;
-    }
-
-    public void setDisabled(int disabled) {
-        this.disabled = disabled;
-    }
-
     public String getViewingTime() {
         return viewingTime;
     }
@@ -108,11 +108,11 @@ public class ReservedTicket implements Serializable, Comparable<ReservedTicket> 
         this.theaterNo = theaterNo;
     }
 
-    public Long getPriority() {
+    public String getPriority() {
         return priority;
     }
 
-    public void setPriority(Long priority) {
+    public void setPriority(String priority) {
         this.priority = priority;
     }
 
@@ -127,6 +127,10 @@ public class ReservedTicket implements Serializable, Comparable<ReservedTicket> 
     @Override
     public int compareTo(ReservedTicket ticket2) {
         if (Objects.equals(this.getPriority(), ticket2.getPriority())) return 0;
-        return (ticket2.getPriority() > this.getPriority() ? 1 : -1);
+        return (Long.parseLong(ticket2.getPriority()) > Long.parseLong(this.getPriority()) ? 1 : -1);
+    }
+
+    public boolean isGreaterThan(String pri){
+        return Long.parseLong(this.getPriority()) > Long.parseLong(pri);
     }
 }

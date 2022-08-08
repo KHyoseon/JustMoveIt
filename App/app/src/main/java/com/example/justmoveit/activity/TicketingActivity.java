@@ -18,21 +18,22 @@ import com.example.justmoveit.R;
 import com.example.justmoveit.model.MoviePlayingInfo;
 import com.example.justmoveit.model.Ticket;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TimeZone;
 
 public class TicketingActivity extends AppCompatActivity {
     private MoviePlayingInfo moviePlayingInfo;
-    private TextView textAdult, textChild, textDisabled, textTotalCost;
+    private TextView textAdult, textChild, textTotalCost;
 
     private NumberPicker adultPicker;
     private NumberPicker childPicker;
-    private NumberPicker disabledPicker;
 
-    private int[] cntSeat; // 0:성인, 1:어린이, 2:장애인
+    private int[] cntSeat; // 0:성인, 1:어린이
     private int canSelectedSeat, totalCost;
     private static Set<String> selectedSeat;
 
@@ -48,7 +49,7 @@ public class TicketingActivity extends AppCompatActivity {
 
         canSelectedSeat = 0;
         totalCost = 0;
-        cntSeat = new int[3];
+        cntSeat = new int[2];
         selectedSeat = new HashSet<>();
 
         // 예매할 영화 정보 가져옴
@@ -57,7 +58,6 @@ public class TicketingActivity extends AppCompatActivity {
         // 레이아웃 매핑
         textAdult = findViewById(R.id.textAdult);
         textChild = findViewById(R.id.textChild);
-        textDisabled = findViewById(R.id.textDisabled);
         textTotalCost = findViewById(R.id.textTotalCost);
 
         // 데이터 뿌림
@@ -79,7 +79,6 @@ public class TicketingActivity extends AppCompatActivity {
             childPicker.setVisibility(View.INVISIBLE);
             // Todo: 안내 모달창??
         }
-        disabledPicker = findViewById(R.id.disabled_picker);
 
         // 넘버피커 - 기본, 최대, 최소값 설정
         setNumberPickerValue();
@@ -107,9 +106,6 @@ public class TicketingActivity extends AppCompatActivity {
                 for(int i=0; i<cntSeat[1]; i++) {
                     sb.append("CHILD,");
                 }
-                for(int i=0; i<cntSeat[2]; i++){
-                    sb.append("DISABLED,");
-                }
                 sb.setLength(sb.length()-1);
                 String classification = sb.toString();
 
@@ -118,14 +114,18 @@ public class TicketingActivity extends AppCompatActivity {
                 ArrayList<String> al = new ArrayList<>(selectedSeat);
                 Collections.sort(al);
                 for(String seat: al){
-                    sb.append(seat + ",");
+                    sb.append(seat).append(",");
                 }
                 sb.setLength(sb.length()-1);
                 String seat = sb.toString();
 
                 // 티켓 객체 생성 후 paymentActivity로 넘겨줌
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
+                simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+                String nowDate = simpleDateFormat.format(new Date());
                 Ticket ticket = new Ticket(moviePlayingInfo.getMoviePlayingInfoId(), moviePlayingInfo.getMovieId(), moviePlayingInfo.getMovieTitle(), "12세",
-                        moviePlayingInfo.getStartTime(), moviePlayingInfo.getEndTime(), "01012345678", classification, new Date().toString(), seat, moviePlayingInfo.getTheaterNo(), 12000);
+                        moviePlayingInfo.getStartTime(), moviePlayingInfo.getEndTime(), "01012345678", classification, nowDate+"", seat, moviePlayingInfo.getTheaterNo(), 12000);
+
                 PaymentActivity paymentActivity = new PaymentActivity(ticket);
                 Intent it = new Intent(getApplicationContext(), paymentActivity.getClass());
                 startActivity(it);
@@ -142,9 +142,6 @@ public class TicketingActivity extends AppCompatActivity {
         childPicker.setMinValue(0);
         childPicker.setValue(0);
 
-        disabledPicker.setMaxValue(5);
-        disabledPicker.setMinValue(0);
-        disabledPicker.setValue(0);
     }
 
     public void setOnAllValueChangeListener() {
@@ -166,17 +163,6 @@ public class TicketingActivity extends AppCompatActivity {
                 cntSeat[1] = newValue;
                 canSelectedSeat += (newValue - oldValue);
                 totalCost += (newValue - oldValue) * 12000 * (0.8);
-                textTotalCost.setText(totalCost+"");
-            }
-        });
-
-        disabledPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-            @Override
-            public void onValueChange(NumberPicker numberPicker, int oldValue, int newValue) {
-                textDisabled.setText("장애인 " + newValue);
-                cntSeat[2] = newValue;
-                canSelectedSeat += (newValue - oldValue);
-                totalCost += (newValue - oldValue) * 12000/80;
                 textTotalCost.setText(totalCost+"");
             }
         });
