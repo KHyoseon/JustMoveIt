@@ -1,5 +1,7 @@
 package com.example.justmoveit.activity;
 
+import static com.example.justmoveit.activity.MainActivity.userSP;
+
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -7,27 +9,31 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import android.content.Intent;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.justmoveit.R;
 import com.example.justmoveit.api.UserTicketApi;
+import com.example.justmoveit.model.ReservedTicket;
 import com.example.justmoveit.model.Ticket;
 import com.example.justmoveit.model.kakaopay.PayApprove;
 import com.example.justmoveit.model.kakaopay.PayReady;
 import com.example.justmoveit.api.PaymentApi;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class PaymentActivity extends AppCompatActivity {
-    private SharedPreferences.Editor editor;
-
     private WebView webView;
-    private Ticket ticket;
+    private static Ticket ticket;
 
     private String tidPin; //결제 고유 번호
     private String pgToken; //결제 요청 토큰
@@ -37,8 +43,8 @@ public class PaymentActivity extends AppCompatActivity {
     public PaymentActivity() {
     }
 
-    public PaymentActivity(Ticket ticket) {
-        this.ticket = ticket;
+    public PaymentActivity(Ticket t) {
+        ticket = t;
         PRODUCT_NAME = ticket.getMovieTitle();
         PRODUCT_PRICE = ticket.getTotalCost();
     }
@@ -47,9 +53,6 @@ public class PaymentActivity extends AppCompatActivity {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment);
-
-        SharedPreferences sharedPref = getPreferences(MODE_PRIVATE);
-        editor = sharedPref.edit();
 
         webView = findViewById(R.id.webView);
         webView.getSettings().setJavaScriptEnabled(true);
@@ -117,21 +120,68 @@ public class PaymentActivity extends AppCompatActivity {
                 public void onResponse(Call<PayApprove> call, Response<PayApprove> response) {
                     if (response.isSuccessful()) {
                         Log.i("Debug", "payment approve success");
+                        // 성공시 앱 캐시에도 저장
+                        Gson gson = new Gson();
+                        String json = userSP.getString("user_tickets", "");
+                        // 기존에 있던 리스트 담고
+                        if(ticket == null){
+                            Log.e("ticket PRODUCT_PRICE", PRODUCT_PRICE+"");
+                            Log.e("ticket?", "이왜널");
+                        } else {
+                            ticket.setTicketId(1L);
+                        }
+                        ArrayList<ReservedTicket> reservedTickets = gson.fromJson(json, TypeToken.getParameterized(ArrayList.class, ReservedTicket.class).getType());
+                        // 새로운 티켓 추가
+                        if(reservedTickets == null){
+                            reservedTickets = new ArrayList<>();
+                        }
+                        reservedTickets.add(new ReservedTicket(ticket));
+                        // 덮어쓰기
+                        SharedPreferences.Editor editor = userSP.edit();
+                        editor.putString("user_tickets", gson.toJson(reservedTickets));
+                        Log.e(">>>> Payment", "서버 통신 ticketService- reserveTicket");
+                        editor.apply();
 
-                        // Todo: 서버에 등록
-                        UserTicketApi ticketService = UserTicketApi.retrofit.create(UserTicketApi.class);
+                        Toast.makeText(PaymentActivity.this, "예매됨", Toast.LENGTH_SHORT).show();
+
+                        Intent it = new Intent();
+                        it.setClassName("com.example.justmoveit", "com.example.justmoveit.activity.TicketInfoActivity");
+                        it.putExtra("ticket", new ReservedTicket(ticket));
+                        startActivity(it);
+
+                        finish();
+                        /*UserTicketApi ticketService = UserTicketApi.retrofit.create(UserTicketApi.class);
                         ticketService.reserveTicket(ticket).enqueue(new Callback<Ticket>() {
                             @Override
                             public void onResponse(Call<Ticket> call, Response<Ticket> response) {
-                                // 성공시 앱 캐시에도 저장
                                 Ticket ticket = response.body();
+                                if(ticket == null){
+                                    Log.e("ticketService reserveTicket", "response body is null");
+                                    return;
+                                }
+                                // 성공시 앱 캐시에도 저장
                                 Gson gson = new Gson();
-                                String json = gson.toJson(ticket);
-                                editor.putString("mytickets", json);
+                                String json = userSP.getString("user_tickets", "");
+                                // 기존에 있던 리스트 담고
+                                ArrayList<ReservedTicket> reservedTickets = gson.fromJson(json, TypeToken.getParameterized(ArrayList.class, ReservedTicket.class).getType());
+                                // 새로운 티켓 추가
+                                if(reservedTickets == null){
+                                    reservedTickets = new ArrayList<>();
+                                }
+                                reservedTickets.add(new ReservedTicket(ticket));
+                                // 덮어쓰기
+                                SharedPreferences.Editor editor = userSP.edit();
+                                editor.putString("user_tickets", gson.toJson(reservedTickets));
+                                Log.e(">>>> Payment", "서버 통신 ticketService- reserveTicket");
                                 editor.apply();
 
-                                Log.i("paymentApprove", "success");
+                                Toast.makeText(PaymentActivity.this, "예매됨", Toast.LENGTH_SHORT).show();
                                 finish();
+
+                                Intent it = new Intent();
+                                it.setClassName("com.example.justmoveit", "com.example.justmoveit.activity.TicketInfoActivity");
+                                it.putExtra("ticket", new ReservedTicket(ticket));
+                                startActivity(it);
                             }
 
                             @Override
@@ -140,7 +190,7 @@ public class PaymentActivity extends AppCompatActivity {
                                 Log.i("paymentApprove", "fail");
                                 finish();
                             }
-                        });
+                        });*/
                     } else {
                         Log.e("Debug", "response is not successful");
                     }
@@ -153,17 +203,13 @@ public class PaymentActivity extends AppCompatActivity {
             });
         }
 
-        public static final String INTENT_PROTOCOL_START = "intent:";
-        public static final String INTENT_PROTOCOL_INTENT = "#Intent;";
-
         // URL 변경시 발생 이벤트
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             Log.d("Debug", "change url: " + url);
 
             if (url != null && url.contains("pg_token=")) {
                 Log.i("url loading", "pg_token");
-                String pg_Token = url.substring(url.indexOf("pg_token=") + 9);
-                pgToken = pg_Token;
+                pgToken = url.substring(url.indexOf("pg_token=") + 9);
                 this.approvePayment();
             } else if (url != null && url.startsWith("intent://")) {
                 Log.i("url loading", "intent");

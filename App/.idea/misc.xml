@@ -21,6 +21,7 @@
         <entry key="..\:/SSAFY/S07P12D207/App/app/src/main/res/layout/ticket_item.xml" value="0.17870884993587002" />
         <entry key="..\:/SSAFY/S07P12D207/App/app/src/main/res/layout/user_profile.xml" value="0.20307823856348867" />
         <entry key="..\:/ssafy/S07P12D207/App/app/src/main/res/drawable-v24/ic_arrow_back_white_24dp.xml" value="0.161" />
+        <entry key="..\:/ssafy/S07P12D207/App/app/src/main/res/drawable/background_spinner_item.xml" value="0.2335" />
         <entry key="..\:/ssafy/S07P12D207/App/app/src/main/res/drawable/custom_spinner.xml" value="0.161" />
         <entry key="..\:/ssafy/S07P12D207/App/app/src/main/res/drawable/gradient.xml" value="0.161" />
         <entry key="..\:/ssafy/S07P12D207/App/app/src/main/res/drawable/ic_back.xml" value="0.161" />
@@ -33,6 +34,7 @@
         <entry key="..\:/ssafy/S07P12D207/App/app/src/main/res/layout/activity_payment.xml" value="0.19635416666666666" />
         <entry key="..\:/ssafy/S07P12D207/App/app/src/main/res/layout/activity_payment_done.xml" value="0.128" />
         <entry key="..\:/ssafy/S07P12D207/App/app/src/main/res/layout/activity_reserve_done.xml" value="0.11197916666666667" />
+        <entry key="..\:/ssafy/S07P12D207/App/app/src/main/res/layout/activity_ticketing.xml" value="0.1640625" />
         <entry key="..\:/ssafy/S07P12D207/App/app/src/main/res/layout/ticket_item.xml" value="0.1" />
         <entry key="..\:/ssafy/S07P12D207/App/app/src/main/res/layout/user_profile.xml" value="0.14673913043478262" />
         <entry key="..\:/ssafy/S07P12D207/App/app/src/main/res/menu/menu.xml" value="0.264" />
