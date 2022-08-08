@@ -12,6 +12,7 @@ import Seats from "./components/Seats";
 import DialPage from "./components/DialPage";
 import MovieSelect from "./components/MovieSelect";
 
+
 let movie_detail = []
 
 

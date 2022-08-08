@@ -1,5 +1,6 @@
 import React from "react";
 import { Button } from "@mui/material";
+import Seats from "./Seats";
 
 let movie
 let times = []
@@ -85,7 +86,8 @@ function MovieDetail() {
 
                 { movie_time }
                 <br></br>
-                <button>좌석 선택</button>
+                {/* <button>좌석 선택</button> */}
+                <Seats />
                 <div>
                 
                 </div>
