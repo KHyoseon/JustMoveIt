@@ -1,7 +1,5 @@
 package com.example.justmoveit.activity;
 
-import static com.example.justmoveit.activity.MainActivity.userSP;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -28,6 +26,9 @@ import com.kakao.util.exception.KakaoException;
 import java.util.Objects;
 
 public class LoginActivity extends AppCompatActivity {
+    SharedPreferences sharedPref;
+    private SharedPreferences.Editor editor;
+
     private final ISessionCallback mSessionCallback = new ISessionCallback() {
         @Override
         public void onSessionOpened() {
@@ -54,14 +55,11 @@ public class LoginActivity extends AppCompatActivity {
                     Intent intent = new Intent(LoginActivity.this, MyTicketsListActivity.class);
                     UserAccount account = result.getKakaoAccount();
 
-                    SharedPreferences.Editor editor = userSP.edit();
-
                     editor.putString("user_name", account.getProfile().getNickname());
                     editor.putString("user_img_url", account.getProfile().getProfileImageUrl());
                     editor.putString("user_email", account.getEmail());
                     editor.putString("user_age_range", account.getAgeRange().getValue());
                     editor.putString("user_gender", Objects.requireNonNull(account.getGender()).getValue());
-                    Log.e("user_name", userSP.getString("user_name", ""));
                     editor.apply();
 
                     startActivity(intent);
@@ -81,6 +79,9 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        sharedPref = getPreferences(MODE_PRIVATE);
+        editor = sharedPref.edit();
+
         Session.getCurrentSession().addCallback(mSessionCallback);
         Session.getCurrentSession().checkAndImplicitOpen();// 자동 로그인
     }
@@ -88,6 +89,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         // onActivityResult: 서브에서 메인으로 돌아올 때 값을 주고 싶을 경우 사용
+
         if (Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
             super.onActivityResult(requestCode, resultCode, data);
         }

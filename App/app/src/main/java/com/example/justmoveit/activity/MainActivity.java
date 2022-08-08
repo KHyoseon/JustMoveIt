@@ -1,7 +1,6 @@
 package com.example.justmoveit.activity;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
@@ -32,17 +31,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    public static SharedPreferences movieSP, userSP;
     private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        movieSP = getSharedPreferences("movieInfo", MODE_PRIVATE);
-        userSP = getSharedPreferences("userInfo", MODE_PRIVATE);
-
         // 툴바 등록
         toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("");
@@ -123,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
         Ticket[] tickets = new Ticket[1];
         tickets[0] = ticket;
 
-        MoviePlayingInfo moviePlayingInfo = new MoviePlayingInfo(1L, 1L,"new movie title", "12세",
+        MoviePlayingInfo moviePlayingInfo = new MoviePlayingInfo(1L, 1L,"movieTitle", "12세",
                 "12:30", "14:10", 2, tickets);
 
         Movie mov1 = new Movie(1L, "한국", "최동훈", "류준열, 김우빈, 김태리", "외계+인 1부",

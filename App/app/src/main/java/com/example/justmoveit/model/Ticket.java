@@ -13,7 +13,7 @@ public class Ticket implements Serializable {
     private String endTime;
     private String phoneNumber;
     private String classification;
-    private String reservationTime; // yyyy-MM-dd
+    private String reservationTime;
     private String seat;
     private int theaterNo, totalCost;
 

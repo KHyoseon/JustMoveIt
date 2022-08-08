@@ -20,7 +20,7 @@ public interface UserTicketApi {
 
     // 티켓 예매 내역 가져오기
     @GET("/justmoveit/tickets/{phoneNumber}")
-    Call<Ticket[]> getUserTicketList(@Path("phoneNumber") String phoneNumber);
+    Call<JsonArray> getUserTicketList(@Path("phoneNumber") String phoneNumber);
 
     // 티켓 예매하기
     @POST("/justmoveit/tickets")
@@ -28,5 +28,5 @@ public interface UserTicketApi {
 
     // 티켓 취소
     @DELETE("/justmoveit/tickets/{id}")
-    Call<Void> cancelTicket(@Path("id") Long id);
+    Call<Void> cancleTicket(@Path("id") int id);
 }
