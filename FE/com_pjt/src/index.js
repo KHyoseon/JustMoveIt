@@ -7,7 +7,9 @@ import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import reducer from './reducer';
 import { composeWithDevTools } from "redux-devtools-extension";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import MovieSelect from './components/MovieSelect';
+import MovieDetail from './components/MovieDetail';
 
 const store = createStore(reducer, composeWithDevTools());
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -15,13 +17,15 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   // store 연결
   <Provider store={store}> 
-    <BrowserRouter>
-      <React.StrictMode>
-        <div className='App'>
-          <App />
-        </div>
-      </React.StrictMode>
-    </BrowserRouter>
+    <React.StrictMode>
+      <BrowserRouter>
+        <Routes>
+          <Route path='/' element={<App />}></Route>
+          <Route path='/movies' element={<MovieSelect />}></Route>
+          <Route path='/movies/*' element={<MovieDetail />}></Route>
+        </Routes>
+      </BrowserRouter>
+    </React.StrictMode>
   </Provider>
 );
 

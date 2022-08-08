@@ -1,5 +1,6 @@
 import React, { useRef } from "react";
 import { Carousel } from '3d-react-carousal';
+import { Link } from 'react-router-dom';
 
 let slides = [];
 let text_data = []
@@ -39,9 +40,10 @@ function MovieSelect(props) {
     
             <div>
     
-                <h1 ref={ movieTitle }></h1>'
+              <h1 ref={ movieTitle }></h1>'
     
-                <button>영화 선택</button>
+              {/* <button>영화 선택</button> */}
+              <Link to='movies/1'><button>영화 선택</button></Link>
     
             </div>
         </div>
