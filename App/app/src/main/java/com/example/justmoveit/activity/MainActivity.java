@@ -22,14 +22,23 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.justmoveit.R;
 import com.example.justmoveit.adapters.MoviesAdapter;
+import com.example.justmoveit.api.MovieApi;
 import com.example.justmoveit.model.Movie;
 import com.example.justmoveit.model.MoviePlayingInfo;
+import com.example.justmoveit.model.ReservedTicket;
 import com.example.justmoveit.model.Ticket;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.kakao.auth.Session;
 
 import java.security.MessageDigest;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
     public static SharedPreferences movieSP, userSP;
@@ -50,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
 //        getAppKeyHash();
 
+        getMoviesFromServer();
         setupMoviesViewPager();
     }
 
@@ -93,8 +103,19 @@ public class MainActivity extends AppCompatActivity {
         }));
         moviesViewPager.setPageTransformer(compositePageTransformer);
 
-        moviesViewPager.setAdapter(new MoviesAdapter(getMovies()));
-
+        // SP에 저장된 무비 리스트 가져와서 어댑트
+        String json = movieSP.getString("movie_list", "");
+        if (json.equals("")) {
+            Log.e("tag", "json is null");
+            return;
+        }
+        Gson gson = new Gson();
+        List<Movie> movies = gson.fromJson(json, TypeToken.getParameterized(List.class, Movie.class).getType());
+        if (movies == null) {
+            Log.e("tag", "movies is null");
+            return;
+        }
+        moviesViewPager.setAdapter(new MoviesAdapter(movies));
     }
 
     private void getAppKeyHash() {
@@ -112,6 +133,57 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void getMoviesFromServer() {
+        MovieApi service = MovieApi.retrofit.create(MovieApi.class);
+        service.getMovieList().enqueue(new Callback<Movie[]>() {
+            @Override
+            public void onResponse(Call<Movie[]> call, Response<Movie[]> response) {
+                Movie[] movies = response.body();
+                Log.e("get Movies from server entered", response.message());
+
+                if(movies == null){
+                    Log.e("getMoviesFromServer", "there are no movies in db");
+                    return;
+                }
+
+                // SP에 저장
+                movieSP = getSharedPreferences("movieinfo", MODE_PRIVATE);
+                SharedPreferences.Editor editor = movieSP.edit();
+                Gson gson = new Gson();
+                editor.remove("movie_list");
+                editor.putString("movie_list", gson.toJson(Arrays.asList(movies)));
+                editor.apply();
+            }
+
+            @Override
+            public void onFailure(Call<Movie[]> call, Throwable t) {
+                Toast.makeText(MainActivity.this, "server connection on failure", Toast.LENGTH_SHORT).show();
+                Log.e("get Movies from server failed", t.getMessage());
+            }
+        });
+
+        /*String json = "[{\"title\":\"외계+인 1부\",\"movieCode\":\"192151\",\"country\":\"한국\",\"genre\":\"액션, 판타지, SF\",\"summary\":" +
+                "\"2022년 현재, ‘가드’(김우빈)’와 ‘썬더’는 인간의 몸에 가두어진 외계인 죄수를 관리하며 지구에 살고 있다.\\n 어느 날, 서울 상공에 우주선이 나타나고\\n " +
+                "형사 ‘문도석’(소지섭)은 기이한 광경을 목격하게 되는데..\\n \\n 한편, 630년 전 고려에선 얼치기 도사 ‘무륵’(류준열)과 천둥 쏘는 처자 ‘이안’(김태리)이\\n " +
+                "엄청난 현상금이 걸린 신검을 차지하기 위해 서로를 속고 속이는 가운데\\n 신검의 비밀을 찾는 두 신선 ‘흑설’(염정아)과 ‘청운’(조우진),\\n 가면 속의 ‘자장’(김의성)도 신검 쟁탈전에 나선다.\\n " +
+                "그리고 우주선이 깊은 계곡에서 빛을 내며 떠오르는데…\\n \\n 2022년 인간 속에 수감된 외계인 죄수를 쫓는 이들\\n 1391년 고려 말 소문 속의 신검을 차지하려는 도사들\\n \\n 시간의 문이 열리고\\n " +
+                "모든 것이 바뀌기 시작했다!\",\"runningTime\":\"142분\",\"img\":\"https://movie-phinf.pstatic.net/20220708_75/16572722362230AyHS_JPEG/movie_image.jpg?type=m203_290_2\"" +
+                ",\"img2\":null,\"img3\":null,\"img4\":null,\"img5\":null,\"img6\":null,\"rating\":\"7.04\",\"engTitle\":\"Alienoid, 2022\",\"ageLimit\":\"12세 관람가\"," +
+                "\"releaseDate\":\"2022.07.20\",\"director\":\"최동훈\",\"actor\":\"류준열, 김우빈, 김태리\",\"totalCustomer\":\"281243\",\"moviePlayingInfoList\":[{\"id\":1," +
+                "\"theaterNo\":\"1\",\"startTime\":\"08:50\",\"endTime\":\"11:12\",\"movieId\":1,\"movieTitle\":\"외계+인 1부\",\"ageLimit\":\"12세 관람가\"," +
+                "\"tickets\":[{\"id\":1,\"phoneNumber\":\"01097072047\",\"seat\":\"B03\",\"classification\":\"ADULT\",\"moviePlayingInfoId\":1,\"movieId\":1,\"movieTitle\":" +
+                "\"외계+인 1부\",\"startTime\":\"08:50\",\"endTime\":\"11:12\",\"ageLimit\":\"12세 관람가\",\"reservationTime\":\"2022-08-05T07:36:09.567+00:00\",\"totalCost\":null," +
+                "\"theaterNo\":\"1\"},{\"id\":2,\"phoneNumber\":\"01059278503\",\"seat\":\"C02,C03,C04\",\"classification\":\"ADULT,ADULT,KIDS\",\"moviePlayingInfoId\":1,\"movieId\":1," +
+                "\"movieTitle\":\"외계+인 1부\",\"startTime\":\"08:50\",\"endTime\":\"11:12\",\"ageLimit\":\"12세 관람가\",\"reservationTime\":\"2022-08-05T07:38:58.069+00:00\"," +
+                "\"totalCost\":null,\"theaterNo\":\"1\"}]},{\"id\":2,\"theaterNo\":\"1\",\"startTime\":\"12:20\",\"endTime\":\"14:42\",\"movieId\":1,\"movieTitle\":\"외계+인 1부\"," +
+                "\"ageLimit\":\"12세 관람가\",\"tickets\":[]},{\"id\":3,\"theaterNo\":\"1\",\"startTime\":\"15:20\",\"endTime\":\"17:42\",\"movieId\":1,\"movieTitle\":\"외계+인 1부\"," +
+                "\"ageLimit\":\"12세 관람가\",\"tickets\":[]},{\"id\":4,\"theaterNo\":\"1\",\"startTime\":\"19:40\",\"endTime\":\"22:02\",\"movieId\":1,\"movieTitle\":\"외계+인 1부\"," +
+                "\"ageLimit\":\"12세 관람가\",\"tickets\":[]},{\"id\":5,\"theaterNo\":\"1\",\"startTime\":\"23:30\",\"endTime\":\"01:52\",\"movieId\":1,\"movieTitle\":\"외계+인 1부\"," +
+                "\"ageLimit\":\"12세 관람가\",\"tickets\":[]}]}]";
+        SharedPreferences.Editor editor = movieSP.edit();
+        editor.putString("movie_list", json);
+        editor.apply();*/
+    }
 
     private List<Movie> getMovies() {
         // 영화 정보
@@ -123,8 +195,8 @@ public class MainActivity extends AppCompatActivity {
         Ticket[] tickets = new Ticket[1];
         tickets[0] = ticket;
 
-        MoviePlayingInfo moviePlayingInfo = new MoviePlayingInfo(1L, 1L,"new movie title", "12세",
-                "12:30", "14:10", 2, tickets);
+        MoviePlayingInfo[] moviePlayingInfo = {new MoviePlayingInfo(1L, 1L, "new movie title", "12세",
+                "12:30", "14:10", 2, tickets)};
 
         Movie mov1 = new Movie(1L, "한국", "최동훈", "류준열, 김우빈, 김태리", "외계+인 1부",
                 "액션, 판타지, SF", "2022년 현재, ‘가드’(김우빈)’와 ‘썬더’는 인간의 몸에 가두어진 외계인 죄수를 관리하며 지구에 살고 있다.\n" +

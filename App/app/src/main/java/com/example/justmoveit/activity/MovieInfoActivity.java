@@ -24,11 +24,16 @@ import com.example.justmoveit.R;
 import com.example.justmoveit.adapters.ImageSliderAdapter;
 import com.example.justmoveit.adapters.TimesAdapter;
 import com.example.justmoveit.model.Movie;
+import com.example.justmoveit.model.MoviePlayingInfo;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
+import java.util.logging.SimpleFormatter;
 
 public class MovieInfoActivity extends AppCompatActivity {
     private Movie movie;
@@ -53,7 +58,7 @@ public class MovieInfoActivity extends AppCompatActivity {
         RoundedImageView imgMoviePoster = findViewById(R.id.imageMoviePoster);
 
         // 영화 포스터 등록
-        Picasso.get().load(movie.getMainImg()).into(imgMoviePoster);
+        Picasso.get().load(movie.getImg()).into(imgMoviePoster);
         //영화 디테일 정보 등록
         setDetail();
         // 뷰 페이저 (서브 이미지) 등록
@@ -66,10 +71,20 @@ public class MovieInfoActivity extends AppCompatActivity {
         // 영화 상영 시간 버튼
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         List<String> timeList= new ArrayList<>();
-        timeList.add("12:00");
-        timeList.add("14:00");
-        timeList.add("16:00");
-        timeList.add("18:00");
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HHmm");
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+        String time = simpleDateFormat.format(new Date());
+
+        for(MoviePlayingInfo info: movie.getMoviePlayingInfoList()){
+            if(!info.isPassedNow(time)){
+                timeList.add(info.getStartTime());
+            }
+        }
+//        timeList.add("12:00");
+//        timeList.add("14:00");
+//        timeList.add("16:00");
+//        timeList.add("18:00");
 
         TimesAdapter timesAdapter = new TimesAdapter();
         timesAdapter.setTimes(timeList, movie);
@@ -97,8 +112,15 @@ public class MovieInfoActivity extends AppCompatActivity {
         }));
         sliderViewPager.setPageTransformer(compositePageTransformer);
 
+        List<String> movieImgs = new ArrayList<>();
+        movieImgs.add(movie.getImg2());
+        movieImgs.add(movie.getImg3());
+        movieImgs.add(movie.getImg4());
+        movieImgs.add(movie.getImg5());
+        movieImgs.add(movie.getImg6());
+
         // Slider Indicator을 바인딩 하기 위한 코드
-        sliderViewPager.setAdapter(new ImageSliderAdapter(movie.getSubImgs()));
+        sliderViewPager.setAdapter(new ImageSliderAdapter(movieImgs));
         sliderViewPager.setVisibility(View.VISIBLE);
         sliderViewPager.setOffscreenPageLimit(1);
         sliderViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {

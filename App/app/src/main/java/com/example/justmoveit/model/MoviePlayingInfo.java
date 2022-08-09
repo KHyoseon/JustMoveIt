@@ -86,4 +86,8 @@ public class MoviePlayingInfo implements Serializable {
     public void setTickets(Ticket[] tickets) {
         this.tickets = tickets;
     }
+
+    public boolean isPassedNow(String time){
+        return Integer.parseInt(this.startTime.replace(":", "")) < Integer.parseInt(time);
+    }
 }

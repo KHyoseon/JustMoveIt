@@ -75,10 +75,6 @@ public class TicketingActivity extends AppCompatActivity {
         // 인원 설정 넘버 피커
         adultPicker = findViewById(R.id.adult_picker);
         childPicker = findViewById(R.id.child_picker);
-        if(moviePlayingInfo.getAgeLimit().equals("만 19세 이상")){
-            childPicker.setVisibility(View.INVISIBLE);
-            // Todo: 안내 모달창??
-        }
 
         // 넘버피커 - 기본, 최대, 최소값 설정
         setNumberPickerValue();
