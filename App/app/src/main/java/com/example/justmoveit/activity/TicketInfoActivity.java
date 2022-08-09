@@ -43,6 +43,7 @@ public class TicketInfoActivity extends AppCompatActivity {
         if(reservedTicket.isExpired()){
             ImageView ticketBg = findViewById(R.id.ticket_bg);
             ticketBg.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#a5a5aa")));
+            findViewById(R.id.reserve_cancel_button).setVisibility(View.INVISIBLE);
         }
 
         Ticket ticket = reservedTicket.getTicket();
