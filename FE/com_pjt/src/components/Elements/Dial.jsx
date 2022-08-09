@@ -9,7 +9,8 @@ function DialPage() {
     return(
         <div className="DialPage">
             {/* <h1>응애 나 다이얼</h1> */}
-            {/* variant="contained" */}
+            {/* variant="contained"         
+            */}
             <ButtonGroup color="secondary" disableElevation>
                 <Button>응애</Button>
                 <Button>응애1</Button>

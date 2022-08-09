@@ -8,8 +8,8 @@ import { createStore } from 'redux';
 import reducer from './reducer';
 import { composeWithDevTools } from "redux-devtools-extension";
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import MovieSelect from './components/MovieSelect';
-import MovieDetail from './components/MovieDetail';
+import MovieSelect from './components/Page/MovieSelect';
+import MovieDetail from './components/Page/MovieDetail';
 
 const store = createStore(reducer, composeWithDevTools());
 const root = ReactDOM.createRoot(document.getElementById('root'));
