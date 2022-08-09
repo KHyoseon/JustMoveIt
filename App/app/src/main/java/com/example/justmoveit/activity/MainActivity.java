@@ -1,18 +1,11 @@
 package com.example.justmoveit.activity;
 
-import static android.content.Context.MODE_PRIVATE;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
 import android.os.Bundle;
-import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,16 +19,10 @@ import com.example.justmoveit.R;
 import com.example.justmoveit.adapters.MoviesAdapter;
 import com.example.justmoveit.api.MovieApi;
 import com.example.justmoveit.model.Movie;
-import com.example.justmoveit.model.MoviePlayingInfo;
-import com.example.justmoveit.model.ReservedTicket;
-import com.example.justmoveit.model.Ticket;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.reflect.TypeToken;
 import com.kakao.auth.Session;
 
-import java.security.MessageDigest;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -121,13 +108,13 @@ public class MainActivity extends AppCompatActivity {
         // SP에 저장된 무비 리스트 가져와서 어댑트
         String json = movieSP.getString("movie_list", "");
         if (json.equals("")) {
-            Log.e("setupMoviesViewPager", "json is null");
+            Log.e("setupMoviesViewPager", "there are no movies in SP");
             return;
         }
         Gson gson = new Gson();
         List<Movie> movies = gson.fromJson(json, TypeToken.getParameterized(List.class, Movie.class).getType());
         if (movies == null) {
-            Log.e("setupMoviesViewPager", "movies is null");
+            Log.e("setupMoviesViewPager", "there are no movies in SP");
             return;
         }
         moviesViewPager.setAdapter(new MoviesAdapter(movies));
@@ -151,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onResponse(Call<Movie[]> call, Response<Movie[]> response) {
                     Movie[] movies = response.body();
                     if(movies == null){
-                        Log.e("getMoviesFromServer", "there are no movies in db");
+                        Log.e("MainActivity - getMoviesFromServer", "onResponse(): " + response.message());
                         return;
                     }
 
@@ -164,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<Movie[]> call, Throwable t) {
-                    Log.e("get Movies from server failed", t.getMessage());
+                    Log.e("MainActivity - getMoviesFromServer", "onFailure(): " + t.getMessage());
                 }
             });
         }

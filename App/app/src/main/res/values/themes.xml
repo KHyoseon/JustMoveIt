@@ -13,6 +13,7 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" >?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <item name="android:actionMenuTextColor">@color/white</item>
     </style>
 
     <style name="FullScreen" parent ="Theme.JustMoveIt">

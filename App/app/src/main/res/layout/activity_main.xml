@@ -7,8 +7,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.MainActivity"
-    android:paddingHorizontal="@dimen/activity_horizontal_margin"
-    android:paddingVertical="@dimen/activity_vertical_margin"
     android:background="@color/colorPrimary">
 
 
@@ -33,12 +31,11 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
-                    android:layout_width="150dp"
-                    android:layout_height="80dp"
-                    android:layout_centerVertical="true"
+                    android:layout_width="120dp"
+                    android:layout_height="67dp"
+                    android:layout_marginVertical="15dp"
                     android:contentDescription="@string/app_name"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/logo" />
+                    android:src="@drawable/logo_reverse_60" />
 
             </RelativeLayout>
         </androidx.appcompat.widget.Toolbar>
