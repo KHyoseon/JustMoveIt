@@ -10,7 +10,7 @@ let movie_title
 
 const axios = require('axios').default;
 
-axios.get('http://localhost/justmoveit/movies/')
+axios.get('http://i7d207.p.ssafy.io/api/movies/')
   .catch(function(err){
     console.log(err,'axios 안되누 ㅡ')
   })

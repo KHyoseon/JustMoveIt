@@ -1,5 +1,5 @@
 import React from "react";
-import Dial from "./Dial";
+import Dial from "../Elements/Dial";
 // import styles from "./DialPage.css";
 
 function DialPage() {

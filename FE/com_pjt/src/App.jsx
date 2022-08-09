@@ -8,9 +8,9 @@ import { Container } from '@material-ui/core';
 import styles from "./App.css";
 import ReactDOM from "react-dom";
 
-import Seats from "./components/Seats";
-import DialPage from "./components/DialPage";
-import MovieSelect from "./components/MovieSelect";
+import Seats from "./components/Page/Seats";
+import DialPage from "./components/Page/DialPage";
+import MovieSelect from "./components/Page/MovieSelect";
 
 
 let movie_detail = []
