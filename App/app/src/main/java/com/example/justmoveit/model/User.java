@@ -1,21 +1,15 @@
 package com.example.justmoveit.model;
 
-import com.kakao.usermgmt.response.model.AgeRange;
-import com.kakao.usermgmt.response.model.Gender;
-
 import java.io.Serializable;
 
 public class User implements Serializable {
     private String imgUrl;
     private String name;
     private String email;
-    private Gender gender;
-    private AgeRange age;
+    private String gender;
+    private String age;
 
-    public User() {
-    }
-
-    public User(String imgUrl, String name, String email, Gender gender, AgeRange age) {
+    public User(String imgUrl, String name, String email, String gender, String age) {
         this.imgUrl = imgUrl;
         this.name = name;
         this.email = email;
@@ -27,50 +21,19 @@ public class User implements Serializable {
         return imgUrl;
     }
 
-    public void setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public Gender getGender() {
+    public String getGender() {
         return gender;
     }
 
-    public void setGender(Gender gender) {
-        this.gender = gender;
-    }
-
-    public AgeRange getAge() {
+    public String getAge() {
         return age;
-    }
-
-    public void setAge(AgeRange age) {
-        this.age = age;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "imgUrl='" + imgUrl + '\'' +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", gender=" + gender +
-                ", age=" + age +
-                '}';
     }
 }

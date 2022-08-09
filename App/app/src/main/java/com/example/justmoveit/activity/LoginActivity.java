@@ -12,7 +12,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.justmoveit.R;
-
+import com.example.justmoveit.model.User;
+import com.google.gson.Gson;
 import com.kakao.auth.ApiResponseCallback;
 import com.kakao.auth.AuthService;
 import com.kakao.auth.ISessionCallback;
@@ -56,12 +57,15 @@ public class LoginActivity extends AppCompatActivity {
 
                     SharedPreferences.Editor editor = userSP.edit();
 
-                    editor.putString("user_name", account.getProfile().getNickname());
-                    editor.putString("user_img_url", account.getProfile().getProfileImageUrl());
-                    editor.putString("user_email", account.getEmail());
-                    editor.putString("user_age_range", account.getAgeRange().getValue());
-                    editor.putString("user_gender", Objects.requireNonNull(account.getGender()).getValue());
-                    Log.e("user_name", userSP.getString("user_name", ""));
+                    User user = new User(account.getProfile().getProfileImageUrl(),
+                            account.getProfile().getNickname(), account.getEmail(),
+                            Objects.requireNonNull(account.getGender()).getValue(),
+                            account.getAgeRange().getValue());
+
+                    Gson gson = new Gson();
+                    editor.putString("user_info", gson.toJson(user));
+                    // Todo: 전화번호 얻기
+                    editor.putString("phone_number", "01052584112");
                     editor.apply();
 
                     startActivity(intent);

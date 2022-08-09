@@ -37,22 +37,23 @@ public class TicketInfoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_reserve_done);
 
         Intent intent = getIntent();
-        ReservedTicket ticket = (ReservedTicket) intent.getExtras().getSerializable("ticket");
+        ReservedTicket reservedTicket = (ReservedTicket) intent.getExtras().getSerializable("ticket");
 
-        if(ticket.isExpired()){
+        if(reservedTicket.isExpired()){
             ImageView ticketBg = findViewById(R.id.ticket_bg);
             ticketBg.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#a5a5aa")));
         }
 
+        Ticket ticket = reservedTicket.getTicket();
         TextView movieTitle = findViewById(R.id.movie_title);
-        movieTitle.setText(ticket.getTitle());
+        movieTitle.setText(ticket.getMovieTitle());
         TextView reserveDate = findViewById(R.id.reserve_date);
-        reserveDate.setText(ticket.getViewingDate());
+        reserveDate.setText(ticket.getReservationTime().substring(0, ticket.getReservationTime().length()-2));
         TextView viewingDate = findViewById(R.id.viewing_date);
-        viewingDate.setText(ticket.getViewingTime());
+        viewingDate.setText(ticket.getStartTime());
         TextView classification = findViewById(R.id.classification);
-        classification.setText((ticket.getAdult()>0?"성인 "+ticket.getAdult()+"명  ":"")
-                .concat(ticket.getChild()>0?"어린이 "+ticket.getChild()+"명":""));
+        classification.setText((reservedTicket.getAdult()>0?"성인 "+reservedTicket.getAdult()+"명  ":"")
+                .concat(reservedTicket.getChild()>0?"어린이 "+reservedTicket.getChild()+"명":""));
         TextView reserveSeat = findViewById(R.id.reserve_seat);
         reserveSeat.setText(ticket.getSeat());
 
@@ -73,21 +74,19 @@ public class TicketInfoActivity extends AppCompatActivity {
                         ArrayList<ReservedTicket> reservedTickets = gson.fromJson(json, TypeToken.getParameterized(List.class, Ticket.class).getType());
                         // id에 해당하는 티켓 예매 정보 삭제
                         for(int i=0, n=reservedTickets.size(); i<n; i++){
-                            if(Objects.equals(reservedTickets.get(i).getTicketId(), ticket.getTicketId())){
+                            if(Objects.equals(reservedTickets.get(i).getTicket().getTicketId(), ticket.getTicketId())){
                                 reservedTickets.remove(i);
                                 break;
                             }
                         }
                         // 다시 삽입
-                        json = gson.toJson(reservedTickets);
-                        editor.putString("user_tickets", json);
-                        Log.e(">>>>>> TicketInfo", "취소 service - cancelTicket");
+                        editor.putString("user_tickets", gson.toJson(reservedTickets));
                         editor.apply();
                     }
 
                     @Override
                     public void onFailure(Call<Void> call, Throwable t) {
-
+                        Log.e("canceling ticket reservation failed", t.getMessage());
                     }
                 });
             }

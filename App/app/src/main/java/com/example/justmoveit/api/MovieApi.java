@@ -20,13 +20,13 @@ public interface MovieApi {
             .build();
 
     Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http://i7d207.p.ssafy.io/api/")
+            .baseUrl("https://i7d207.p.ssafy.io/")
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build();
 
     // 상영 중인 전체 영화 목록
-    @GET("/movies")
+    @GET("/api/movies")
     Call<Movie[]> getMovieList();
     /*
     {

@@ -14,19 +14,23 @@ import retrofit2.http.Path;
 
 public interface UserTicketApi {
     Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("https://kapi.kakao.com/")
+            .baseUrl("https://i7d207.p.ssafy.io/")
             .addConverterFactory(GsonConverterFactory.create())
             .build();
 
     // 티켓 예매 내역 가져오기
-    @GET("/justmoveit/tickets/{phoneNumber}")
+    @GET("/api/tickets/{phoneNumber}")
     Call<Ticket[]> getUserTicketList(@Path("phoneNumber") String phoneNumber);
 
     // 티켓 예매하기
-    @POST("/justmoveit/tickets")
+    @POST("/api/tickets")
     Call<Ticket> reserveTicket(@Body Ticket ticket);
 
     // 티켓 취소
-    @DELETE("/justmoveit/tickets/{id}")
+    @DELETE("/api/tickets/{id}")
     Call<Void> cancelTicket(@Path("id") Long id);
+
+
+    // test
+//    @POST
 }
