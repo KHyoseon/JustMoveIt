@@ -68,7 +68,7 @@ public class MyTicketsListActivity extends AppCompatActivity {
             }
         });
 
-        // 서버에서 예매 이력 가져오기
+        // 서버 통신 스레드 - 서버에서 예매 이력 가져오기
         ConnectionThread thread = new ConnectionThread();
         Log.d("MyTicketsListActivity", "connection thread start");
         thread.start();
@@ -137,6 +137,7 @@ public class MyTicketsListActivity extends AppCompatActivity {
         public void run() {
             synchronized (this){
                 getUserTicketsFromServer();
+                Log.d("MyTicketsListActivity", "connection thread end");
                 notify();
             }
         }

@@ -111,7 +111,7 @@ public class PaymentActivity extends AppCompatActivity {
             String cid = "TC0ONETIME";
             String tid = tidPin;
             String partner_order_id = "1001";
-            String partner_user_id = "gorany";
+            String partner_user_id = "JustMoveIt";
             String pg_token = pgToken;
             Integer total_amount = PRODUCT_PRICE;
 
@@ -119,29 +119,22 @@ public class PaymentActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<PayApprove> call, Response<PayApprove> response) {
                     if (response.isSuccessful()) {
-                        Log.i("Debug", "payment approve success");
-                        // 성공시 앱 캐시에도 저장
-                        Gson gson = new Gson();
-                        String json = userSP.getString("user_tickets", "");
-                        // 기존에 있던 리스트 담고
-                        if(ticket == null){
-                            Log.e("ticket PRODUCT_PRICE", PRODUCT_PRICE+"");
-                            Log.e("ticket?", "이왜널");
-                        } else {
-                            ticket.setTicketId(1L);
-                        }
-                        ArrayList<ReservedTicket> reservedTickets = gson.fromJson(json, TypeToken.getParameterized(ArrayList.class, ReservedTicket.class).getType());
-                        // 새로운 티켓 추가
-                        if(reservedTickets == null){
-                            reservedTickets = new ArrayList<>();
-                        }
-                        reservedTickets.add(new ReservedTicket(ticket));
-                        // 덮어쓰기
-                        SharedPreferences.Editor editor = userSP.edit();
-                        editor.putString("user_tickets", gson.toJson(reservedTickets));
-                        Log.e(">>>> Payment", "서버 통신 ticketService- reserveTicket");
-                        editor.apply();
+                        Log.d("PaymentActivity - approvePayment", "onResponse(): successful");
 
+                        // 서버 통신 스레드 - 예매 완료 서버에 요청
+                        ConnectionThread thread = new ConnectionThread();
+                        Log.d("PaymentActivity", "connection thread start");
+                        thread.start();
+                        synchronized (thread) {
+                            try {
+                                Log.d("PaymentActivity", "main thread waiting");
+                                thread.wait();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        Log.d("PaymentActivity", "payment done");
                         Toast.makeText(PaymentActivity.this, "예매됨", Toast.LENGTH_SHORT).show();
 
                         Intent it = new Intent();
@@ -150,57 +143,17 @@ public class PaymentActivity extends AppCompatActivity {
                         startActivity(it);
 
                         finish();
-                        /*UserTicketApi ticketService = UserTicketApi.retrofit.create(UserTicketApi.class);
-                        ticketService.reserveTicket(ticket).enqueue(new Callback<Ticket>() {
-                            @Override
-                            public void onResponse(Call<Ticket> call, Response<Ticket> response) {
-                                Ticket ticket = response.body();
-                                if(ticket == null){
-                                    Log.e("ticketService reserveTicket", "response body is null");
-                                    return;
-                                }
-                                // 성공시 앱 캐시에도 저장
-                                Gson gson = new Gson();
-                                String json = userSP.getString("user_tickets", "");
-                                // 기존에 있던 리스트 담고
-                                ArrayList<ReservedTicket> reservedTickets = gson.fromJson(json, TypeToken.getParameterized(ArrayList.class, ReservedTicket.class).getType());
-                                // 새로운 티켓 추가
-                                if(reservedTickets == null){
-                                    reservedTickets = new ArrayList<>();
-                                }
-                                reservedTickets.add(new ReservedTicket(ticket));
-                                // 덮어쓰기
-                                SharedPreferences.Editor editor = userSP.edit();
-                                editor.putString("user_tickets", gson.toJson(reservedTickets));
-                                Log.e(">>>> Payment", "서버 통신 ticketService- reserveTicket");
-                                editor.apply();
-
-                                Toast.makeText(PaymentActivity.this, "예매됨", Toast.LENGTH_SHORT).show();
-                                finish();
-
-                                Intent it = new Intent();
-                                it.setClassName("com.example.justmoveit", "com.example.justmoveit.activity.TicketInfoActivity");
-                                it.putExtra("ticket", new ReservedTicket(ticket));
-                                startActivity(it);
-                            }
-
-                            @Override
-                            public void onFailure(Call<Ticket> call, Throwable t) {
-                                // 실패시
-                                Log.i("paymentApprove", "fail");
-                                finish();
-                            }
-                        });*/
                     } else {
-                        Log.e("Debug", "response is not successful");
+                        Log.e("PaymentActivity - approvePayment", "onResponse(): response is not successful");
                     }
                 }
 
                 @Override
                 public void onFailure(Call<PayApprove> call, Throwable throwable) {
-                    Log.e("Debug", "Error: " + throwable.getMessage());
+                    Log.e("PaymentActivity - approvePayment", "onFailure(): " + throwable.getMessage());
                 }
             });
+
         }
 
         // URL 변경시 발생 이벤트
@@ -225,4 +178,54 @@ public class PaymentActivity extends AppCompatActivity {
             return false;
         }
     }
+
+    static class ConnectionThread extends Thread {
+        @Override
+        public void run() {
+            synchronized (this) {
+                getReserveTicket();
+                Log.d("PaymentActivity", "connection thread end");
+                notify();
+            }
+        }
+
+        private void getReserveTicket() {
+            UserTicketApi ticketService = UserTicketApi.retrofit.create(UserTicketApi.class);
+            ticketService.reserveTicket(ticket).enqueue(new Callback<Ticket>() {
+                @Override
+                public void onResponse(Call<Ticket> call, Response<Ticket> response) {
+                    Ticket ticket = response.body();
+                    if(ticket == null){
+                        Log.e("PaymentActivity - reserveTicket", "response body is null");
+                        return;
+                    }
+
+                    // 성공시 앱 캐시에도 저장
+                    Gson gson = new Gson();
+                    String json = userSP.getString("user_tickets", "");
+
+                    // 기존에 있던 리스트 담고
+                    ArrayList<ReservedTicket> reservedTickets = gson.fromJson(json, TypeToken.getParameterized(ArrayList.class, ReservedTicket.class).getType());
+
+                    // 새로운 티켓 추가
+                    if(reservedTickets == null){
+                        reservedTickets = new ArrayList<>();
+                    }
+                    reservedTickets.add(new ReservedTicket(ticket));
+
+                    // SP에 덮어쓰기
+                    SharedPreferences.Editor editor = userSP.edit();
+                    editor.putString("user_tickets", gson.toJson(reservedTickets));
+                    editor.apply();
+                    Log.d("PaymentActivity - reserveTicket", "putString(reservedTickets) done");
+                }
+
+                @Override
+                public void onFailure(Call<Ticket> call, Throwable t) {
+                    Log.e("PaymentActivity - reserveTicket", "onFailure(): "+t.getMessage());
+                }
+            });
+        }
+    }
+
 }

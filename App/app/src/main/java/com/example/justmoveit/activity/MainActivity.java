@@ -139,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
             synchronized (this){
                 // 메인 스레드 멈추고 실행할 부분
                 getMoviesFromServer();
-                Log.d("tag", "connection thread end");
+                Log.d("MainActivity", "connection thread end");
                 notify();
             }
         }
