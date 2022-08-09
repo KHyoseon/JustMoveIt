@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.justmoveit.R;
 import com.example.justmoveit.model.MoviePlayingInfo;
+import com.example.justmoveit.model.ReservedTicket;
 import com.example.justmoveit.model.Ticket;
 
 import java.text.SimpleDateFormat;
@@ -33,7 +34,7 @@ public class TicketingActivity extends AppCompatActivity {
     private NumberPicker adultPicker;
     private NumberPicker childPicker;
 
-    private int[] cntSeat; // 0:성인, 1:어린이
+    private int[] clsf; // 0:성인, 1:어린이
     private int canSelectedSeat, totalCost;
     private static Set<String> selectedSeat;
 
@@ -49,7 +50,7 @@ public class TicketingActivity extends AppCompatActivity {
 
         canSelectedSeat = 0;
         totalCost = 0;
-        cntSeat = new int[2];
+        clsf = new int[2];
         selectedSeat = new HashSet<>();
 
         // 예매할 영화 정보 가져옴
@@ -95,18 +96,10 @@ public class TicketingActivity extends AppCompatActivity {
                 }
 
                 // classification 저장
-                StringBuilder sb = new StringBuilder();
-                for(int i=0; i<cntSeat[0]; i++) {
-                    sb.append("ADULT,");
-                }
-                for(int i=0; i<cntSeat[1]; i++) {
-                    sb.append("CHILD,");
-                }
-                sb.setLength(sb.length()-1);
-                String classification = sb.toString();
+                String classification = ReservedTicket.convertClassificationToString(clsf);
 
                 // seat 저장
-                sb.setLength(0);
+                StringBuilder sb = new StringBuilder();
                 ArrayList<String> al = new ArrayList<>(selectedSeat);
                 Collections.sort(al);
                 for(String seat: al){
@@ -145,7 +138,7 @@ public class TicketingActivity extends AppCompatActivity {
             @Override
             public void onValueChange(NumberPicker numberPicker, int oldValue, int newValue) {
                 textAdult.setText("성인 " + newValue);
-                cntSeat[0] = newValue;
+                clsf[0] = newValue;
                 canSelectedSeat += (newValue - oldValue);
                 totalCost += (newValue - oldValue) * 12000;
                 textTotalCost.setText(totalCost+"");
@@ -156,7 +149,7 @@ public class TicketingActivity extends AppCompatActivity {
             @Override
             public void onValueChange(NumberPicker numberPicker, int oldValue, int newValue) {
                 textChild.setText("어린이 " + newValue);
-                cntSeat[1] = newValue;
+                clsf[1] = newValue;
                 canSelectedSeat += (newValue - oldValue);
                 totalCost += (newValue - oldValue) * 12000 * (0.8);
                 textTotalCost.setText(totalCost+"");

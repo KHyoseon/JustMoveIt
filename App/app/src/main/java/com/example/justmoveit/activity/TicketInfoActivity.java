@@ -39,58 +39,88 @@ public class TicketInfoActivity extends AppCompatActivity {
         Intent intent = getIntent();
         ReservedTicket reservedTicket = (ReservedTicket) intent.getExtras().getSerializable("ticket");
 
+        // 만료 여부 - 만료시 배경색 회색으로 변경
         if(reservedTicket.isExpired()){
             ImageView ticketBg = findViewById(R.id.ticket_bg);
             ticketBg.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#a5a5aa")));
         }
 
         Ticket ticket = reservedTicket.getTicket();
-        TextView movieTitle = findViewById(R.id.movie_title);
-        movieTitle.setText(ticket.getMovieTitle());
-        TextView reserveDate = findViewById(R.id.reserve_date);
-        reserveDate.setText(ticket.getReservationTime().substring(0, ticket.getReservationTime().length()-2));
-        TextView viewingDate = findViewById(R.id.viewing_date);
-        viewingDate.setText(ticket.getStartTime());
-        TextView classification = findViewById(R.id.classification);
-        classification.setText((reservedTicket.getAdult()>0?"성인 "+reservedTicket.getAdult()+"명  ":"")
-                .concat(reservedTicket.getChild()>0?"어린이 "+reservedTicket.getChild()+"명":""));
-        TextView reserveSeat = findViewById(R.id.reserve_seat);
-        reserveSeat.setText(ticket.getSeat());
 
+        // 영화 예매 정보 뿌림
+        getSetTexts(ticket);
 
-        TextView reserveCancel = findViewById(R.id.reserve_cancel_button);
-        reserveCancel.setOnClickListener(new View.OnClickListener(){
+        // 예매 취소
+        findViewById(R.id.reserve_cancel_button).setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                // Todo: 서버 취소 요청
-                UserTicketApi service = UserTicketApi.retrofit.create(UserTicketApi.class);
-                service.cancelTicket(ticket.getTicketId()).enqueue(new Callback<Void>() {
-                    @Override
-                    public void onResponse(Call<Void> call, Response<Void> response) {
-                        SharedPreferences.Editor editor = userSP.edit();
-                        // SP에서 사용자 예매 정보 불러옴
-                        Gson gson = new Gson();
-                        String json = userSP.getString("user_tickets", "");
-                        ArrayList<ReservedTicket> reservedTickets = gson.fromJson(json, TypeToken.getParameterized(List.class, Ticket.class).getType());
-                        // id에 해당하는 티켓 예매 정보 삭제
-                        for(int i=0, n=reservedTickets.size(); i<n; i++){
-                            if(Objects.equals(reservedTickets.get(i).getTicket().getTicketId(), ticket.getTicketId())){
-                                reservedTickets.remove(i);
-                                break;
-                            }
-                        }
-                        // 다시 삽입
-                        editor.putString("user_tickets", gson.toJson(reservedTickets));
-                        editor.apply();
-                    }
+                ConnectionThread thread = new ConnectionThread(ticket);
+                thread.start();
 
-                    @Override
-                    public void onFailure(Call<Void> call, Throwable t) {
-                        Log.e("canceling ticket reservation failed", t.getMessage());
-                    }
-                });
+                try {
+                    thread.wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
+    }
+
+    private void getSetTexts(Ticket ticket) {
+        ((TextView) findViewById(R.id.movie_title)).setText(ticket.getMovieTitle());
+        ((TextView) findViewById(R.id.reserve_date)).setText(ticket.getReservationTime().substring(0, ticket.getReservationTime().length()-2));
+        ((TextView) findViewById(R.id.viewing_date)).setText(ticket.getStartTime());
+
+        int[] clsf = ReservedTicket.convertClassificationToInt(ticket.getClassification());
+        ((TextView) findViewById(R.id.classification)).setText(
+                (clsf[0]>0?"성인 "+clsf[0]+"명  ":"").concat(clsf[1]>0?"어린이 "+clsf[1]+"명":""));
+
+        ((TextView) findViewById(R.id.reserve_seat)).setText(ticket.getSeat().replace(",", ", "));
+    }
+
+    static class ConnectionThread extends Thread {
+        Ticket ticket;
+
+        public ConnectionThread(Ticket ticket){
+            this.ticket = ticket;
+        }
+
+        @Override
+        public void run() {
+            synchronized (this){
+                cancelReservation();
+                notify();
+            }
+        }
+
+        private void cancelReservation() {
+            UserTicketApi service = UserTicketApi.retrofit.create(UserTicketApi.class);
+            service.cancelTicket(ticket.getTicketId()).enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    SharedPreferences.Editor editor = userSP.edit();
+                    // SP에서 사용자 예매 정보 불러옴
+                    Gson gson = new Gson();
+                    String json = userSP.getString("user_tickets", "");
+                    ArrayList<ReservedTicket> reservedTickets = gson.fromJson(json, TypeToken.getParameterized(List.class, Ticket.class).getType());
+                    // id에 해당하는 티켓 예매 정보 삭제
+                    for(int i=0, n=reservedTickets.size(); i<n; i++){
+                        if(Objects.equals(reservedTickets.get(i).getTicket().getTicketId(), ticket.getTicketId())){
+                            reservedTickets.remove(i);
+                            break;
+                        }
+                    }
+                    // 다시 삽입
+                    editor.putString("user_tickets", gson.toJson(reservedTickets));
+                    editor.apply();
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    Log.e("canceling ticket reservation failed", t.getMessage());
+                }
+            });
+        }
     }
 }

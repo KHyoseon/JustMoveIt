@@ -5,37 +5,40 @@ import java.util.Objects;
 
 public class ReservedTicket implements Serializable, Comparable<ReservedTicket> {
     private final Ticket ticket;
-    private int adult, child;
     private boolean expired;
 
     public ReservedTicket(Ticket ticket) {
         this.ticket = ticket;
-        adult = child = 0;
-        getParseClassification();
     }
 
-    private void getParseClassification() {
-        String[] parsed = this.ticket.getClassification().split(",");
+    public static int[] convertClassificationToInt(String str) {
+        String[] parsed = str.split(",");
+        int[] ret = new int[2];
         for(String s: parsed){
             switch (s){
                 case "ADULT":
-                    ++adult; break;
+                    ++ret[0]; break;
                 case "CHILD":
-                    ++child; break;
+                    ++ret[1]; break;
             }
         }
+        return ret;
+    }
+
+    public static String convertClassificationToString(int[] param) {
+        StringBuilder sb = new StringBuilder();
+        for(int i=0; i< param[0]; i++){
+            sb.append("ADULT,");
+        }
+        for(int i=0; i< param[1]; i++){
+            sb.append("CHILD,");
+        }
+        sb.setLength(sb.length()-1);
+        return sb.toString();
     }
 
     public Ticket getTicket() {
         return ticket;
-    }
-
-    public int getAdult() {
-        return adult;
-    }
-
-    public int getChild() {
-        return child;
     }
 
     public boolean isExpired() {

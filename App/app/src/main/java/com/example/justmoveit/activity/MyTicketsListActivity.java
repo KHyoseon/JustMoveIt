@@ -37,26 +37,18 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MyTicketsListActivity extends AppCompatActivity {
-    ImageView imgProfile;
-    TextView userName, userEmail;
-    SharedPreferences.Editor editor;
+    private Gson gson;
+    private SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mytickets_list);
 
-        imgProfile = findViewById(R.id.profile_img);
-        userName = findViewById(R.id.user_name);
-        userEmail = findViewById(R.id.user_email);
+        gson = new Gson();
 
-        // 세션에서 사용자 정보 가져와서 profile_section setText
-        Gson gson = new Gson();
-        User user =  gson.fromJson(userSP.getString("user_info", ""), User.class);
-        userName.setText(user.getName());
-        userEmail.setText(user.getEmail());
-        // 원형 프로필
-        Glide.with(this).load(user.getImgUrl()).into(imgProfile);
+        // 프로필 섹션 채우기
+        getFillProfileSection();
 
         // 로그아웃
         TextView logout = findViewById(R.id.logout);
@@ -92,18 +84,8 @@ public class MyTicketsListActivity extends AppCompatActivity {
         ArrayList<ReservedTicket> ticketListFromSP = gson.fromJson(userSP.getString("user_tickets", ""),
                 TypeToken.getParameterized(ArrayList.class, ReservedTicket.class, Ticket.class).getType());
 
-        // 티켓 리스트 데이터 가공
-        for (ReservedTicket reservedTicket: ticketListFromSP) {
-            // 현재 시간 기준으로 예매한 티켓과 만료된 티켓을 구분
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
-            String nowPriority = simpleDateFormat.format(new Date());
-
-            reservedTicket.setExpired(reservedTicket.isPassedNow(nowPriority));
-        }
-
-        // 상영일 내림차 순으로 정렬 (최근 것이 위에 오도록)
-        Collections.sort(ticketListFromSP);
+        // 예매 티켓 리스트 가공 (만료 여부, 정렬)
+        processingTicketList(ticketListFromSP);
 
         // 예매 티켓 어댑트
         Log.e("adapter", "티켓 어댑트");
@@ -122,6 +104,32 @@ public class MyTicketsListActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void processingTicketList(ArrayList<ReservedTicket> ticketListFromSP) {
+        // 티켓 리스트 데이터 가공
+        for (ReservedTicket reservedTicket: ticketListFromSP) {
+            // 현재 시간 기준으로 예매한 티켓과 만료된 티켓을 구분
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+            String nowPriority = simpleDateFormat.format(new Date());
+            reservedTicket.setExpired(reservedTicket.isPassedNow(nowPriority));
+        }
+        // 상영일 내림차 순으로 정렬 (최근 것이 위에 오도록)
+        Collections.sort(ticketListFromSP);
+    }
+
+    private void getFillProfileSection() {
+        ImageView imgProfile = findViewById(R.id.profile_img);
+        TextView userName = findViewById(R.id.user_name);
+        TextView userEmail = findViewById(R.id.user_email);
+
+        // 세션에서 사용자 정보 가져와서 profile_section setText
+        User user =  gson.fromJson(userSP.getString("user_info", ""), User.class);
+        userName.setText(user.getName());
+        userEmail.setText(user.getEmail());
+        // 원형 프로필
+        Glide.with(this).load(user.getImgUrl()).into(imgProfile);
     }
 
     static class ConnectionThread extends Thread {

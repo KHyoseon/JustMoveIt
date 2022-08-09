@@ -134,7 +134,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     static class ConnectionThread extends Thread {
-
         @Override
         public void run() {
             synchronized (this){

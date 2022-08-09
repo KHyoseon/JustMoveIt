@@ -33,22 +33,6 @@ public class Ticket implements Serializable {
         this.theaterNo = theaterNo;
         this.totalCost = totalCost;
     }
-//    public Ticket(Long ticketId, Long moviePlayingInfoId, Long movieId, String movieTitle, String ageLimit, String startTime, String endTime,
-//                  String phoneNumber, String classification, String reservationTime, String seat, int theaterNo, int totalCost) {
-//        this.ticketId = ticketId;
-//        this.moviePlayingInfoId = moviePlayingInfoId;
-//        this.movieId = movieId;
-//        this.movieTitle = movieTitle;
-//        this.ageLimit = ageLimit;
-//        this.startTime = startTime;
-//        this.endTime = endTime;
-//        this.phoneNumber = phoneNumber;
-//        this.classification = classification;
-//        this.reservationTime = reservationTime;
-//        this.seat = seat;
-//        this.theaterNo = theaterNo;
-//        this.totalCost = totalCost;
-//    }
 
     public Long getTicketId() {
         return ticketId;
