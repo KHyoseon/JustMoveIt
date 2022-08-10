@@ -25,3 +25,20 @@
 2022-08-09 13:10:05.936  INFO 166408 --- [http-nio-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/api]    : Initializing Spring DispatcherServlet 'dispatcherServlet'
 2022-08-09 13:10:05.936  INFO 166408 --- [http-nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
 2022-08-09 13:10:05.939  INFO 166408 --- [http-nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 3 ms
+2022-08-09 04:32:56.584  INFO 184820 --- [Test worker] c.s.CommonPJT.CommonPjtApplicationTests  : Starting CommonPjtApplicationTests using Java 1.8.0_342 on ip-172-26-6-129 with PID 184820 (started by root in /S07P12D207/BE/CommonPJT)
+2022-08-09 04:32:56.586  INFO 184820 --- [Test worker] c.s.CommonPJT.CommonPjtApplicationTests  : No active profile set, falling back to 1 default profile: "default"
+2022-08-09 04:32:57.455  INFO 184820 --- [Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2022-08-09 04:32:57.522  INFO 184820 --- [Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 58 ms. Found 6 JPA repository interfaces.
+2022-08-09 04:32:58.234  INFO 184820 --- [Test worker] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-08-09 04:32:58.289  INFO 184820 --- [Test worker] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.6.9.Final
+2022-08-09 04:32:58.483  INFO 184820 --- [Test worker] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2022-08-09 04:32:58.599  INFO 184820 --- [Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2022-08-09 04:32:59.010  INFO 184820 --- [Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2022-08-09 04:32:59.052  INFO 184820 --- [Test worker] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+2022-08-09 04:32:59.954  INFO 184820 --- [Test worker] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-08-09 04:32:59.964  INFO 184820 --- [Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2022-08-09 04:33:01.123  WARN 184820 --- [Test worker] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2022-08-09 04:33:02.098  INFO 184820 --- [Test worker] c.s.CommonPJT.CommonPjtApplicationTests  : Started CommonPjtApplicationTests in 5.912 seconds (JVM running for 7.128)
+2022-08-09 04:33:02.218  INFO 184820 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2022-08-09 04:33:02.221  INFO 184820 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2022-08-09 04:33:02.238  INFO 184820 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
