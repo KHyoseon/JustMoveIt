@@ -116,7 +116,7 @@ public class Ticket implements Serializable {
     public String getReservationTime() {
         // 이렇게 옴 2022-08-05T17:30:37.002+00:00 -> 2022-08-05 17:30:37
         String parsed = reservationTime.substring(0, reservationTime.indexOf("."));
-        return reservationTime.replace("T", " ");
+        return parsed.replace("T", " ");
     }
 
     public void setReservationTime(String reservationTime) {

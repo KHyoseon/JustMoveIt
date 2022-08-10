@@ -57,6 +57,6 @@ public class ReservedTicket implements Serializable, Comparable<ReservedTicket> 
 
     public boolean isPassedNow(String otherPri){
         String thisPri = this.getTicket().getReservationTime();
-        return thisPri.compareTo(otherPri) > 0;
+        return thisPri.compareTo(otherPri) < 0;
     }
 }

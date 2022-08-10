@@ -70,8 +70,9 @@ public class TicketInfoActivity extends AppCompatActivity {
 
     private void getSetTexts(Ticket ticket) {
         ((TextView) findViewById(R.id.movie_title)).setText(ticket.getMovieTitle());
-        ((TextView) findViewById(R.id.reserve_date)).setText(ticket.getReservationTime().substring(0, ticket.getReservationTime().length()-2));
+        ((TextView) findViewById(R.id.reserve_date)).setText(ticket.getReservationTime());
         ((TextView) findViewById(R.id.viewing_date)).setText(ticket.getStartTime());
+        ((TextView) findViewById(R.id.total_cost)).setText((ticket.getTotalCost()==null? "알 수 없음": ticket.getTotalCost()));
 
         int[] clsf = ReservedTicket.convertClassificationToInt(ticket.getClassification());
         ((TextView) findViewById(R.id.classification)).setText(
