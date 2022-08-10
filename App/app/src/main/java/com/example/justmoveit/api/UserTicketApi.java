@@ -1,7 +1,6 @@
 package com.example.justmoveit.api;
 
 import com.example.justmoveit.model.Ticket;
-import com.google.gson.JsonArray;
 
 import java.util.concurrent.TimeUnit;
 
@@ -30,12 +29,12 @@ public interface UserTicketApi {
             .client(client)
             .build();
 
-    @Headers({"Content-Type:application/x-www-form-urlencoded;charset=utf-8"})
     // 티켓 예매 내역 가져오기
     @GET("/api/tickets/{phoneNumber}")
     Call<Ticket[]> getUserTicketList(@Path("phoneNumber") String phoneNumber);
 
     // 티켓 예매하기
+    @Headers({"Content-Type:application/json;charset=utf-8"})
     @POST("/api/tickets")
     Call<Ticket> reserveTicket(@Body Ticket ticket);
 

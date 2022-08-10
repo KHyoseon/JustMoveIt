@@ -213,6 +213,10 @@ public class Movie implements Serializable {
         return moviePlayingInfoList;
     }
 
+    public MoviePlayingInfo getMoviePlayingInfoByIndex(int index){
+        return moviePlayingInfoList[index];
+    }
+
     public void setMoviePlayingInfoList(MoviePlayingInfo[] moviePlayingInfoList) {
         this.moviePlayingInfoList = moviePlayingInfoList;
     }

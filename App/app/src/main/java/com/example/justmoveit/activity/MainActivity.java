@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    static class ConnectionThread extends Thread {
+    private static class ConnectionThread extends Thread {
         @Override
         public void run() {
             synchronized (this){

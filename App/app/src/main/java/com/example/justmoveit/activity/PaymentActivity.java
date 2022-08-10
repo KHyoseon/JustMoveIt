@@ -179,7 +179,7 @@ public class PaymentActivity extends AppCompatActivity {
         }
     }
 
-    static class ConnectionThread extends Thread {
+    private static class ConnectionThread extends Thread {
         @Override
         public void run() {
             synchronized (this) {

@@ -55,7 +55,7 @@ public class TimesAdapter extends RecyclerView.Adapter<TimesAdapter.TimeViewHold
             public void onClick(View view) {
                 //클릭 이벤트
                 Intent intent = new Intent(context.getApplicationContext(), TicketingActivity.class);
-                intent.putExtra("moviePlayingInfo", movie.getMoviePlayingInfoList()[index]);
+                intent.putExtra("moviePlayingInfo", movie.getMoviePlayingInfoByIndex(index));
                 context.startActivity(intent);
             }
         });

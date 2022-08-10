@@ -1,24 +1,43 @@
 package com.example.justmoveit.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
 
 // 서버 통신 dto
 public class Ticket implements Serializable {
+    @SerializedName("ticketId")
     private Long ticketId;
+    @SerializedName("moviePlayingInfoId")
     private Long moviePlayingInfoId;
+    @SerializedName("movieId")
     private Long movieId;
+    @SerializedName("movieTitle")
     private String movieTitle;
+    @SerializedName("ageLimit")
     private String ageLimit;
+    @SerializedName("startTime")
     private String startTime;
+    @SerializedName("endTime")
     private String endTime;
+    @SerializedName("phoneNumber")
     private String phoneNumber;
+    @SerializedName("classification")
     private String classification;
-    private String reservationTime;
+    @SerializedName("reservationTime")
+    private Date reservationTime;
+    @SerializedName("seat")
     private String seat;
-    private String theaterNo, totalCost;
+    @SerializedName("theaterNo")
+    private String theaterNo;
+    @SerializedName("totalCost")
+    private String totalCost;
 
     public Ticket(Long moviePlayingInfoId, Long movieId, String movieTitle, String ageLimit, String startTime, String endTime,
-                  String phoneNumber, String classification, String reservationTime, String seat, String theaterNo, String totalCost) {
+                  String phoneNumber, String classification, Date reservationTime, String seat, String theaterNo, String totalCost) {
         this.moviePlayingInfoId = moviePlayingInfoId;
         this.movieId = movieId;
         this.movieTitle = movieTitle;
@@ -115,11 +134,12 @@ public class Ticket implements Serializable {
 
     public String getReservationTime() {
         // 이렇게 옴 2022-08-05T17:30:37.002+00:00 -> 2022-08-05 17:30:37
-        String parsed = reservationTime.substring(0, reservationTime.indexOf("."));
-        return parsed.replace("T", " ");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+        return simpleDateFormat.format(reservationTime);
     }
 
-    public void setReservationTime(String reservationTime) {
+    public void setReservationTime(Date reservationTime) {
         this.reservationTime = reservationTime;
     }
 

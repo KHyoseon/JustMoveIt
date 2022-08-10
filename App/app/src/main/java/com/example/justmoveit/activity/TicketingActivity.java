@@ -1,6 +1,10 @@
 package com.example.justmoveit.activity;
 
+import static com.example.justmoveit.activity.MainActivity.movieSP;
+import static com.example.justmoveit.activity.MainActivity.userSP;
+
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,10 +19,14 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.justmoveit.R;
+import com.example.justmoveit.api.UserTicketApi;
 import com.example.justmoveit.model.MoviePlayingInfo;
 import com.example.justmoveit.model.ReservedTicket;
 import com.example.justmoveit.model.Ticket;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,6 +34,10 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.TimeZone;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class TicketingActivity extends AppCompatActivity {
     private MoviePlayingInfo moviePlayingInfo;
@@ -108,16 +120,31 @@ public class TicketingActivity extends AppCompatActivity {
                 sb.setLength(sb.length()-1);
                 String seat = sb.toString();
 
-                // 티켓 객체 생성 후 paymentActivity로 넘겨줌
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
-                simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
-                String nowDate = simpleDateFormat.format(new Date());
-                Ticket ticket = new Ticket(moviePlayingInfo.getMoviePlayingInfoId(), moviePlayingInfo.getMovieId(), moviePlayingInfo.getMovieTitle(), "12세",
-                        moviePlayingInfo.getStartTime(), moviePlayingInfo.getEndTime(), "01012345678", classification, nowDate+"", seat, moviePlayingInfo.getTheaterNo(), "12000");
+                movieSP.getString("", "");
 
-                PaymentActivity paymentActivity = new PaymentActivity(ticket);
-                Intent it = new Intent(getApplicationContext(), paymentActivity.getClass());
-                startActivity(it);
+                // 티켓 객체 생성 후 paymentActivity로 넘겨줌
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+                String formatStr = simpleDateFormat.format(new Date());
+                Date now = null;
+                try {
+                    now = simpleDateFormat.parse(formatStr);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                Ticket ticket = new Ticket(moviePlayingInfo.getId(), moviePlayingInfo.getMovieId(), moviePlayingInfo.getMovieTitle(), "12세",
+                        moviePlayingInfo.getStartTime(), moviePlayingInfo.getEndTime(), "01052584112", classification, now, seat, moviePlayingInfo.getTheaterNo(), totalCost+"");
+
+
+                // Todo: 로직 paymentActivity로 넘기기
+                // 서버에 넣음
+                postTicketToServer(ticket);
+
+                finish();
+
+//                PaymentActivity paymentActivity = new PaymentActivity(ticket);
+//                Intent it = new Intent(getApplicationContext(), paymentActivity.getClass());
+//                startActivity(it);
             }
         });
     }
@@ -184,6 +211,20 @@ public class TicketingActivity extends AppCompatActivity {
 
     }
 
+    private void postTicketToServer(Ticket ticket){
+        ConnectionThread thread = new ConnectionThread(ticket);
+        Log.d("PaymentActivity", "connection thread start");
+        thread.start();
+        synchronized (thread) {
+            try {
+                Log.d("PaymentActivity", "main thread waiting");
+                thread.wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     class seatSelectListener implements CompoundButton.OnCheckedChangeListener {
         @Override
         public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
@@ -202,6 +243,62 @@ public class TicketingActivity extends AppCompatActivity {
                 Log.i("unChecked", compoundButton.getResources().getResourceEntryName(compoundButton.getId()));
                 selectedSeat.remove(compoundButton.getResources().getResourceEntryName(compoundButton.getId()));
             }
+        }
+    }
+
+    static class ConnectionThread extends Thread {
+        Ticket ticket;
+
+        public ConnectionThread(Ticket ticket){
+            this.ticket = ticket;
+        }
+
+        @Override
+        public void run() {
+            synchronized (this) {
+                getReserveTicket();
+                Log.d("PaymentActivity", "connection thread end");
+                notify();
+            }
+        }
+
+        private void getReserveTicket() {
+            UserTicketApi ticketService = UserTicketApi.retrofit.create(UserTicketApi.class);
+            ticketService.reserveTicket(ticket).enqueue(new Callback<Ticket>() {
+                @Override
+                public void onResponse(Call<Ticket> call, Response<Ticket> response) {
+                    // ticketID가 포함된 객체 반환
+                    Ticket retTicket = response.body();
+                    if(retTicket == null){
+                        Log.e("PaymentActivity - reserveTicket", "response body is null: "+response.code());
+                        return;
+                    }
+
+                    // 성공시 앱 캐시에도 저장
+                    Gson gson = new Gson();
+                    String json = userSP.getString("user_tickets", "");
+
+                    // 기존에 있던 리스트 담고
+                    ArrayList<ReservedTicket> reservedTickets = gson.fromJson(json, TypeToken.getParameterized(ArrayList.class, ReservedTicket.class).getType());
+
+                    // 새로운 티켓 추가
+                    if(reservedTickets == null){
+                        reservedTickets = new ArrayList<>();
+                    }
+                    reservedTickets.add(new ReservedTicket(retTicket));
+
+                    // SP에 덮어쓰기
+                    SharedPreferences.Editor editor = userSP.edit();
+                    editor.putString("user_tickets", gson.toJson(reservedTickets));
+                    editor.apply();
+                    Log.d("PaymentActivity - reserveTicket", "putString(reservedTickets) done");
+                }
+
+                @Override
+                public void onFailure(Call<Ticket> call, Throwable t) {
+                    Log.e("PaymentActivity - reserveTicket", "onFailure(): "+t.getMessage());
+                }
+            });
         }
     }
 }

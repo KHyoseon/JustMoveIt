@@ -101,7 +101,7 @@ public class MyTicketListActivity extends AppCompatActivity {
         Glide.with(this).load(user.getImgUrl()).into(imgProfile);
     }
 
-    static class ConnectionThread extends Thread {
+    private static class ConnectionThread extends Thread {
         @Override
         public void run() {
             synchronized (this){

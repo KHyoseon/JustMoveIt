@@ -1,7 +1,6 @@
 package com.example.justmoveit.api;
 
 import com.example.justmoveit.model.Movie;
-import com.google.gson.JsonArray;
 
 import java.util.concurrent.TimeUnit;
 
@@ -10,8 +9,6 @@ import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
-import retrofit2.http.Header;
-import retrofit2.http.Headers;
 
 public interface MovieApi {
     OkHttpClient client = new OkHttpClient().newBuilder()
@@ -27,7 +24,6 @@ public interface MovieApi {
             .client(client)
             .build();
 
-    @Headers({"Content-Type:application/x-www-form-urlencoded;charset=utf-8"})
     // 상영 중인 전체 영화 목록
     @GET("/api/movies")
     Call<Movie[]> getMovieList();

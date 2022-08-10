@@ -71,7 +71,7 @@ public class TicketInfoActivity extends AppCompatActivity {
     private void getSetTexts(Ticket ticket) {
         ((TextView) findViewById(R.id.movie_title)).setText(ticket.getMovieTitle());
         ((TextView) findViewById(R.id.reserve_date)).setText(ticket.getReservationTime());
-        ((TextView) findViewById(R.id.viewing_date)).setText(ticket.getStartTime());
+        ((TextView) findViewById(R.id.viewing_date)).setText((ticket.getReservationTime().split(" "))[0] + " " + ticket.getStartTime());
         ((TextView) findViewById(R.id.total_cost)).setText((ticket.getTotalCost()==null? "알 수 없음": ticket.getTotalCost()));
 
         int[] clsf = ReservedTicket.convertClassificationToInt(ticket.getClassification());
@@ -81,7 +81,7 @@ public class TicketInfoActivity extends AppCompatActivity {
         ((TextView) findViewById(R.id.reserve_seat)).setText(ticket.getSeat().replace(",", ", "));
     }
 
-    static class ConnectionThread extends Thread {
+    private static class ConnectionThread extends Thread {
         Ticket ticket;
 
         public ConnectionThread(Ticket ticket){

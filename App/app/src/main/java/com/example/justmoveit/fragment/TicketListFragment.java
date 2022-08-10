@@ -89,12 +89,12 @@ public class TicketListFragment extends Fragment {
         // 티켓 리스트 데이터 가공
         for (ReservedTicket reservedTicket: ticketListFromSP) {
             // 현재 시간 기준으로 예매한 티켓과 만료된 티켓을 구분
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
             simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
             String nowPriority = simpleDateFormat.format(new Date());
             reservedTicket.setExpired(reservedTicket.isPassedNow(nowPriority));
         }
         // 상영일 내림차 순으로 정렬 (최근 것이 위에 오도록)
-        Collections.sort(ticketListFromSP);
+        Collections.sort(ticketListFromSP, Collections.reverseOrder());
     }
 }
