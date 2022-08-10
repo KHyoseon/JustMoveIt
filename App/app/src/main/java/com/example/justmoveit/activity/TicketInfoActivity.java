@@ -1,5 +1,6 @@
 package com.example.justmoveit.activity;
 
+import static com.example.justmoveit.activity.MainActivity.movieSP;
 import static com.example.justmoveit.activity.MainActivity.userSP;
 
 import android.content.Intent;
@@ -17,10 +18,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.justmoveit.R;
 import com.example.justmoveit.api.UserTicketApi;
+import com.example.justmoveit.model.Movie;
 import com.example.justmoveit.model.ReservedTicket;
 import com.example.justmoveit.model.Ticket;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,11 +60,12 @@ public class TicketInfoActivity extends AppCompatActivity {
             public void onClick(View view) {
                 ConnectionThread thread = new ConnectionThread(ticket);
                 thread.start();
-
-                try {
-                    thread.wait();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                synchronized (thread) {
+                    try {
+                        thread.wait();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
@@ -70,6 +74,15 @@ public class TicketInfoActivity extends AppCompatActivity {
 
     private void getSetTexts(Ticket ticket) {
         ((TextView) findViewById(R.id.movie_title)).setText(ticket.getMovieTitle());
+
+        // 영화 포스터 등록
+//        ImageView poster = findViewById(R.id.movie_poster);
+//        String json = movieSP.getString("movie_list", "");
+//        Gson gson = new Gson();
+//        List<Movie> movies = gson.fromJson(json, TypeToken.getParameterized(List.class, Movie.class).getType());
+//        for()
+//        Picasso.get().load(ticket.getimg()).into(poster);
+
         ((TextView) findViewById(R.id.reserve_date)).setText(ticket.getReservationTime());
         ((TextView) findViewById(R.id.viewing_date)).setText((ticket.getReservationTime().split(" "))[0] + " " + ticket.getStartTime());
         ((TextView) findViewById(R.id.total_cost)).setText((ticket.getTotalCost()==null? "알 수 없음": ticket.getTotalCost()));
@@ -98,7 +111,8 @@ public class TicketInfoActivity extends AppCompatActivity {
 
         private void cancelReservation() {
             UserTicketApi service = UserTicketApi.retrofit.create(UserTicketApi.class);
-            service.cancelTicket(ticket.getTicketId()).enqueue(new Callback<Void>() {
+            Long id = ticket.getId();
+            service.cancelTicket(id).enqueue(new Callback<Void>() {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
                     SharedPreferences.Editor editor = userSP.edit();
@@ -108,7 +122,7 @@ public class TicketInfoActivity extends AppCompatActivity {
                     ArrayList<ReservedTicket> reservedTickets = gson.fromJson(json, TypeToken.getParameterized(List.class, Ticket.class).getType());
                     // id에 해당하는 티켓 예매 정보 삭제
                     for(int i=0, n=reservedTickets.size(); i<n; i++){
-                        if(Objects.equals(reservedTickets.get(i).getTicket().getTicketId(), ticket.getTicketId())){
+                        if(Objects.equals((reservedTickets.get(i).getTicket()).getId(), id)){
                             reservedTickets.remove(i);
                             break;
                         }

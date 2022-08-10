@@ -9,35 +9,22 @@ import java.util.TimeZone;
 
 // 서버 통신 dto
 public class Ticket implements Serializable {
-    @SerializedName("ticketId")
-    private Long ticketId;
-    @SerializedName("moviePlayingInfoId")
+    private Long id;
     private Long moviePlayingInfoId;
-    @SerializedName("movieId")
     private Long movieId;
-    @SerializedName("movieTitle")
     private String movieTitle;
-    @SerializedName("ageLimit")
     private String ageLimit;
-    @SerializedName("startTime")
     private String startTime;
-    @SerializedName("endTime")
     private String endTime;
-    @SerializedName("phoneNumber")
     private String phoneNumber;
-    @SerializedName("classification")
     private String classification;
-    @SerializedName("reservationTime")
     private Date reservationTime;
-    @SerializedName("seat")
     private String seat;
-    @SerializedName("theaterNo")
     private String theaterNo;
-    @SerializedName("totalCost")
     private String totalCost;
 
-    public Ticket(Long moviePlayingInfoId, Long movieId, String movieTitle, String ageLimit, String startTime, String endTime,
-                  String phoneNumber, String classification, Date reservationTime, String seat, String theaterNo, String totalCost) {
+    public Ticket(Long id, Long moviePlayingInfoId, Long movieId, String movieTitle, String ageLimit, String startTime, String endTime, String phoneNumber, String classification, Date reservationTime, String seat, String theaterNo, String totalCost) {
+        this.id = id;
         this.moviePlayingInfoId = moviePlayingInfoId;
         this.movieId = movieId;
         this.movieTitle = movieTitle;
@@ -52,12 +39,12 @@ public class Ticket implements Serializable {
         this.totalCost = totalCost;
     }
 
-    public Long getTicketId() {
-        return ticketId;
+    public Long getId() {
+        return id;
     }
 
-    public void setTicketId(Long ticketId) {
-        this.ticketId = ticketId;
+    public void setId(Long ticketId) {
+        this.id = ticketId;
     }
 
     public String getTheaterNo() {

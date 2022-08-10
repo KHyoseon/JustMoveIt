@@ -1,5 +1,7 @@
 package com.example.justmoveit.model;
 
+import android.util.Log;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -50,13 +52,14 @@ public class ReservedTicket implements Serializable, Comparable<ReservedTicket> 
 
     @Override
     public int compareTo(ReservedTicket ticket2) {
-        String thisPri = this.getTicket().getReservationTime();
+        String thisPri = ticket.getReservationTime();
         String otherPri = ticket2.getTicket().getReservationTime();
         return (thisPri.compareTo(otherPri));
     }
 
     public boolean isPassedNow(String otherPri){
-        String thisPri = this.getTicket().getReservationTime();
+        String thisPri = (ticket.getReservationTime().split(" "))[0] + " " + ticket.getStartTime();
+        Log.i("is expired?", "this: "+ thisPri +" / now: "+otherPri);
         return thisPri.compareTo(otherPri) < 0;
     }
 }

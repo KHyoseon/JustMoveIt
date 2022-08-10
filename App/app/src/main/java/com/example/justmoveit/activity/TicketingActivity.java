@@ -122,7 +122,7 @@ public class TicketingActivity extends AppCompatActivity {
 
                 movieSP.getString("", "");
 
-                // 티켓 객체 생성 후 paymentActivity로 넘겨줌
+                // 티켓 객체 생성 후 paymentActivity 로 넘겨줌
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                 simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
                 String formatStr = simpleDateFormat.format(new Date());
@@ -132,7 +132,7 @@ public class TicketingActivity extends AppCompatActivity {
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                Ticket ticket = new Ticket(moviePlayingInfo.getId(), moviePlayingInfo.getMovieId(), moviePlayingInfo.getMovieTitle(), "12세",
+                Ticket ticket = new Ticket(0L, moviePlayingInfo.getId(), moviePlayingInfo.getMovieId(), moviePlayingInfo.getMovieTitle(), "12세",
                         moviePlayingInfo.getStartTime(), moviePlayingInfo.getEndTime(), "01052584112", classification, now, seat, moviePlayingInfo.getTheaterNo(), totalCost+"");
 
 

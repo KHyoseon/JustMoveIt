@@ -28,12 +28,8 @@ import com.example.justmoveit.model.MoviePlayingInfo;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
-import java.util.logging.SimpleFormatter;
 
 public class MovieInfoActivity extends AppCompatActivity {
     private Movie movie;
@@ -72,19 +68,9 @@ public class MovieInfoActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         List<String> timeList= new ArrayList<>();
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HHmm");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
-        String time = simpleDateFormat.format(new Date());
-
         for(MoviePlayingInfo info: movie.getMoviePlayingInfoList()){
-            if(!info.isPassedNow(time)){
-                timeList.add(info.getStartTime());
-            }
+            timeList.add(info.getStartTime());
         }
-//        timeList.add("12:00");
-//        timeList.add("14:00");
-//        timeList.add("16:00");
-//        timeList.add("18:00");
 
         TimesAdapter timesAdapter = new TimesAdapter();
         timesAdapter.setTimes(timeList, movie);
