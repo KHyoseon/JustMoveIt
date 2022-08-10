@@ -113,7 +113,7 @@ public class TicketingActivity extends AppCompatActivity {
                 simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
                 String nowDate = simpleDateFormat.format(new Date());
                 Ticket ticket = new Ticket(moviePlayingInfo.getMoviePlayingInfoId(), moviePlayingInfo.getMovieId(), moviePlayingInfo.getMovieTitle(), "12세",
-                        moviePlayingInfo.getStartTime(), moviePlayingInfo.getEndTime(), "01012345678", classification, nowDate+"", seat, moviePlayingInfo.getTheaterNo(), 12000);
+                        moviePlayingInfo.getStartTime(), moviePlayingInfo.getEndTime(), "01012345678", classification, nowDate+"", seat, moviePlayingInfo.getTheaterNo(), "12000");
 
                 PaymentActivity paymentActivity = new PaymentActivity(ticket);
                 Intent it = new Intent(getApplicationContext(), paymentActivity.getClass());

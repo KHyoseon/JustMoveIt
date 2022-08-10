@@ -48,7 +48,7 @@
             android:exported="true"
             android:theme="@style/FullScreen" />
         <activity
-            android:name=".activity.MyTicketsListActivity"
+            android:name=".activity.MyTicketListActivity"
             android:exported="true"
             android:theme="@style/FullScreen" />
         <activity

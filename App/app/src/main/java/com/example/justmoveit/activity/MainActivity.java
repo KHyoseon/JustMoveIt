@@ -18,6 +18,8 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.example.justmoveit.R;
 import com.example.justmoveit.adapters.MoviesAdapter;
 import com.example.justmoveit.api.MovieApi;
+import com.example.justmoveit.fragment.BlankFragment;
+import com.example.justmoveit.fragment.ViewPagerFragment;
 import com.example.justmoveit.model.Movie;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -33,20 +35,15 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
     public static SharedPreferences movieSP, userSP;
-    private Toolbar toolbar;
+
+    private ViewPagerFragment viewPagerFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
         movieSP = getSharedPreferences("movieInfo", MODE_PRIVATE);
         userSP = getSharedPreferences("userInfo", MODE_PRIVATE);
-
-        // 툴바 등록
-        toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("");
-        setSupportActionBar(toolbar);
 
         // 서버 통신 스레드
         ConnectionThread thread = new ConnectionThread();
@@ -59,10 +56,25 @@ public class MainActivity extends AppCompatActivity {
             } catch (InterruptedException e){
                 e.printStackTrace();
             }
+
+        }
+
+        setContentView(R.layout.activity_main);
+
+        // 툴바 등록
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
+
+        viewPagerFragment = (ViewPagerFragment) getSupportFragmentManager().findFragmentById(R.id.VP_fragment);
+        BlankFragment blankFragment = new BlankFragment("상영 중인 영화가 없습니다.");
+
+        // 서버에서 받아왔는데 아무것도 없으면 빈 프래그먼트로 교체
+        if(movieSP.getString("movie_list", "").equals("")){
+            getSupportFragmentManager().beginTransaction().replace(R.id.VP_container, blankFragment).commit();
         }
 
         Log.d("MainActivity", "view Pager start");
-        setupMoviesViewPager();
     }
 
     @Override
@@ -79,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
         if (item.getItemId() == R.id.profile) {
             if (Session.getCurrentSession().isOpened()) {
 //                Toast.makeText(this, "CurrentSession is opend ", Toast.LENGTH_SHORT).show();
-                it.setClassName("com.example.justmoveit", "com.example.justmoveit.activity.MyTicketsListActivity");
+                it.setClassName("com.example.justmoveit", "com.example.justmoveit.activity.MyTicketListActivity");
             } else {
 //                Toast.makeText(this, "CurrentSession is closed", Toast.LENGTH_SHORT).show();
                 it.setClassName("com.example.justmoveit", "com.example.justmoveit.activity.LoginActivity");
@@ -88,36 +100,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    private void setupMoviesViewPager() {
-        // 메인 페이지 - 영화 목록 (카드)
-        ViewPager2 moviesViewPager = findViewById(R.id.moviesViewPager);
-        moviesViewPager.setClipToPadding(false);
-        moviesViewPager.setClipChildren(false);
-        moviesViewPager.setOffscreenPageLimit(3);
-        moviesViewPager.getChildAt(0).setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
-        CompositePageTransformer compositePageTransformer = new CompositePageTransformer();
-        compositePageTransformer.addTransformer(new MarginPageTransformer(10));
-        compositePageTransformer.addTransformer(((page, position) -> {
-            float r = 1 - Math.abs(position);
-            page.setScaleY(0.85f + r * 0.15f);
-        }));
-        moviesViewPager.setPageTransformer(compositePageTransformer);
-
-        // SP에 저장된 무비 리스트 가져와서 어댑트
-        String json = movieSP.getString("movie_list", "");
-        if (json.equals("")) {
-            Log.e("setupMoviesViewPager", "there are no movies in SP");
-            return;
-        }
-        Gson gson = new Gson();
-        List<Movie> movies = gson.fromJson(json, TypeToken.getParameterized(List.class, Movie.class).getType());
-        if (movies == null) {
-            Log.e("setupMoviesViewPager", "there are no movies in SP");
-            return;
-        }
-        moviesViewPager.setAdapter(new MoviesAdapter(movies));
     }
 
     static class ConnectionThread extends Thread {
@@ -132,18 +114,23 @@ public class MainActivity extends AppCompatActivity {
         }
 
         private void getMoviesFromServer() {
+            SharedPreferences.Editor editor = MainActivity.movieSP.edit();
+
+//            editor.remove("movie_list");
+//            editor.apply();
+
             MovieApi service = MovieApi.retrofit.create(MovieApi.class);
             service.getMovieList().enqueue(new Callback<Movie[]>() {
                 @Override
                 public void onResponse(Call<Movie[]> call, Response<Movie[]> response) {
                     Movie[] movies = response.body();
+                    Log.d("MainActivity - getMoviesFromServer", "onResponse()");
                     if(movies == null){
                         Log.e("MainActivity - getMoviesFromServer", "onResponse(): " + response.message());
                         return;
                     }
 
                     // SP에 저장
-                    SharedPreferences.Editor editor = MainActivity.movieSP.edit();
                     Gson gson = new Gson();
                     editor.putString("movie_list", gson.toJson(Arrays.asList(movies)));
                     editor.apply();

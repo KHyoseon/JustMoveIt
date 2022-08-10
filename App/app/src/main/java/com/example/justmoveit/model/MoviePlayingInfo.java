@@ -9,10 +9,10 @@ public class MoviePlayingInfo implements Serializable {
     private String ageLimit;
     private String startTime;
     private String endTime;
-    private int theaterNo;
+    private String theaterNo;
     private Ticket[] tickets;
 
-    public MoviePlayingInfo(Long moviePlayingInfoId, Long movieId, String movieTitle, String ageLimit, String startTime, String endTime, int theaterNo, Ticket[] tickets) {
+    public MoviePlayingInfo(Long moviePlayingInfoId, Long movieId, String movieTitle, String ageLimit, String startTime, String endTime, String theaterNo, Ticket[] tickets) {
         this.moviePlayingInfoId = moviePlayingInfoId;
         this.movieId = movieId;
         this.movieTitle = movieTitle;
@@ -71,11 +71,11 @@ public class MoviePlayingInfo implements Serializable {
         this.endTime = endTime;
     }
 
-    public int getTheaterNo() {
+    public String getTheaterNo() {
         return theaterNo;
     }
 
-    public void setTheaterNo(int theaterNo) {
+    public void setTheaterNo(String theaterNo) {
         this.theaterNo = theaterNo;
     }
 

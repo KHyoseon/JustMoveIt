@@ -52,7 +52,7 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(MeV2Response result) {
                     // 로그인 성공
-                    Intent intent = new Intent(LoginActivity.this, MyTicketsListActivity.class);
+                    Intent intent = new Intent(LoginActivity.this, MyTicketListActivity.class);
                     UserAccount account = result.getKakaoAccount();
 
                     SharedPreferences.Editor editor = userSP.edit();

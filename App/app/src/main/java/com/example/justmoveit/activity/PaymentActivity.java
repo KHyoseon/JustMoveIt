@@ -46,7 +46,7 @@ public class PaymentActivity extends AppCompatActivity {
     public PaymentActivity(Ticket t) {
         ticket = t;
         PRODUCT_NAME = ticket.getMovieTitle();
-        PRODUCT_PRICE = ticket.getTotalCost();
+        PRODUCT_PRICE = Integer.parseInt(ticket.getTotalCost());
     }
 
     @Override

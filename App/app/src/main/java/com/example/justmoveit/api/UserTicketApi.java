@@ -12,6 +12,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 
@@ -29,6 +30,7 @@ public interface UserTicketApi {
             .client(client)
             .build();
 
+    @Headers({"Content-Type:application/x-www-form-urlencoded;charset=utf-8"})
     // 티켓 예매 내역 가져오기
     @GET("/api/tickets/{phoneNumber}")
     Call<Ticket[]> getUserTicketList(@Path("phoneNumber") String phoneNumber);

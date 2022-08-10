@@ -15,10 +15,10 @@ public class Ticket implements Serializable {
     private String classification;
     private String reservationTime; // yyyy-MM-dd
     private String seat;
-    private int theaterNo, totalCost;
+    private String theaterNo, totalCost;
 
     public Ticket(Long moviePlayingInfoId, Long movieId, String movieTitle, String ageLimit, String startTime, String endTime,
-                  String phoneNumber, String classification, String reservationTime, String seat, int theaterNo, int totalCost) {
+                  String phoneNumber, String classification, String reservationTime, String seat, String theaterNo, String totalCost) {
         this.moviePlayingInfoId = moviePlayingInfoId;
         this.movieId = movieId;
         this.movieTitle = movieTitle;
@@ -42,11 +42,11 @@ public class Ticket implements Serializable {
         this.ticketId = ticketId;
     }
 
-    public int getTheaterNo() {
+    public String getTheaterNo() {
         return theaterNo;
     }
 
-    public void setTheaterNo(int theaterNo) {
+    public void setTheaterNo(String theaterNo) {
         this.theaterNo = theaterNo;
     }
 
@@ -130,11 +130,11 @@ public class Ticket implements Serializable {
         this.seat = seat;
     }
 
-    public int getTotalCost() {
+    public String getTotalCost() {
         return totalCost;
     }
 
-    public void setTotalCost(int totalCost) {
+    public void setTotalCost(String totalCost) {
         this.totalCost = totalCost;
     }
 }
