@@ -30,6 +30,6 @@ public interface MovieApi {
     Call<Movie[]> getMovieList();
 
     // 영화 상영 정보
-    @GET("/justmoveit/movies/{id}")
+    @GET("/api/movies/{id}")
     Call<Movie> getMoviePlayingInfo(@Path("id") String id);
 }

@@ -47,11 +47,11 @@ public class MovieInfoActivity extends AppCompatActivity {
     private ViewPager2 sliderViewPager;
     private Handler sliderHandler = new Handler();
 
+    private String movieId;
+
     private void loadMovieDetails(){
         Intent intent = getIntent();
-        String movieId = intent.getStringExtra("movie_id");
-        Gson gson = new Gson();
-        movie = gson.fromJson(movieSP.getString(movieId, ""), Movie.class);
+        movieId = intent.getStringExtra("movie_id");
 
         // 서버 통신 스레드 - movie id로 통신 -> 새로운 playinginfo 있으면 SP 저장
         ConnectionThread thread = new ConnectionThread(movieId);
@@ -72,8 +72,12 @@ public class MovieInfoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_detail);
 
+        Gson gson = new Gson();
+
         // 서버에서 movie 최신 정보 가져옴
         loadMovieDetails();
+
+        movie = gson.fromJson(movieSP.getString(movieId, ""), Movie.class);
 
         layoutSliderIndicators = findViewById(R.id.layoutSliderIndicators);
         RoundedImageView imgMoviePoster = findViewById(R.id.imageMoviePoster);
@@ -101,6 +105,13 @@ public class MovieInfoActivity extends AppCompatActivity {
         timesAdapter.setTimes(timeList, movie);
         recyclerView.setAdapter(timesAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL,false));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // 서버에서 movie 최신 정보 가져옴
+        loadMovieDetails();
     }
 
     private  void setImageBack(){
@@ -247,13 +258,13 @@ public class MovieInfoActivity extends AppCompatActivity {
         public void run() {
             synchronized (this) {
                 // 메인 스레드 멈추고 실행할 부분
-                getMoviePlayingInfoFromServer();
+                getMoviesFromServer();
                 Log.d("MovieInfoActivity", "connection thread end");
                 notify();
             }
         }
 
-        private void getMoviePlayingInfoFromServer() {
+        private void getMoviesFromServer() {
             SharedPreferences.Editor editor = movieSP.edit();
 
             MovieApi service = MovieApi.retrofit.create(MovieApi.class);

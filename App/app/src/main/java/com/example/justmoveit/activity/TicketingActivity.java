@@ -56,7 +56,7 @@ public class TicketingActivity extends AppCompatActivity {
 
     private void loadMovie() {
         Intent intent = getIntent();
-        // 얘는 중복 id니까 어디 영화건지 확인하기 위해 movieid도 필요하다.
+
         String movieId = intent.getStringExtra("movieId");
         String moviePlayingInfoId = intent.getStringExtra("moviePlayingInfoId");
 
