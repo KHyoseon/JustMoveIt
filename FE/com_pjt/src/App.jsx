@@ -1,16 +1,17 @@
 import React, {StyleSheet, useState, useRef } from 'react'
 import { Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
-import { Carousel } from '3d-react-carousal';
-import Grid from '@mui/material/Grid';
+import { useSelector } from 'react-redux';
+// import { Carousel } from '3d-react-carousal';
+// import Grid from '@mui/material/Grid';
 // import { MovieDetail } from './route/MovieDetail'
-import { Container } from '@material-ui/core';
+// import { Container } from '@material-ui/core';
 import styles from "./App.css";
-import ReactDOM from "react-dom";
+// import ReactDOM from "react-dom";
 
-import Seats from "./components/Page/Seats";
-import DialPage from "./components/Page/DialPage";
-import MovieSelect from "./components/Page/MovieSelect";
+// import Seats from "./components/Page/Seats";
+// import DialPage from "./components/Page/DialPage";
+// import MovieSelect from "./components/Page/MovieSelect";
 
 
 let movie_detail = []
@@ -95,6 +96,9 @@ const App = () => {
     console.log("응애!")
     // document.location.href = "./";
   }
+
+  const appState = useSelector( (state) => state );
+  console.log(appState)
 
   return (
     <div className='App'>

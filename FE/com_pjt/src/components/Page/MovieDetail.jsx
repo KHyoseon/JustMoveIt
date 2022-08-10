@@ -8,24 +8,27 @@ let movie_time_tickets = []
 let seats_info = []
 
 
- movie = {
-    "id": 1,
-    "title": "인터스텔라",
-    "movieCode": "1",
-    "country": "1",
-    "genre": "1",
-    "summary": "1",
-    "runningTime": "1",
-    "img": "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/zDNAeWU0PxKolEX1D8Vn1qWhGjH.jpg",
-    "rating": "1",
-    "engTitle": "1",
-    "ageLimit": "12",
-    "releaseDate": "2000-11-11T00:00:00",
-    "director": "1",
-    "actor": "1",
-    "totalCustomer": "1",
-    "moviePlayingInfo": []
-  }
+//  movie = {
+//     "id": 1,
+//     "title": "인터스텔라",
+//     "movieCode": "1",
+//     "country": "1",
+//     "genre": "1",
+//     "summary": "1",
+//     "runningTime": "1",
+//     "img": "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/zDNAeWU0PxKolEX1D8Vn1qWhGjH.jpg",
+//     "rating": "1",
+//     "engTitle": "1",
+//     "ageLimit": "12",
+//     "releaseDate": "2000-11-11T00:00:00",
+//     "director": "1",
+//     "actor": "1",
+//     "totalCustomer": "1",
+//     "moviePlayingInfo": []
+//   }
+
+    // movie = 
+
     const axios = require('axios').default;
 
     axios.get('http://localhost/justmoveit/movies/1')
