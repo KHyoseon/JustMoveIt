@@ -9,6 +9,7 @@ public class CommonPjtApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(CommonPjtApplication.class, args);
+
 	}
 
 }
