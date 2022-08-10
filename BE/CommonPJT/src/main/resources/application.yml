@@ -7,7 +7,7 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
-    hidden-method:
+    hiddenmethod:
       filter:
         enabled: true
 
