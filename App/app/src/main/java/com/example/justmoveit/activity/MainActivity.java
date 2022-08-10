@@ -27,6 +27,7 @@ import com.kakao.auth.Session;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -70,7 +71,8 @@ public class MainActivity extends AppCompatActivity {
         BlankFragment blankFragment = new BlankFragment("상영 중인 영화가 없습니다.");
 
         // 서버에서 받아왔는데 아무것도 없으면 빈 프래그먼트로 교체
-        if(movieSP.getString("movie_list", "").equals("")){
+        Map<String, ?> map = movieSP.getAll();
+        if(map.size() == 0){
             getSupportFragmentManager().beginTransaction().replace(R.id.VP_container, blankFragment).commit();
         }
 
@@ -116,9 +118,6 @@ public class MainActivity extends AppCompatActivity {
         private void getMoviesFromServer() {
             SharedPreferences.Editor editor = MainActivity.movieSP.edit();
 
-//            editor.remove("movie_list");
-//            editor.apply();
-
             MovieApi service = MovieApi.retrofit.create(MovieApi.class);
             service.getMovieList().enqueue(new Callback<Movie[]>() {
                 @Override
@@ -131,8 +130,15 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     // SP에 저장
+                    // Todo: 11번째 저거 뭐야????
                     Gson gson = new Gson();
-                    editor.putString("movie_list", gson.toJson(Arrays.asList(movies)));
+                    int i=0;
+                    for(Movie movie: movies) {
+                        if(i == 10)   return;
+                        editor.putString(movie.getMoviePlayingInfoByIndex(0).getMovieId()+"", gson.toJson(movie));
+                        Log.i("movieSP", movie.getMoviePlayingInfoByIndex(0).getMovieId()+"" + " 삽입");
+                        ++i;
+                    }
                     editor.apply();
                 }
 

@@ -9,6 +9,7 @@ import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 
 public interface MovieApi {
     OkHttpClient client = new OkHttpClient().newBuilder()
@@ -28,8 +29,7 @@ public interface MovieApi {
     @GET("/api/movies")
     Call<Movie[]> getMovieList();
 
-    /*// 영화 상영 정보
-    @GET("/justmoveit/info")
-    Call<JsonArray> getMoviePlayingInfo();
-    */
+    // 영화 상영 정보
+    @GET("/justmoveit/movies/{id}")
+    Call<Movie> getMoviePlayingInfo(@Path("id") String id);
 }

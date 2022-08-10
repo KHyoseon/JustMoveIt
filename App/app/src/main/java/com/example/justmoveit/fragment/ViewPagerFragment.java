@@ -24,7 +24,9 @@ import com.example.justmoveit.model.Movie;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class ViewPagerFragment extends Fragment {
     MainActivity activity;
@@ -72,7 +74,20 @@ public class ViewPagerFragment extends Fragment {
         moviesViewPager.setPageTransformer(compositePageTransformer);
 
         // SP에 저장된 무비 리스트 가져와서 어댑트
-        String json = movieSP.getString("movie_list", "");
+        Map<String, ?> map = movieSP.getAll();
+        // 없으면 종료
+        if(map == null || map.size() == 0){
+            Log.e("setupMoviesViewPager", "there are no movies in SP");
+            return;
+        }
+
+        // 리스트에 옮겨담음
+        List<Movie> movies = new ArrayList<>();
+        Gson gson = new Gson();
+        for(String id: map.keySet()){
+            movies.add(gson.fromJson(movieSP.getString(id, ""), Movie.class));
+        }
+        /*String json = movieSP.getString("movie_list", "");
         if (json.equals("")) {
             Log.e("setupMoviesViewPager", "there are no movies in SP");
             return;
@@ -82,7 +97,7 @@ public class ViewPagerFragment extends Fragment {
         if (movies == null) {
             Log.e("setupMoviesViewPager", "there are no movies in SP");
             return;
-        }
+        }*/
         moviesViewPager.setAdapter(new MoviesAdapter(movies));
     }
 

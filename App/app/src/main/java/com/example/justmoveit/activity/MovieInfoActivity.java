@@ -1,9 +1,13 @@
 package com.example.justmoveit.activity;
 
+import static com.example.justmoveit.activity.MainActivity.movieSP;
+
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -23,13 +27,19 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.example.justmoveit.R;
 import com.example.justmoveit.adapters.ImageSliderAdapter;
 import com.example.justmoveit.adapters.TimesAdapter;
+import com.example.justmoveit.api.MovieApi;
 import com.example.justmoveit.model.Movie;
 import com.example.justmoveit.model.MoviePlayingInfo;
+import com.google.gson.Gson;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MovieInfoActivity extends AppCompatActivity {
     private Movie movie;
@@ -38,8 +48,23 @@ public class MovieInfoActivity extends AppCompatActivity {
     private Handler sliderHandler = new Handler();
 
     private void loadMovieDetails(){
-        Intent intent =getIntent();
-        movie=(Movie)intent.getSerializableExtra("movie");
+        Intent intent = getIntent();
+        String movieId = intent.getStringExtra("movie_id");
+        Gson gson = new Gson();
+        movie = gson.fromJson(movieSP.getString(movieId, ""), Movie.class);
+
+        // 서버 통신 스레드 - movie id로 통신 -> 새로운 playinginfo 있으면 SP 저장
+        ConnectionThread thread = new ConnectionThread(movieId);
+        Log.d("TicketingActivity", "connection thread start");
+        thread.start();
+        synchronized (thread){
+            try {
+                Log.d("TicketingActivity", "main thread waiting");
+                thread.wait();
+            } catch (InterruptedException e){
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -47,7 +72,7 @@ public class MovieInfoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_detail);
 
-        //intent로 movie 정보 가져옴
+        // 서버에서 movie 최신 정보 가져옴
         loadMovieDetails();
 
         layoutSliderIndicators = findViewById(R.id.layoutSliderIndicators);
@@ -80,7 +105,7 @@ public class MovieInfoActivity extends AppCompatActivity {
 
     private  void setImageBack(){
         ImageView imgBack = findViewById(R.id.imageBack);
-        imgBack.setOnClickListener(view ->onBackPressed());
+        imgBack.setOnClickListener(view -> onBackPressed());
     }
 
     private void setupSliderViewPager(){
@@ -210,4 +235,52 @@ public class MovieInfoActivity extends AppCompatActivity {
         ratingBar.setRating(Float.parseFloat(movie.getRating())/2);
         textRatingBarNum.setText((movie.getRating()));
     }
+
+    private static class ConnectionThread extends Thread {
+        private String id;
+
+        public ConnectionThread(String movieId){
+            this.id = movieId;
+        }
+
+        @Override
+        public void run() {
+            synchronized (this) {
+                // 메인 스레드 멈추고 실행할 부분
+                getMoviePlayingInfoFromServer();
+                Log.d("MovieInfoActivity", "connection thread end");
+                notify();
+            }
+        }
+
+        private void getMoviePlayingInfoFromServer() {
+            SharedPreferences.Editor editor = movieSP.edit();
+
+            MovieApi service = MovieApi.retrofit.create(MovieApi.class);
+            service.getMoviePlayingInfo(id).enqueue(new Callback<Movie>() {
+                @Override
+                public void onResponse(Call<Movie> call, Response<Movie> response) {
+                    Movie movie = response.body();
+                    if(movie == null) {
+                        Log.d("MovieInfoActivity - getMoviesFromServer", "onResponse(): "+response.code());
+                        return;
+                    }
+                    Log.d("MovieInfoActivity - getMoviesFromServer", "onResponse(): success");
+
+                    Gson gson = new Gson();
+                    // 서버에서 가져온 movie 정보를 다시 덮어씌워줌
+                    String movieId = movie.getMoviePlayingInfoByIndex(0).getMovieId()+"";
+                    editor.putString(movieId, gson.toJson(movie));
+                    editor.apply();
+                    // 이러면 최신 좌석 현황을 저장할 수 있음
+                }
+
+                @Override
+                public void onFailure(Call<Movie> call, Throwable t) {
+
+                }
+            });
+        }
+    }
+
 }

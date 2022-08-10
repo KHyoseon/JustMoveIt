@@ -34,7 +34,7 @@ public class MyTicketListActivity extends AppCompatActivity {
     private Gson gson;
     private SharedPreferences.Editor editor;
 
-    private TicketListFragment ticketListFragment;
+    private BlankFragment blankFragment;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,26 +62,19 @@ public class MyTicketListActivity extends AppCompatActivity {
 
         // 로그아웃
         TextView logout = findViewById(R.id.logout);
-        logout.setOnClickListener(new View.OnClickListener() {
+        logout.setOnClickListener(view -> UserManagement.getInstance().requestLogout(new LogoutResponseCallback() {
             @Override
-            public void onClick(View view) {
-                UserManagement.getInstance().requestLogout(new LogoutResponseCallback() {
-                    @Override
-                    public void onCompleteLogout() {
-                        editor = userSP.edit();
-                        editor.remove("user_info");
-                        editor.remove("user_tickets");
-                        editor.apply();
-                        finish(); // 현재 액티비티 종료 -> 메인으로 돌아감
-                    }
-                });
+            public void onCompleteLogout() {
+                editor = userSP.edit();
+                editor.remove("user_info");
+                editor.remove("user_tickets");
+                editor.apply();
+                finish(); // 현재 액티비티 종료 -> 메인으로 돌아감
             }
-        });
-
-        ticketListFragment = (TicketListFragment) getSupportFragmentManager().findFragmentById(R.id.TL_fragment);
-        BlankFragment blankFragment = new BlankFragment("예매 내역이 없습니다.");
+        }));
 
         // 서버에서 받아왔는데 아무것도 없으면 빈 프래그먼트로 교체
+        blankFragment = new BlankFragment("예매 내역이 없습니다.");
         String str = userSP.getString("user_tickets", "");
         if(str.equals("")){
             getSupportFragmentManager().beginTransaction().replace(R.id.TL_container, blankFragment).commit();
@@ -113,29 +106,29 @@ public class MyTicketListActivity extends AppCompatActivity {
 
         private void getUserTicketsFromServer() {
             UserTicketApi ticketService = UserTicketApi.retrofit.create(UserTicketApi.class);
-
-            SharedPreferences.Editor editor = userSP.edit();
-            ArrayList<ReservedTicket> finalTicketListFromPS = new ArrayList<>();
-
             String phoneNumber = userSP.getString("phone_number", "");
+
             ticketService.getUserTicketList(phoneNumber).enqueue(new Callback<Ticket[]>() {
                 @Override
                 public void onResponse(Call<Ticket[]> call, Response<Ticket[]> response) {
-                    Log.d("ConnectionThread - getUserTicketList", "onResponse()");
                     Ticket[] ticketListFromServer = response.body();
 
                     // 서버에 예매 이력이 없으면 종료
-                    if(ticketListFromServer==null){
+                    if(ticketListFromServer==null || ticketListFromServer.length==0){
                         Log.e("getUserTicketsFromServer", "ticket list from server doesn't exist");
-                    } else {
-                        // 서버에 이력이 있으면 추가함
-                        for (Ticket ticket : ticketListFromServer) {
-                            finalTicketListFromPS.add(new ReservedTicket(ticket));
-                        }
+                        return;
                     }
+                    Log.d("ConnectionThread - getUserTicketList", "onResponse()");
+
+                    // 서버에 이력이 있으면 추가함
+                    ArrayList<ReservedTicket> finalTicketListFromPS = new ArrayList<>();
+                    for (Ticket ticket : ticketListFromServer) {
+                        finalTicketListFromPS.add(new ReservedTicket(ticket));
+                    }
+
                     // final을 SP에 담음
                     Gson gson = new Gson();
-                    editor.remove("user_tickets");
+                    SharedPreferences.Editor editor = userSP.edit();
                     editor.putString("user_tickets", gson.toJson(finalTicketListFromPS));
                     editor.apply();
                 }

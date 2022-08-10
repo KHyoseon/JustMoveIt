@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.justmoveit.R;
 import com.example.justmoveit.api.UserTicketApi;
+import com.example.justmoveit.model.Movie;
 import com.example.justmoveit.model.ReservedTicket;
 import com.example.justmoveit.model.Ticket;
 import com.example.justmoveit.model.kakaopay.PayApprove;
@@ -33,6 +34,7 @@ import retrofit2.Response;
 
 public class PaymentActivity extends AppCompatActivity {
     private WebView webView;
+    private static Movie movie;
     private static Ticket ticket;
 
     private String tidPin; //결제 고유 번호
@@ -43,7 +45,8 @@ public class PaymentActivity extends AppCompatActivity {
     public PaymentActivity() {
     }
 
-    public PaymentActivity(Ticket t) {
+    public PaymentActivity(Movie m, Ticket t) {
+        movie = m;
         ticket = t;
         PRODUCT_NAME = ticket.getMovieTitle();
         PRODUCT_PRICE = Integer.parseInt(ticket.getTotalCost());
@@ -201,10 +204,12 @@ public class PaymentActivity extends AppCompatActivity {
                     }
 
                     // 성공시 앱 캐시에도 저장
+                    // movieSP에 따로 저장할 필요없음. oncreate 때 계속 서버랑 통신하면서 최신 좌석 배치를 얻어올 테니까..
+                    // 그냥 유저 예매 내역에만 추가해주면 됨.
                     Gson gson = new Gson();
                     String json = userSP.getString("user_tickets", "");
 
-                    // 기존에 있던 리스트 담고
+                    // 기존에 있던 예매 내역 리스트 담고
                     ArrayList<ReservedTicket> reservedTickets = gson.fromJson(json, TypeToken.getParameterized(ArrayList.class, ReservedTicket.class).getType());
 
                     // 새로운 티켓 추가

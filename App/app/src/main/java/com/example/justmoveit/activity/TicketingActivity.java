@@ -19,7 +19,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.justmoveit.R;
+import com.example.justmoveit.api.MovieApi;
 import com.example.justmoveit.api.UserTicketApi;
+import com.example.justmoveit.model.Movie;
 import com.example.justmoveit.model.MoviePlayingInfo;
 import com.example.justmoveit.model.ReservedTicket;
 import com.example.justmoveit.model.Ticket;
@@ -32,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.TimeZone;
 
@@ -40,6 +43,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class TicketingActivity extends AppCompatActivity {
+    private Movie movie;
     private MoviePlayingInfo moviePlayingInfo;
     private TextView textAdult, textChild, textTotalCost;
 
@@ -52,7 +56,22 @@ public class TicketingActivity extends AppCompatActivity {
 
     private void loadMovie() {
         Intent intent = getIntent();
-        moviePlayingInfo = (MoviePlayingInfo) intent.getSerializableExtra("moviePlayingInfo");
+        // 얘는 중복 id니까 어디 영화건지 확인하기 위해 movieid도 필요하다.
+        String movieId = intent.getStringExtra("movieId");
+        String moviePlayingInfoId = intent.getStringExtra("moviePlayingInfoId");
+
+        Gson gson = new Gson();
+        // 영화
+        movie = gson.fromJson(movieSP.getString(movieId, ""), Movie.class);
+        // 영화 상영 정보
+        MoviePlayingInfo[] infos = movie.getMoviePlayingInfoList();
+        for(MoviePlayingInfo info: infos){
+            String str = info.getId() + "";
+            if(moviePlayingInfoId.equals(str)){
+                moviePlayingInfo = info;
+                break;
+            }
+        }
     }
 
     @Override
@@ -65,7 +84,7 @@ public class TicketingActivity extends AppCompatActivity {
         clsf = new int[2];
         selectedSeat = new HashSet<>();
 
-        // 예매할 영화 정보 가져옴
+        // 예매할 영화 정보 서버에서 가져옴
         loadMovie();
 
         // 레이아웃 매핑
@@ -120,8 +139,6 @@ public class TicketingActivity extends AppCompatActivity {
                 sb.setLength(sb.length()-1);
                 String seat = sb.toString();
 
-                movieSP.getString("", "");
-
                 // 티켓 객체 생성 후 paymentActivity 로 넘겨줌
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                 simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
@@ -139,10 +156,8 @@ public class TicketingActivity extends AppCompatActivity {
                 // Todo: 로직 paymentActivity로 넘기기
                 // 서버에 넣음
                 postTicketToServer(ticket);
-
                 finish();
-
-//                PaymentActivity paymentActivity = new PaymentActivity(ticket);
+//                PaymentActivity paymentActivity = new PaymentActivity(movie, ticket);
 //                Intent it = new Intent(getApplicationContext(), paymentActivity.getClass());
 //                startActivity(it);
             }
@@ -212,7 +227,7 @@ public class TicketingActivity extends AppCompatActivity {
     }
 
     private void postTicketToServer(Ticket ticket){
-        ConnectionThread thread = new ConnectionThread(ticket);
+        ConnectionThreadTemp thread = new ConnectionThreadTemp(ticket);
         Log.d("PaymentActivity", "connection thread start");
         thread.start();
         synchronized (thread) {
@@ -246,10 +261,10 @@ public class TicketingActivity extends AppCompatActivity {
         }
     }
 
-    static class ConnectionThread extends Thread {
-        Ticket ticket;
+    private static class ConnectionThreadTemp extends Thread {
+        private Ticket ticket;
 
-        public ConnectionThread(Ticket ticket){
+        public ConnectionThreadTemp(Ticket ticket){
             this.ticket = ticket;
         }
 
@@ -263,6 +278,7 @@ public class TicketingActivity extends AppCompatActivity {
         }
 
         private void getReserveTicket() {
+            // 서버 통신을 위해 movieinfoid가 필요함, SP에 저장하기 위해서 movieid도 필요 근데 이건 플레잉 인포에 이미 있음
             UserTicketApi ticketService = UserTicketApi.retrofit.create(UserTicketApi.class);
             ticketService.reserveTicket(ticket).enqueue(new Callback<Ticket>() {
                 @Override
@@ -301,4 +317,5 @@ public class TicketingActivity extends AppCompatActivity {
             });
         }
     }
+
 }

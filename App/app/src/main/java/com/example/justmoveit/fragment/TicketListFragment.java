@@ -54,6 +54,13 @@ public class TicketListFragment extends Fragment {
         return rootView;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.e("ticketList fragment", "onResume()");
+        adaptTicketList();
+    }
+
     private void adaptTicketList(){
         Gson gson = new Gson();
         ArrayList<ReservedTicket> ticketListFromSP = gson.fromJson(userSP.getString("user_tickets", ""),
