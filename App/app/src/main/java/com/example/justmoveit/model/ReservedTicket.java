@@ -15,11 +15,10 @@ public class ReservedTicket implements Serializable, Comparable<ReservedTicket> 
         String[] parsed = str.split(",");
         int[] ret = new int[2];
         for(String s: parsed){
-            switch (s){
-                case "ADULT":
-                    ++ret[0]; break;
-                case "CHILD":
-                    ++ret[1]; break;
+            if ("ADULT".equals(s)) {
+                ++ret[0];
+            } else {
+                ++ret[1];
             }
         }
         return ret;

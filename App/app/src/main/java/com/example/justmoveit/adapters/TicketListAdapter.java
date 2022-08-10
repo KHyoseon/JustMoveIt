@@ -40,7 +40,7 @@ public class TicketListAdapter extends ArrayAdapter {
         Ticket ticket = reservedTicket.getTicket();
 
         title.setText(ticket.getMovieTitle());
-        date.setText(ticket.getReservationTime().substring(0, ticket.getReservationTime().length()-2));
+        date.setText((ticket.getReservationTime().split(" "))[0]);
         time.setText(ticket.getStartTime());
         theater.setText(ticket.getTheaterNo()+"관");
         seat.setText(ticket.getSeat());

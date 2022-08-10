@@ -13,7 +13,7 @@ public class Ticket implements Serializable {
     private String endTime;
     private String phoneNumber;
     private String classification;
-    private String reservationTime; // yyyy-MM-dd
+    private String reservationTime;
     private String seat;
     private String theaterNo, totalCost;
 
@@ -27,8 +27,7 @@ public class Ticket implements Serializable {
         this.endTime = endTime;
         this.phoneNumber = phoneNumber;
         this.classification = classification;
-        // 2022-08-05 16:52:12
-        this.reservationTime = reservationTime.substring(0, reservationTime.indexOf("."));
+        this.reservationTime = reservationTime;
         this.seat = seat;
         this.theaterNo = theaterNo;
         this.totalCost = totalCost;
@@ -115,7 +114,9 @@ public class Ticket implements Serializable {
     }
 
     public String getReservationTime() {
-        return reservationTime;
+        // 이렇게 옴 2022-08-05T17:30:37.002+00:00 -> 2022-08-05 17:30:37
+        String parsed = reservationTime.substring(0, reservationTime.indexOf("."));
+        return reservationTime.replace("T", " ");
     }
 
     public void setReservationTime(String reservationTime) {

@@ -117,9 +117,6 @@ public class MyTicketListActivity extends AppCompatActivity {
             SharedPreferences.Editor editor = userSP.edit();
             ArrayList<ReservedTicket> finalTicketListFromPS = new ArrayList<>();
 
-//            editor.remove("user_tickets");
-//            editor.apply();
-
             String phoneNumber = userSP.getString("phone_number", "");
             ticketService.getUserTicketList(phoneNumber).enqueue(new Callback<Ticket[]>() {
                 @Override

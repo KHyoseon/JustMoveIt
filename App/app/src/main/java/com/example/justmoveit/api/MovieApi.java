@@ -36,29 +36,4 @@ public interface MovieApi {
     @GET("/justmoveit/info")
     Call<JsonArray> getMoviePlayingInfo();
     */
-    /* return
-    {
-        "ageLimit": "string",
-        "endTime": "string",
-        "movieId": 0,
-        "movieTitle": "string",
-        "startTime": "string",
-        "theaterNo": "string",
-        "tickets": [
-          {
-            "ageLimit": "string",
-            "classification": "ADULT",
-            "endTime": "string",
-            "movieId": 0,
-            "moviePlayingInfoId": 0,
-            "movieTitle": "string",
-            "phoneNumber": "string",
-            "reservationTime": "2022-08-05T16:54:47.561Z",
-            "seat": "string",
-            "startTime": "string"
-          }
-        ]
-      }
-     *//*
-*/
 }

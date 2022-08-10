@@ -43,7 +43,4 @@ public interface UserTicketApi {
     @DELETE("/api/tickets/{id}")
     Call<Void> cancelTicket(@Path("id") Long id);
 
-
-    // test
-//    @POST
 }
