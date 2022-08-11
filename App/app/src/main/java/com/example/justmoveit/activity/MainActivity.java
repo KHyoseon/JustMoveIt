@@ -2,7 +2,11 @@ package com.example.justmoveit.activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,6 +29,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.kakao.auth.Session;
 
+import java.security.MessageDigest;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +42,7 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity {
     public static SharedPreferences movieSP, userSP;
 
-    private ViewPagerFragment viewPagerFragment;
+//    private ViewPagerFragment viewPagerFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
 
-        viewPagerFragment = (ViewPagerFragment) getSupportFragmentManager().findFragmentById(R.id.VP_fragment);
+//        viewPagerFragment = (ViewPagerFragment) getSupportFragmentManager().findFragmentById(R.id.VP_fragment);
         BlankFragment blankFragment = new BlankFragment("상영 중인 영화가 없습니다.");
 
         // 서버에서 받아왔는데 아무것도 없으면 빈 프래그먼트로 교체
@@ -75,6 +80,8 @@ public class MainActivity extends AppCompatActivity {
         if(map.size() == 0){
             getSupportFragmentManager().beginTransaction().replace(R.id.VP_container, blankFragment).commit();
         }
+
+        getAppKeyHash();
 
         Log.d("MainActivity", "view Pager start");
     }
@@ -104,6 +111,22 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private void getAppKeyHash() {
+        try {
+            PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_SIGNATURES);
+            for (Signature signature : info.signatures) {
+                MessageDigest md;
+                md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                String something = new String(Base64.encode(md.digest(), 0));
+                Log.e("Hash key", something);
+            }
+        } catch (Exception e) {
+            Log.e("name not found", e.toString());
+        }
+    }
+
+
     private static class ConnectionThread extends Thread {
         @Override
         public void run() {
@@ -111,6 +134,11 @@ public class MainActivity extends AppCompatActivity {
                 // 메인 스레드 멈추고 실행할 부분
                 getMoviesFromServer();
                 Log.d("MainActivity", "connection thread end");
+                try {
+                    sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 notify();
             }
         }
@@ -130,16 +158,16 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     // SP에 저장
-                    // Todo: 11번째 저거 뭐야????
                     Gson gson = new Gson();
                     int i=0;
                     for(Movie movie: movies) {
-                        if(i == 10)   return;
+                        if(i == 10)   break;
                         editor.putString(movie.getMoviePlayingInfoByIndex(0).getMovieId()+"", gson.toJson(movie));
                         Log.i("movieSP", movie.getMoviePlayingInfoByIndex(0).getMovieId()+"" + " 삽입");
                         ++i;
                     }
                     editor.apply();
+                    Log.i("movieSP", "모든 영화 삽입 완료");
                 }
 
                 @Override
