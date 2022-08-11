@@ -53,7 +53,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context.getApplicationContext(), MovieInfoActivity.class);
-                intent.putExtra("movie", movieList.get(index));
+                intent.putExtra("movie_id", movieList.get(index).getMoviePlayingInfoByIndex(0).getMovieId()+"");
                 context.startActivity(intent);
             }
         });
@@ -80,7 +80,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
 
         // 값 적용
         void setMovie(Movie movie) {
-            Picasso.get().load(movie.getMainImg()).into(imagePoster);
+            Picasso.get().load(movie.getImg()).into(imagePoster);
             textName.setText(movie.getTitle());
             ratingBar.setRating(Float.parseFloat(movie.getRating()) / 2);
             ratingBarNum.setText((movie.getRating()));

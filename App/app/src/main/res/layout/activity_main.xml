@@ -7,12 +7,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.MainActivity"
-    android:paddingHorizontal="@dimen/activity_horizontal_margin"
-    android:paddingVertical="@dimen/activity_vertical_margin"
     android:background="@color/colorPrimary">
 
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:elevation="0dp"
@@ -33,29 +32,29 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
-                    android:layout_width="150dp"
-                    android:layout_height="80dp"
-                    android:layout_centerVertical="true"
+                    android:layout_width="120dp"
+                    android:layout_height="67dp"
+                    android:layout_marginVertical="15dp"
                     android:contentDescription="@string/app_name"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/logo" />
+                    android:src="@drawable/logo_reverse_60" />
 
             </RelativeLayout>
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/moviesViewPager"
+    <FrameLayout
+        android:id="@+id/VP_container"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="150dp"
-        android:layout_marginBottom="200dp"
-        android:paddingStart="@dimen/_50sdp"
-        android:paddingEnd="@dimen/_50sdp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        tools:layout_editor_absoluteX="0dp">
-    </androidx.viewpager2.widget.ViewPager2>
+        android:layout_height="match_parent"
+        android:layout_marginTop="100dp"
+        app:layout_constraintTop_toBottomOf="@+id/app_bar">
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/VP_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:name="com.example.justmoveit.fragment.ViewPagerFragment"/>
+
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

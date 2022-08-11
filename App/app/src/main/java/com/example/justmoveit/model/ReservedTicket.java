@@ -1,119 +1,45 @@
 package com.example.justmoveit.model;
 
+import android.util.Log;
+
 import java.io.Serializable;
 import java.util.Objects;
 
 public class ReservedTicket implements Serializable, Comparable<ReservedTicket> {
-    private String title;
-    private String viewingDate;
-    private String seat;
-    private int adult, child, disabled;
-
-    private String viewingTime;
-    private int theaterNo;
-
-    private Long priority;
+    private final Ticket ticket;
     private boolean expired;
 
     public ReservedTicket(Ticket ticket) {
-        this.title = ticket.getMovieTitle();
-        this.viewingDate = ticket.getReservationTime().substring(0, 10);
-
-        this.viewingTime = ticket.getStartTime();
-        this.theaterNo = ticket.getTheaterNo();
-
-        adult = child = disabled = 0;
-        getParseClassification(ticket);
-        this.seat = ticket.getSeat();
-
-        String temp = viewingDate + viewingTime;
-        this.priority = Long.parseLong(temp.replace("-", "").replace(":", ""));
+        this.ticket = ticket;
     }
 
-    private void getParseClassification(Ticket ticket) {
-        String[] parsed = ticket.getClassification().split(",");
+    public static int[] convertClassificationToInt(String str) {
+        String[] parsed = str.split(",");
+        int[] ret = new int[2];
         for(String s: parsed){
-            switch (s){
-                case "ADULT":
-                    ++adult; break;
-                case "CHILD":
-                    ++child; break;
-                case "DISABLED":
-                    ++disabled; break;
+            if ("ADULT".equals(s)) {
+                ++ret[0];
+            } else {
+                ++ret[1];
             }
         }
+        return ret;
     }
 
-    public String getTitle() {
-        return title;
+    public static String convertClassificationToString(int[] param) {
+        StringBuilder sb = new StringBuilder();
+        for(int i=0; i< param[0]; i++){
+            sb.append("ADULT,");
+        }
+        for(int i=0; i< param[1]; i++){
+            sb.append("CHILD,");
+        }
+        sb.setLength(sb.length()-1);
+        return sb.toString();
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getViewingDate() {
-        return viewingDate;
-    }
-
-    public void setViewingDate(String viewingDate) {
-        this.viewingDate = viewingDate;
-    }
-
-    public String getSeat() {
-        return seat;
-    }
-
-    public void setSeat(String seat) {
-        this.seat = seat;
-    }
-
-    public int getAdult() {
-        return adult;
-    }
-
-    public void setAdult(int adult) {
-        this.adult = adult;
-    }
-
-    public int getChild() {
-        return child;
-    }
-
-    public void setChild(int child) {
-        this.child = child;
-    }
-
-    public int getDisabled() {
-        return disabled;
-    }
-
-    public void setDisabled(int disabled) {
-        this.disabled = disabled;
-    }
-
-    public String getViewingTime() {
-        return viewingTime;
-    }
-
-    public void setViewingTime(String viewingTime) {
-        this.viewingTime = viewingTime;
-    }
-
-    public int getTheaterNo() {
-        return theaterNo;
-    }
-
-    public void setTheaterNo(int theaterNo) {
-        this.theaterNo = theaterNo;
-    }
-
-    public Long getPriority() {
-        return priority;
-    }
-
-    public void setPriority(Long priority) {
-        this.priority = priority;
+    public Ticket getTicket() {
+        return ticket;
     }
 
     public boolean isExpired() {
@@ -126,7 +52,14 @@ public class ReservedTicket implements Serializable, Comparable<ReservedTicket> 
 
     @Override
     public int compareTo(ReservedTicket ticket2) {
-        if (Objects.equals(this.getPriority(), ticket2.getPriority())) return 0;
-        return (ticket2.getPriority() > this.getPriority() ? 1 : -1);
+        String thisPri = ticket.getReservationTime();
+        String otherPri = ticket2.getTicket().getReservationTime();
+        return (thisPri.compareTo(otherPri));
+    }
+
+    public boolean isPassedNow(String otherPri){
+        String thisPri = (ticket.getReservationTime().split(" "))[0] + " " + ticket.getStartTime();
+        Log.i("is expired?", "this: "+ thisPri +" / now: "+otherPri);
+        return thisPri.compareTo(otherPri) < 0;
     }
 }

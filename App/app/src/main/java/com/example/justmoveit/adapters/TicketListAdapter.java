@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 
 import com.example.justmoveit.R;
 import com.example.justmoveit.model.ReservedTicket;
+import com.example.justmoveit.model.Ticket;
 
 import java.util.ArrayList;
 
@@ -35,16 +36,17 @@ public class TicketListAdapter extends ArrayAdapter {
         TextView theater = convertView.findViewById(R.id.theater);
         TextView seat = convertView.findViewById(R.id.seat);
 
-        ReservedTicket ticket = (ReservedTicket)getItem(position);
+        ReservedTicket reservedTicket = (ReservedTicket)getItem(position);
+        Ticket ticket = reservedTicket.getTicket();
 
-        title.setText(ticket.getTitle());
-        date.setText(ticket.getViewingDate());
-        time.setText(ticket.getViewingTime());
+        title.setText(ticket.getMovieTitle());
+        date.setText((ticket.getReservationTime().split(" "))[0]);
+        time.setText(ticket.getStartTime());
         theater.setText(ticket.getTheaterNo()+"관");
         seat.setText(ticket.getSeat());
 
-        if(ticket.isExpired()){
-            Log.i("background Tint", ticket.getTitle());
+        if(reservedTicket.isExpired()){
+            Log.i("background Tint", ticket.getMovieTitle());
             convertView.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#a5a5aa")));
         }
 

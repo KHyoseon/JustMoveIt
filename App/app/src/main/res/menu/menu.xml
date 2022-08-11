@@ -4,11 +4,11 @@
 
     <item
         android:id="@+id/profile"
-        android:title="profile"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:layout_marginHorizontal="10dp"
-        android:icon="@drawable/user"
+        android:title="My"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginHorizontal="20dp"
         app:showAsAction="ifRoom"/>
+<!--    android:icon="@drawable/user"-->
 
 </menu>

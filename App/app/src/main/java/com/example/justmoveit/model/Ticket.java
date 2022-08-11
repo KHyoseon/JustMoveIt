@@ -1,9 +1,15 @@
 package com.example.justmoveit.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
 
 // 서버 통신 dto
 public class Ticket implements Serializable {
+    @SerializedName("id")
     private Long ticketId;
     private Long moviePlayingInfoId;
     private Long movieId;
@@ -13,11 +19,12 @@ public class Ticket implements Serializable {
     private String endTime;
     private String phoneNumber;
     private String classification;
-    private String reservationTime;
+    private Date reservationTime;
     private String seat;
-    private int theaterNo;
+    private String theaterNo;
+    private String totalCost;
 
-    public Ticket(Long ticketId, Long moviePlayingInfoId, Long movieId, String movieTitle, String ageLimit, String startTime, String endTime, String phoneNumber, String classification, String reservationTime, String seat, int theaterNo) {
+    public Ticket(Long ticketId, Long moviePlayingInfoId, Long movieId, String movieTitle, String ageLimit, String startTime, String endTime, String phoneNumber, String classification, Date reservationTime, String seat, String theaterNo, String totalCost) {
         this.ticketId = ticketId;
         this.moviePlayingInfoId = moviePlayingInfoId;
         this.movieId = movieId;
@@ -30,21 +37,22 @@ public class Ticket implements Serializable {
         this.reservationTime = reservationTime;
         this.seat = seat;
         this.theaterNo = theaterNo;
+        this.totalCost = totalCost;
     }
 
     public Long getTicketId() {
         return ticketId;
     }
 
-    public void setTicketId(Long ticketId) {
+    public void setId(Long ticketId) {
         this.ticketId = ticketId;
     }
 
-    public int getTheaterNo() {
+    public String getTheaterNo() {
         return theaterNo;
     }
 
-    public void setTheaterNo(int theaterNo) {
+    public void setTheaterNo(String theaterNo) {
         this.theaterNo = theaterNo;
     }
 
@@ -113,10 +121,13 @@ public class Ticket implements Serializable {
     }
 
     public String getReservationTime() {
-        return reservationTime;
+        // 이렇게 옴 2022-08-05T17:30:37.002+00:00 -> 2022-08-05 17:30:37
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+        return simpleDateFormat.format(reservationTime);
     }
 
-    public void setReservationTime(String reservationTime) {
+    public void setReservationTime(Date reservationTime) {
         this.reservationTime = reservationTime;
     }
 
@@ -126,5 +137,13 @@ public class Ticket implements Serializable {
 
     public void setSeat(String seat) {
         this.seat = seat;
+    }
+
+    public String getTotalCost() {
+        return totalCost;
+    }
+
+    public void setTotalCost(String totalCost) {
+        this.totalCost = totalCost;
     }
 }

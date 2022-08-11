@@ -1,6 +1,9 @@
 package com.example.justmoveit.activity;
 
+import static com.example.justmoveit.activity.LoadingActivity.userSP;
+
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -9,7 +12,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.justmoveit.R;
-
+import com.example.justmoveit.model.User;
+import com.google.gson.Gson;
 import com.kakao.auth.ApiResponseCallback;
 import com.kakao.auth.AuthService;
 import com.kakao.auth.ISessionCallback;
@@ -21,7 +25,6 @@ import com.kakao.usermgmt.callback.MeV2ResponseCallback;
 import com.kakao.usermgmt.response.MeV2Response;
 import com.kakao.usermgmt.response.model.UserAccount;
 import com.kakao.util.exception.KakaoException;
-import com.kakao.util.helper.SharedPreferencesCache;
 
 import java.util.Objects;
 
@@ -49,18 +52,24 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(MeV2Response result) {
                     // 로그인 성공
-                    Intent intent = new Intent(LoginActivity.this, MyTicketsListActivity.class);
-
+                    Intent intent = new Intent(LoginActivity.this, MyTicketListActivity.class);
                     UserAccount account = result.getKakaoAccount();
-                    SharedPreferencesCache cache = Session.getCurrentSession().getAppCache();
 
-                    cache.put("user_name", account.getProfile().getNickname());
-                    cache.put("user_img_url", account.getProfile().getProfileImageUrl());
-                    cache.put("user_email", account.getEmail());
-                    cache.put("user_age_range", account.getAgeRange().getValue());
-                    cache.put("user_gender", Objects.requireNonNull(account.getGender()).getValue());
+                    SharedPreferences.Editor editor = userSP.edit();
+
+                    User user = new User(account.getProfile().getProfileImageUrl(),
+                            account.getProfile().getNickname(), account.getEmail(),
+                            Objects.requireNonNull(account.getGender()).getValue(),
+                            account.getAgeRange().getValue());
+
+                    Gson gson = new Gson();
+                    editor.putString("user_info", gson.toJson(user));
+                    // Todo: 전화번호 얻기
+                    editor.putString("phone_number", "01052584112");
+                    editor.apply();
 
                     startActivity(intent);
+                    finish();
                 }
             });
         }
@@ -83,7 +92,6 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         // onActivityResult: 서브에서 메인으로 돌아올 때 값을 주고 싶을 경우 사용
-
         if (Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
             super.onActivityResult(requestCode, resultCode, data);
         }

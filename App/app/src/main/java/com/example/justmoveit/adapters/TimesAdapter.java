@@ -2,11 +2,15 @@ package com.example.justmoveit.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,7 +18,10 @@ import com.example.justmoveit.R;
 import com.example.justmoveit.activity.TicketingActivity;
 import com.example.justmoveit.model.Movie;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 public class TimesAdapter extends RecyclerView.Adapter<TimesAdapter.TimeViewHolder> {
     Movie movie;
@@ -50,12 +57,23 @@ public class TimesAdapter extends RecyclerView.Adapter<TimesAdapter.TimeViewHold
         int index = position % times.size();
 
         holder.setTime(times.get(index));
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+        String now = simpleDateFormat.format(new Date());
+        if(times.get(index).compareTo(now) < 0){
+            holder.itemView.setEnabled(false);
+            holder.textTime.setTextColor(R.color.black);
+            holder.relativeLayout.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("darkgray")));
+        }
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //클릭 이벤트
                 Intent intent = new Intent(context.getApplicationContext(), TicketingActivity.class);
-                intent.putExtra("moviePlayingInfo", movie.getMoviePlayingInfo());
+                intent.putExtra("movieId", movie.getMoviePlayingInfoByIndex(index).getMovieId()+"");
+                intent.putExtra("moviePlayingInfoId", movie.getMoviePlayingInfoByIndex(index).getId()+"");
                 context.startActivity(intent);
             }
         });
@@ -68,10 +86,12 @@ public class TimesAdapter extends RecyclerView.Adapter<TimesAdapter.TimeViewHold
 
     static class TimeViewHolder extends RecyclerView.ViewHolder {
         private final TextView textTime;
+        private final RelativeLayout relativeLayout;
 
         public TimeViewHolder(@NonNull View view) {
             super(view);
             textTime = view.findViewById(R.id.textTime);
+            relativeLayout = view.findViewById(R.id.background_color);
         }
 
         void setTime(String time) {

@@ -3,15 +3,17 @@ package com.example.justmoveit.model;
 import java.io.Serializable;
 
 public class MoviePlayingInfo implements Serializable {
+    private Long id;
     private Long movieId;
     private String movieTitle;
     private String ageLimit;
     private String startTime;
     private String endTime;
-    private int theaterNo;
+    private String theaterNo;
     private Ticket[] tickets;
 
-    public MoviePlayingInfo(Long movieId, String movieTitle, String ageLimit, String startTime, String endTime, int theaterNo, Ticket[] tickets) {
+    public MoviePlayingInfo(Long id, Long movieId, String movieTitle, String ageLimit, String startTime, String endTime, String theaterNo, Ticket[] tickets) {
+        this.id = id;
         this.movieId = movieId;
         this.movieTitle = movieTitle;
         this.ageLimit = ageLimit;
@@ -19,6 +21,14 @@ public class MoviePlayingInfo implements Serializable {
         this.endTime = endTime;
         this.theaterNo = theaterNo;
         this.tickets = tickets;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getMovieId() {
@@ -61,11 +71,11 @@ public class MoviePlayingInfo implements Serializable {
         this.endTime = endTime;
     }
 
-    public int getTheaterNo() {
+    public String getTheaterNo() {
         return theaterNo;
     }
 
-    public void setTheaterNo(int theaterNo) {
+    public void setTheaterNo(String theaterNo) {
         this.theaterNo = theaterNo;
     }
 
@@ -75,5 +85,9 @@ public class MoviePlayingInfo implements Serializable {
 
     public void setTickets(Ticket[] tickets) {
         this.tickets = tickets;
+    }
+
+    public boolean isPassedNow(String time){
+        return Integer.parseInt(this.startTime.replace(":", "")) < Integer.parseInt(time);
     }
 }
