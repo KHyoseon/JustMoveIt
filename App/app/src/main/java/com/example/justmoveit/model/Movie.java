@@ -1,8 +1,11 @@
 package com.example.justmoveit.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
 public class Movie implements Serializable {
+    @SerializedName("id")
     private Long movieId;
     private String country;
     private String director;

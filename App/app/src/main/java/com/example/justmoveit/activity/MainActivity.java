@@ -4,6 +4,7 @@ import static com.example.justmoveit.activity.LoadingActivity.movieSP;
 import static com.example.justmoveit.activity.LoadingActivity.userSP;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
@@ -31,9 +32,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        Intent intent = new Intent(this, LoadingActivity.class);
-        startActivity(intent);
 
         setContentView(R.layout.activity_main);
 

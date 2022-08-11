@@ -297,7 +297,6 @@
                 android:maxLines="4"
                 android:textColor="@color/colorTextIcons"
                 android:textSize="@dimen/_11ssp"
-
                 app:layout_constraintTop_toBottomOf="@+id/textReleaseDate"
                 tools:layout_editor_absoluteX="10dp" />
 

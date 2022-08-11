@@ -76,35 +76,42 @@ public class MovieInfoActivity extends AppCompatActivity {
 
         // 서버에서 movie 최신 정보 가져옴
         loadMovieDetails();
-
-        movie = gson.fromJson(movieSP.getString(movieId, ""), Movie.class);
-
-        layoutSliderIndicators = findViewById(R.id.layoutSliderIndicators);
-        RoundedImageView imgMoviePoster = findViewById(R.id.imageMoviePoster);
-
-        // 영화 포스터 등록
-        Picasso.get().load(movie.getImg()).into(imgMoviePoster);
-        //영화 디테일 정보 등록
-        setDetail();
-        // 뷰 페이저 (서브 이미지) 등록
-        setupSliderViewPager();
-        // 뷰 페이저 하단 인디케이터 등록
-        setupSliderIndicators(5);
         // 뒤로가기 버튼 등록
         setImageBack();
 
         // 영화 상영 시간 버튼
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         List<String> timeList= new ArrayList<>();
-
-        for(MoviePlayingInfo info: movie.getMoviePlayingInfoList()){
-            timeList.add(info.getStartTime());
-        }
-
         TimesAdapter timesAdapter = new TimesAdapter();
-        timesAdapter.setTimes(timeList, movie);
-        recyclerView.setAdapter(timesAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL,false));
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                movie = gson.fromJson(movieSP.getString(movieId, ""), Movie.class);
+
+                layoutSliderIndicators = findViewById(R.id.layoutSliderIndicators);
+                RoundedImageView imgMoviePoster = findViewById(R.id.imageMoviePoster);
+
+                // 영화 포스터 등록
+                Picasso.get().load(movie.getImg()).into(imgMoviePoster);
+                //영화 디테일 정보 등록
+                setDetail();
+                // 뷰 페이저 (서브 이미지) 등록
+                setupSliderViewPager();
+                // 뷰 페이저 하단 인디케이터 등록
+                setupSliderIndicators(5);
+
+                for(MoviePlayingInfo info: movie.getMoviePlayingInfoList()){
+                    timeList.add(info.getStartTime());
+                }
+
+                timesAdapter.setTimes(timeList, movie);
+                recyclerView.setAdapter(timesAdapter);
+                recyclerView.setLayoutManager(new LinearLayoutManager(MovieInfoActivity.this, RecyclerView.HORIZONTAL,false));
+            }
+        }, 500);
+
     }
 
     @Override
