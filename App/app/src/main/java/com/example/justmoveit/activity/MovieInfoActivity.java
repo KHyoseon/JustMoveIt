@@ -1,6 +1,6 @@
 package com.example.justmoveit.activity;
 
-import static com.example.justmoveit.activity.MainActivity.movieSP;
+import static com.example.justmoveit.activity.LoadingActivity.movieSP;
 
 import android.content.Intent;
 import android.content.SharedPreferences;

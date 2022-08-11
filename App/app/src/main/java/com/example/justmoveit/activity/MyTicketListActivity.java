@@ -1,11 +1,10 @@
 package com.example.justmoveit.activity;
-import static com.example.justmoveit.activity.MainActivity.movieSP;
-import static com.example.justmoveit.activity.MainActivity.userSP;
+
+import static com.example.justmoveit.activity.LoadingActivity.userSP;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,7 +15,6 @@ import com.bumptech.glide.Glide;
 import com.example.justmoveit.R;
 import com.example.justmoveit.api.UserTicketApi;
 import com.example.justmoveit.fragment.BlankFragment;
-import com.example.justmoveit.fragment.TicketListFragment;
 import com.example.justmoveit.model.ReservedTicket;
 import com.example.justmoveit.model.Ticket;
 import com.example.justmoveit.model.User;
@@ -33,8 +31,6 @@ import retrofit2.Response;
 public class MyTicketListActivity extends AppCompatActivity {
     private Gson gson;
     private SharedPreferences.Editor editor;
-
-    private BlankFragment blankFragment;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -74,9 +70,9 @@ public class MyTicketListActivity extends AppCompatActivity {
         }));
 
         // 서버에서 받아왔는데 아무것도 없으면 빈 프래그먼트로 교체
-        blankFragment = new BlankFragment("예매 내역이 없습니다.");
         String str = userSP.getString("user_tickets", "");
         if(str.equals("")){
+            BlankFragment blankFragment = new BlankFragment("예매 내역이 없습니다.");
             getSupportFragmentManager().beginTransaction().replace(R.id.TL_container, blankFragment).commit();
         }
     }

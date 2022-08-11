@@ -1,6 +1,6 @@
 package com.example.justmoveit.fragment;
 
-import static com.example.justmoveit.activity.MainActivity.userSP;
+import static com.example.justmoveit.activity.LoadingActivity.userSP;
 
 import android.content.Context;
 import android.content.Intent;
@@ -31,8 +31,8 @@ import java.util.Date;
 import java.util.TimeZone;
 
 public class TicketListFragment extends Fragment {
-    MyTicketListActivity activity;
-    ViewGroup rootView;
+    private MyTicketListActivity activity;
+    private ViewGroup rootView;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -49,8 +49,6 @@ public class TicketListFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         rootView = (ViewGroup) inflater.inflate(R.layout.fragment_ticket_list, container, false);
-        adaptTicketList();
-
         return rootView;
     }
 
@@ -63,8 +61,9 @@ public class TicketListFragment extends Fragment {
 
     private void adaptTicketList(){
         Gson gson = new Gson();
-        ArrayList<ReservedTicket> ticketListFromSP = gson.fromJson(userSP.getString("user_tickets", ""),
-                TypeToken.getParameterized(ArrayList.class, ReservedTicket.class, Ticket.class).getType());
+        String json = userSP.getString("user_tickets", "");
+        ArrayList<ReservedTicket> ticketListFromSP
+                = gson.fromJson(json, TypeToken.getParameterized(ArrayList.class, ReservedTicket.class).getType());
 
         if(ticketListFromSP == null){
             Log.e("TicketListFragment - adaptTicketList()", "ticketListFromSP is null");

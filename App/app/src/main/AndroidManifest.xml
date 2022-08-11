@@ -35,6 +35,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activity.LoadingActivity"
+            android:exported="true"
+            android:theme="@style/FullScreen" />
         <activity
             android:name=".activity.MovieInfoActivity"
             android:exported="true"

@@ -1,7 +1,7 @@
 package com.example.justmoveit.activity;
 
-import static com.example.justmoveit.activity.MainActivity.movieSP;
-import static com.example.justmoveit.activity.MainActivity.userSP;
+import static com.example.justmoveit.activity.LoadingActivity.movieSP;
+import static com.example.justmoveit.activity.LoadingActivity.userSP;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -68,6 +68,7 @@ public class TicketInfoActivity extends AppCompatActivity {
                     }
                 }
                 Toast.makeText(TicketInfoActivity.this, "예매 취소가 완료되었습니다.", Toast.LENGTH_SHORT).show();
+
                 finish();
             }
         });
@@ -111,7 +112,7 @@ public class TicketInfoActivity extends AppCompatActivity {
 
         private void cancelReservation() {
             UserTicketApi service = UserTicketApi.retrofit.create(UserTicketApi.class);
-            Long id = ticket.getId();
+            Long id = ticket.getTicketId();
             service.cancelTicket(id).enqueue(new Callback<Void>() {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
@@ -123,8 +124,9 @@ public class TicketInfoActivity extends AppCompatActivity {
                     // id에 해당하는 티켓 예매 정보 삭제
                     for(int i=0, n=reservedTickets.size(); i<n; i++){
                         Ticket tkt = reservedTickets.get(i).getTicket();
-                        if(Objects.equals(id, tkt.getId())){
+                        if(Objects.equals(id, tkt.getTicketId())){
                             reservedTickets.remove(i);
+                            Log.i("TicketInfoActivity - cancelReservation", "cancel done");
                             break;
                         }
                     }

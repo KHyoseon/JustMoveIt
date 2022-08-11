@@ -1,6 +1,6 @@
 package com.example.justmoveit.fragment;
 
-import static com.example.justmoveit.activity.MainActivity.movieSP;
+import static com.example.justmoveit.activity.LoadingActivity.movieSP;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -22,7 +22,6 @@ import com.example.justmoveit.activity.MainActivity;
 import com.example.justmoveit.adapters.MoviesAdapter;
 import com.example.justmoveit.model.Movie;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.List;

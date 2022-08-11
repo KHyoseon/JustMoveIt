@@ -9,7 +9,8 @@ import java.util.TimeZone;
 
 // 서버 통신 dto
 public class Ticket implements Serializable {
-    private Long id;
+    @SerializedName("id")
+    private Long ticketId;
     private Long moviePlayingInfoId;
     private Long movieId;
     private String movieTitle;
@@ -23,8 +24,8 @@ public class Ticket implements Serializable {
     private String theaterNo;
     private String totalCost;
 
-    public Ticket(Long id, Long moviePlayingInfoId, Long movieId, String movieTitle, String ageLimit, String startTime, String endTime, String phoneNumber, String classification, Date reservationTime, String seat, String theaterNo, String totalCost) {
-        this.id = id;
+    public Ticket(Long ticketId, Long moviePlayingInfoId, Long movieId, String movieTitle, String ageLimit, String startTime, String endTime, String phoneNumber, String classification, Date reservationTime, String seat, String theaterNo, String totalCost) {
+        this.ticketId = ticketId;
         this.moviePlayingInfoId = moviePlayingInfoId;
         this.movieId = movieId;
         this.movieTitle = movieTitle;
@@ -39,12 +40,12 @@ public class Ticket implements Serializable {
         this.totalCost = totalCost;
     }
 
-    public Long getId() {
-        return id;
+    public Long getTicketId() {
+        return ticketId;
     }
 
     public void setId(Long ticketId) {
-        this.id = ticketId;
+        this.ticketId = ticketId;
     }
 
     public String getTheaterNo() {
