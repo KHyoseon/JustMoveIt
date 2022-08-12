@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 public class MoviePlayingInfoResDto {
 
-    private Long id;
+    private Long moviePlayingInfoId;
     private String theaterNo;
     private String startTime;
     private String endTime;
@@ -26,7 +26,7 @@ public class MoviePlayingInfoResDto {
 
 
     public MoviePlayingInfoResDto(MoviePlayingInfo moviePlayingInfo) {
-        this.id = moviePlayingInfo.getId();
+        this.moviePlayingInfoId = moviePlayingInfo.getId();
         this.theaterNo = moviePlayingInfo.getTheaterNo();
         this.startTime = moviePlayingInfo.getStartTime();
         this.endTime = moviePlayingInfo.getEndTime();

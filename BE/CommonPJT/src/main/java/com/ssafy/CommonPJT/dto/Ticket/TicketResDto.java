@@ -12,7 +12,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class TicketResDto {
 
-    private Long id;
+    private Long ticketId;
     private String phoneNumber;
     private String seat;
     private String classification;
@@ -28,7 +28,7 @@ public class TicketResDto {
 
 
     public TicketResDto(Ticket ticket) {
-        this.id = ticket.getId();
+        this.ticketId = ticket.getId();
         this.phoneNumber = ticket.getPhoneNumber();
         this.seat = ticket.getSeat();
         this.classification = ticket.getClassification();
