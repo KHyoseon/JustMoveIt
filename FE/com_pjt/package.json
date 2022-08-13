@@ -10,11 +10,14 @@
     "@mui/icons-material": "^5.8.4",
     "@mui/material": "^5.9.2",
     "@mui/styled-engine-sc": "^5.8.0",
+    "@reduxjs/toolkit": "^1.8.3",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.5.0",
     "3d-react-carousal": "^5.0.0",
     "axios": "^0.27.2",
+    "package": "^1.0.1",
+    "package.json": "^2.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^8.0.2",
@@ -51,7 +54,11 @@
   "devDependencies": {
     "redux-devtools-extension": "^2.13.9"
   },
-  "browser":{
+  "browser": {
     "child_process": false
-    }  
+  },
+  "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
+  "main": "index.js",
+  "author": "",
+  "license": "ISC"
 }

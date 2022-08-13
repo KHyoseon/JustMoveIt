@@ -5,7 +5,6 @@ import com.ssafy.CommonPJT.dto.Movie.MovieDetailDto;
 import com.ssafy.CommonPJT.dto.Movie.MovieSaveDto;
 import com.ssafy.CommonPJT.repository.MovieRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,5 +35,10 @@ public class MovieService {
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 영화입니다."));
         MovieDetailDto movie1 = new MovieDetailDto(movie);
         return movie1;
+    }
+
+    @Transactional
+    public void deleteById(Long movieId) {
+        movieRepository.deleteById(movieId);
     }
 }
