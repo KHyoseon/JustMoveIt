@@ -11,8 +11,8 @@ public class SocketController {
     @GetMapping("/socket")
     public String chatGET(){
 
-        log.info("@SocketController, chat GET()");
-
+//        log.info("@SocketController, chat GET()");
+        System.out.println("수신완료");
         //return "socket";
         return null;
     }
