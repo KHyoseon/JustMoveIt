@@ -30,16 +30,7 @@ public class MovieRecommendService {
     public List<Movie> rank(MovieRecommendDto movieRecommendDto) {
         List<Movie> recommendation = new ArrayList<>();
         if (movieRecommendDto.getGender().equals("Male")) {
-            if (movieRecommendDto.getAge().substring(0, 1).equals("1")) {
-                List<AgePortion> agePortionList = agePortionRepository.findAll(Sort.by(Sort.Direction.DESC, "male10"));
-                for (AgePortion agePortion : agePortionList) {
-                    if (!agePortion.getMale10().equals("0")) {
-                        String code = agePortion.getMovieCode();
-                        Movie movie = movieRepository.findMovieByMovieCode(code);
-                        recommendation.add(movie);
-                    }
-                }
-            } else if (movieRecommendDto.getAge().substring(0, 1).equals("2")) {
+            if (movieRecommendDto.getAge().substring(0, 1).equals("2")) {
                 List<AgePortion> agePortionList = agePortionRepository.findAll(Sort.by(Sort.Direction.DESC, "male20"));
                 for (AgePortion agePortion : agePortionList) {
                     if (!agePortion.getMale20().equals("0")) {
@@ -75,18 +66,24 @@ public class MovieRecommendService {
                         recommendation.add(movie);
                     }
                 }
-            }
-        } else {
-            if (movieRecommendDto.getAge().substring(0, 1).equals("1")) {
-                List<AgePortion> agePortionList = agePortionRepository.findAll(Sort.by(Sort.Direction.DESC, "female10"));
+            } else {
+                List<AgePortion> agePortionList = agePortionRepository.findAll(Sort.by(Sort.Direction.DESC, "male10"));
                 for (AgePortion agePortion : agePortionList) {
-                    if (!agePortion.getFemale10().equals("0")) {
+                    if (!agePortion.getMale10().equals("0")) {
                         String code = agePortion.getMovieCode();
                         Movie movie = movieRepository.findMovieByMovieCode(code);
-                        recommendation.add(movie);
+                        if (!movie.getAgeLimit().equals("청소년 관람불가")) {
+                            if (movie.getAgeLimit().equals("전체 관람가")) {
+                                recommendation.add(movie);
+                            } else if (Integer.parseInt(movie.getAgeLimit().substring(0, 2)) <= Integer.parseInt(movieRecommendDto.getAge())) {
+                                recommendation.add(movie);
+                            }
+                        }
                     }
                 }
-            } else if (movieRecommendDto.getAge().substring(0, 1).equals("2")) {
+            }
+        } else {
+            if (movieRecommendDto.getAge().substring(0, 1).equals("2")) {
                 List<AgePortion> agePortionList = agePortionRepository.findAll(Sort.by(Sort.Direction.DESC, "female20"));
                 for (AgePortion agePortion : agePortionList) {
                     if (!agePortion.getFemale20().equals("0")) {
@@ -120,6 +117,21 @@ public class MovieRecommendService {
                         String code = agePortion.getMovieCode();
                         Movie movie = movieRepository.findMovieByMovieCode(code);
                         recommendation.add(movie);
+                    }
+                }
+            } else {
+                List<AgePortion> agePortionList = agePortionRepository.findAll(Sort.by(Sort.Direction.DESC, "female10"));
+                for (AgePortion agePortion : agePortionList) {
+                    if (!agePortion.getFemale10().equals("0")) {
+                        String code = agePortion.getMovieCode();
+                        Movie movie = movieRepository.findMovieByMovieCode(code);
+                        if (!movie.getAgeLimit().equals("청소년 관람불가")) {
+                            if (movie.getAgeLimit().equals("전체 관람가")) {
+                                recommendation.add(movie);
+                            } else if (Integer.parseInt(movie.getAgeLimit().substring(0, 2)) < Integer.parseInt(movieRecommendDto.getAge())) {
+                                recommendation.add(movie);
+                            }
+                        }
                     }
                 }
             }

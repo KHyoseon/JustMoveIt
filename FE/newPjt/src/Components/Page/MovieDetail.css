@@ -1,0 +1,149 @@
+@font-face {
+  font-family: "SEBANG_Gothic_Bold";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2104@1.0/SEBANG_Gothic_Bold.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "NanumBarunGothic";
+  font-style: bold;
+  font-weight: 300;
+  src: url("//cdn.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWebLight.eot");
+  src: url("//cdn.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWebLight.eot?#iefix")
+      format("embedded-opentype"),
+    url("//cdn.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWebLight.woff")
+      format("woff"),
+    url("//cdn.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWebLight.ttf")
+      format("truetype");
+}
+
+.MovieDetail h3 {
+  color: black;
+}
+
+#timeSelect {
+  font-family: "SEBANG_Gothic_Bold";
+  margin-bottom: 20px;
+}
+
+#poster {
+  width: 180px;
+  margin-right: 50px;
+}
+
+#container {
+  display: flex;
+  justify-content: space-around;
+  padding-left: 20px;
+}
+
+.reservation {
+  width: inherit;
+  background-color: rgb(64, 80, 88);
+  border-radius: 10px;
+  color: white;
+  margin: 10px 0 40px;
+  padding: 20px;
+  justify-content: center;
+}
+/* 
+#box1 {
+  width: 500px;
+} */
+
+#box2 {
+  text-align: left;
+  width: fit-content;
+  height: fit-content;
+  margin: auto 0;
+}
+
+#box2 p {
+  margin: 8px 0;
+}
+
+#box2 h2 {
+  text-align: center;
+}
+
+#box2 .align_container p {
+  margin: 8px 20px;
+  text-align: center;
+}
+
+#next {
+  width: 180px;
+  height: 50px;
+  text-decoration: none;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  background-color: rgb(64, 80, 88);
+  margin-left: 20px;
+}
+
+#before {
+  width: 180px;
+  height: 50px;
+  text-decoration: none;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  background-color: rgb(64, 80, 88);
+  margin-right: 20px;
+}
+
+#timeBox {
+  /* border-color: white; */
+  width: 180px;
+  border-width: 10px;
+  border-radius: 10px;
+  height: fit-content;
+  text-decoration: none;
+  align-self: center;
+  background-color: rgb(38, 50, 56);
+  margin-right: 20px;
+}
+
+.time_button {
+  margin: 5px;
+}
+
+.button_section {
+  justify-self: center;
+  align-self: center;
+  margin-top: 50px;
+  margin-left: auto;
+}
+
+.modal_box {
+  width: fit-content;
+  text-align: center;
+  margin: auto;
+}
+
+#timeContainer {
+  width: inherit;
+}
+
+#timeButton {
+  background-color: rgb(38, 50, 56);
+  text-decoration: none;
+  color: white;
+  width: 70px;
+  height: 45px;
+  margin: auto;
+  border-style: solid;
+  border-radius: 6px;
+  border-color: rgb(64, 80, 88);
+  margin: 10px 0;
+}
+
+.align_container {
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+  margin: auto;
+}

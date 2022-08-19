@@ -12,6 +12,8 @@ import com.example.justmoveit.api.MovieApi;
 import com.example.justmoveit.model.Movie;
 import com.google.gson.Gson;
 
+import java.util.Arrays;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -33,6 +35,11 @@ public class LoadingActivity extends Activity {
         ConnectionThread thread = new ConnectionThread();
         Log.d("LoadingActivity", "connection thread start");
         thread.start();
+        /*try {
+            thread.join(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }*/
         synchronized (thread){
             try {
                 Log.d("LoadingActivity", "main thread waiting");
@@ -42,14 +49,13 @@ public class LoadingActivity extends Activity {
             }
         }
 
-
-        Handler handler = new Handler();
-        handler.postDelayed(() -> {
+//        Handler handler = new Handler();
+//        handler.postDelayed(() -> {
             Intent intent = new Intent(this, MainActivity.class);
             Log.i("LoadingActivity", "move to mainActivity");
             startActivity(intent);
             finish();
-        }, 1000);
+//        }, 1000);
     }
 
     private static class ConnectionThread extends Thread {
@@ -79,15 +85,12 @@ public class LoadingActivity extends Activity {
 
                     // SP에 저장
                     Gson gson = new Gson();
-                    int i=0;
-                    for(Movie movie: movies) {
-                        if(i == 10)   break;
-                        editor.putString(movie.getMoviePlayingInfoByIndex(0).getMovieId()+"", gson.toJson(movie));
-                        Log.i("movieSP", movie.getMoviePlayingInfoByIndex(0).getMovieId()+"" + " 삽입");
-                        ++i;
+
+                    for(Movie m: movies){
+                        editor.putString(m.getMovieId(), gson.toJson(m));
                     }
                     editor.apply();
-                    Log.i("movieSP", "모든 영화 삽입 완료");
+                    Log.d("movieSP", "모든 영화 삽입 완료");
                 }
 
                 @Override

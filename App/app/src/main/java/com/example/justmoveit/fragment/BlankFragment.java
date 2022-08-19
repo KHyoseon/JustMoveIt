@@ -15,6 +15,7 @@ import com.example.justmoveit.R;
 public class BlankFragment extends Fragment {
     private String message;
 
+    public BlankFragment() {this.message = "상영 중인 영화가 없습니다.";}
     public BlankFragment(String message){
         this.message = message;
     }
@@ -24,6 +25,9 @@ public class BlankFragment extends Fragment {
         super.onCreate(savedInstanceState);
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_blank, container, false);
 
+        if(message == null){
+            message = "상영 중인 영화가 없습니다";
+        }
         ((TextView) rootView.findViewById(R.id.message)).setText(message);
 
         return rootView;

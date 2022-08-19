@@ -7,4 +7,5 @@
     <string name="bar">&#160;&#160;|&#160;&#160;</string>
     <string name="director">"감독: "</string>
     <string name="actor">"배우: "</string>
+    <string name="char_star">\U+2605</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.example.justmoveit.api;
 
 import com.example.justmoveit.model.Movie;
+import com.example.justmoveit.model.Recommend;
 
 import java.util.concurrent.TimeUnit;
 
@@ -8,7 +9,10 @@ import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Headers;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 public interface MovieApi {
@@ -29,7 +33,12 @@ public interface MovieApi {
     @GET("/api/movies")
     Call<Movie[]> getMovieList();
 
+    // 사용자에 맞는 추천 순위
+    @Headers({"Content-Type:application/json;charset=utf-8"})
+    @POST("/api/recommend")
+    Call<Movie[]> getMovieOrderedList(@Body Recommend recommend);
+
     // 영화 상영 정보
-    @GET("/api/movies/{id}")
-    Call<Movie> getMoviePlayingInfo(@Path("id") String id);
+    @GET("/api/movies/{movieCode}")
+    Call<Movie> getMoviePlayingInfo(@Path("movieCode") String movieCode);
 }

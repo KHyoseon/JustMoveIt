@@ -1,33 +1,37 @@
 package com.example.justmoveit.activity;
 
 import static com.example.justmoveit.activity.LoadingActivity.movieSP;
-import static com.example.justmoveit.activity.LoadingActivity.userSP;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.justmoveit.R;
-import com.example.justmoveit.fragment.BlankFragment;
+import com.example.justmoveit.fragment.ViewPagerFragment;
+import com.kakao.auth.Session;
 
 import java.security.MessageDigest;
 import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity {
-
-//    private ViewPagerFragment viewPagerFragment;
+    private TextView generalRanking;
+    private TextView myRanking;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,14 +44,53 @@ public class MainActivity extends AppCompatActivity {
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
 
-        // 서버에서 받아왔는데 아무것도 없으면 빈 프래그먼트로 교체
-        Map<String, ?> map = movieSP.getAll();
-        if(map.size() == 0){
-            BlankFragment blankFragment = new BlankFragment("상영 중인 영화가 없습니다.");
-            getSupportFragmentManager().beginTransaction().replace(R.id.VP_container, blankFragment).commit();
-        }
+        generalRanking = findViewById(R.id.general_ranking);
+        myRanking = findViewById(R.id.my_ranking);
 
+        myRanking.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onOffMovieRankTab(myRanking, generalRanking);
+                ViewPagerFragment myRankingView = new ViewPagerFragment(1);
+                getSupportFragmentManager().beginTransaction().replace(R.id.VP_container, myRankingView).commit();
+            }
+        });
+
+        generalRanking.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onOffMovieRankTab(generalRanking, myRanking);
+                ViewPagerFragment genRankingView = new ViewPagerFragment(0);
+                getSupportFragmentManager().beginTransaction().replace(R.id.VP_container, genRankingView).commit();
+            }
+        });
         Log.d("MainActivity", "view Pager start");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        Map<String, ?> map = movieSP.getAll();
+
+        // 로그인되어 있으면 마이 랭킹 켜고 일반 랭킹 끄기
+        if(Session.getCurrentSession().isOpened() && movieSP.getString("my_ranking","") != null && !movieSP.getString("my_ranking","").equals("")){
+            myRanking.setVisibility(View.VISIBLE);
+            myRanking.performClick();
+        } else if (map != null && map.size() > 1) {
+            myRanking.setVisibility(View.INVISIBLE);
+            generalRanking.performClick();
+        }
+    }
+
+    private void onOffMovieRankTab(TextView on, TextView off) {
+        // on
+        on.setTypeface(null, Typeface.BOLD);
+        on.setTextColor(Color.parseColor("#ffffff"));
+        // off
+        if(off == null) return;
+        off.setTypeface(null, Typeface.NORMAL);
+        off.setTextColor(Color.parseColor("#757575"));
     }
 
     @Override
@@ -62,8 +105,7 @@ public class MainActivity extends AppCompatActivity {
         Intent it = new Intent();
         // 프로필 클릭시 로그인 페이지 or 티켓 예매 내역 페이지
         if (item.getItemId() == R.id.profile) {
-            String session = userSP.getString("user_info", "");
-            if (session != null && !session.equals("")) {
+            if (Session.getCurrentSession().isOpened()) {
 //                Toast.makeText(this, "CurrentSession is opend ", Toast.LENGTH_SHORT).show();
                 it.setClassName("com.example.justmoveit", "com.example.justmoveit.activity.MyTicketListActivity");
             } else {

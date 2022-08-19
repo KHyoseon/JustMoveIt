@@ -3,6 +3,8 @@ package com.example.justmoveit.activity;
 import static com.example.justmoveit.activity.LoadingActivity.movieSP;
 import static com.example.justmoveit.activity.LoadingActivity.userSP;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -15,11 +17,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.justmoveit.R;
-import com.example.justmoveit.api.MovieApi;
 import com.example.justmoveit.api.UserTicketApi;
 import com.example.justmoveit.model.Movie;
 import com.example.justmoveit.model.MoviePlayingInfo;
@@ -27,6 +30,7 @@ import com.example.justmoveit.model.ReservedTicket;
 import com.example.justmoveit.model.Ticket;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.kakao.auth.Session;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -34,7 +38,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.TimeZone;
 
@@ -54,6 +57,8 @@ public class TicketingActivity extends AppCompatActivity {
     private int canSelectedSeat, totalCost;
     private static Set<String> selectedSeat;
 
+    private Context context;
+
     private void loadMovie() {
         Intent intent = getIntent();
 
@@ -63,10 +68,11 @@ public class TicketingActivity extends AppCompatActivity {
         Gson gson = new Gson();
         // 영화
         movie = gson.fromJson(movieSP.getString(movieId, ""), Movie.class);
+
         // 영화 상영 정보
         MoviePlayingInfo[] infos = movie.getMoviePlayingInfoList();
         for(MoviePlayingInfo info: infos){
-            String str = info.getId() + "";
+            String str = info.getMoviePlayingInfoId() + "";
             if(moviePlayingInfoId.equals(str)){
                 moviePlayingInfo = info;
                 break;
@@ -79,11 +85,14 @@ public class TicketingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ticketing);
 
+        context = this;
+
         canSelectedSeat = 0;
         totalCost = 0;
         clsf = new int[2];
         selectedSeat = new HashSet<>();
 
+        setResult();
         // 예매할 영화 정보 서버에서 가져옴
         loadMovie();
 
@@ -126,7 +135,7 @@ public class TicketingActivity extends AppCompatActivity {
                     return;
                 }
 
-                // classification 저장
+               // classification 저장
                 String classification = ReservedTicket.convertClassificationToString(clsf);
 
                 // seat 저장
@@ -149,19 +158,40 @@ public class TicketingActivity extends AppCompatActivity {
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                Ticket ticket = new Ticket(0L, moviePlayingInfo.getId(), moviePlayingInfo.getMovieId(), moviePlayingInfo.getMovieTitle(), "12세",
-                        moviePlayingInfo.getStartTime(), moviePlayingInfo.getEndTime(), "01052584112", classification, now, seat, moviePlayingInfo.getTheaterNo(), totalCost+"");
 
+                String pn = userSP.getString("phone_number", "");
+                if(Session.getCurrentSession().isClosed()) {
+                    Intent it = new Intent(TicketingActivity.this, LoginActivity.class);
+                    startActivity(it);
+                } else if (pn == null || pn.equals("")) {
+                    Intent it = new Intent(TicketingActivity.this, PhoneNumberActivity.class);
+                    startActivity(it);
+                } else {
+                    Ticket ticket = new Ticket(0L, moviePlayingInfo.getMoviePlayingInfoId(), moviePlayingInfo.getMovieId(), moviePlayingInfo.getMovieTitle(), "12세",
+                            moviePlayingInfo.getStartTime(), moviePlayingInfo.getEndTime(), pn, classification, now, seat, moviePlayingInfo.getTheaterNo(), totalCost + "");
 
-                // Todo: 로직 paymentActivity로 넘기기
-                // 서버에 넣음
-                postTicketToServer(ticket);
-                finish();
-//                PaymentActivity paymentActivity = new PaymentActivity(movie, ticket);
-//                Intent it = new Intent(getApplicationContext(), paymentActivity.getClass());
-//                startActivity(it);
+//                    setResult(RESULT_OK);
+//                    finish();
+
+                    PaymentActivity paymentActivity = new PaymentActivity(movie, ticket);
+                    Intent it = new Intent(getApplicationContext(), paymentActivity.getClass());
+                    launcher.launch(it);
+                }
             }
         });
+    }
+
+    private ActivityResultLauncher<Intent> launcher;
+
+    private void setResult(){
+        launcher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        setResult(Activity.RESULT_OK);
+                        this.finish();
+                    }
+                });
     }
 
     private void setNumberPickerValue() {
@@ -172,7 +202,6 @@ public class TicketingActivity extends AppCompatActivity {
         childPicker.setMaxValue(5);
         childPicker.setMinValue(0);
         childPicker.setValue(0);
-
     }
 
     public void setOnAllValueChangeListener() {
@@ -278,7 +307,6 @@ public class TicketingActivity extends AppCompatActivity {
         }
 
         private void getReserveTicket() {
-            // 서버 통신을 위해 movieinfoid가 필요함, SP에 저장하기 위해서 movieid도 필요 근데 이건 플레잉 인포에 이미 있음
             UserTicketApi ticketService = UserTicketApi.retrofit.create(UserTicketApi.class);
             ticketService.reserveTicket(ticket).enqueue(new Callback<Ticket>() {
                 @Override

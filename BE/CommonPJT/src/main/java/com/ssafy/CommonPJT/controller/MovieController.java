@@ -1,8 +1,6 @@
 package com.ssafy.CommonPJT.controller;
 
-import com.ssafy.CommonPJT.domain.Movie;
 import com.ssafy.CommonPJT.dto.Movie.MovieDetailDto;
-import com.ssafy.CommonPJT.dto.Movie.MovieRecommendDto;
 import com.ssafy.CommonPJT.dto.Movie.MovieSaveDto;
 import com.ssafy.CommonPJT.service.MovieService;
 import io.swagger.annotations.Api;
@@ -19,7 +17,7 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @Api("MovieController") //swagger 컨트롤러 이름
-@RequestMapping("/movies")
+@RequestMapping("/api/movies")
 public class MovieController {
 
     private final MovieService movieService;
@@ -38,16 +36,16 @@ public class MovieController {
         return new ResponseEntity<>(movieService.findMovies(), HttpStatus.OK);
     }
 
-    @ApiOperation(value = "영화", notes = "영화 정보를 출력한다.")
-    @GetMapping("/{id}")
-    public ResponseEntity<MovieDetailDto> getMovieById(@PathVariable Long id) {
-        log.info("영화 정보를 조회합니다.");
-        return new ResponseEntity<>(movieService.findOne(id), HttpStatus.OK);
+    @ApiOperation(value = "영화 정보(영화코드)", notes = "영화 코드에 따른 영화정보를 출력한다.")
+    @GetMapping("/{movieCode}")
+    public ResponseEntity<MovieDetailDto> getMovieByMovieCode(@PathVariable String movieCode) {
+        log.info("영화코드에 따른 영화정보를 출력합니다.");
+        return new ResponseEntity<>(movieService.findByMovieCode(movieCode), HttpStatus.OK);
     }
 
     @ApiOperation(value = "영화 정보 삭제", notes = "영화 정보를 삭제합니다.")
-    @DeleteMapping("/{movieId}")
-    public void deleteMovieById(@PathVariable Long movieId) {
-        movieService.deleteById(movieId);
+    @DeleteMapping("/{movieCode}")
+    public void deleteMovieByMovieCode(@PathVariable String movieCode) {
+        movieService.deleteByMovieCode(movieCode);
     }
 }

@@ -1,6 +1,5 @@
 package com.ssafy.CommonPJT.controller;
 
-import com.ssafy.CommonPJT.domain.Ticket;
 import com.ssafy.CommonPJT.dto.Ticket.TicketResDto;
 import com.ssafy.CommonPJT.dto.Ticket.TicketSaveDto;
 import com.ssafy.CommonPJT.service.TicketService;
@@ -18,7 +17,7 @@ import java.util.List;
 @Slf4j
 @Api("TicketController")
 @RequiredArgsConstructor
-@RequestMapping("/tickets")
+@RequestMapping("/api/tickets")
 public class TicketController {
 
     private final TicketService ticketService;

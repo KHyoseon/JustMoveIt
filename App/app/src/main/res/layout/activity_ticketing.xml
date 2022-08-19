@@ -11,8 +11,7 @@
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay"
-        app:elevation="0dp">
+        android:theme="@style/AppTheme.AppBarOverlay">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
@@ -122,9 +121,6 @@
                             android:scaleX="0.8"
                             android:scaleY="0.8"
                             android:theme="@style/NumberPickerStyle" />
-<!--                            android:layout_height="140dp"-->
-<!--                            android:layout_weight="30"-->
-
 
                     </LinearLayout>
 
@@ -254,6 +250,7 @@
                     </LinearLayout>
 
                 </androidx.cardview.widget.CardView>
+
 
                 <Button
                     android:id="@+id/payment"

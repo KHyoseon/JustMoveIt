@@ -2,6 +2,7 @@ package com.example.justmoveit.activity;
 
 import static com.example.justmoveit.activity.LoadingActivity.movieSP;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -15,6 +16,8 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -31,6 +34,7 @@ import com.example.justmoveit.api.MovieApi;
 import com.example.justmoveit.model.Movie;
 import com.example.justmoveit.model.MoviePlayingInfo;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
@@ -51,10 +55,13 @@ public class MovieInfoActivity extends AppCompatActivity {
 
     private void loadMovieDetails(){
         Intent intent = getIntent();
+        // 선택된 영화의 id
         movieId = intent.getStringExtra("movie_id");
 
         // 서버 통신 스레드 - movie id로 통신 -> 새로운 playinginfo 있으면 SP 저장
-        ConnectionThread thread = new ConnectionThread(movieId);
+        Gson gson = new Gson();
+        String movieCode = gson.fromJson(movieSP.getString(movieId, ""), Movie.class).getMovieCode();
+        ConnectionThread thread = new ConnectionThread(movieCode);
         Log.d("TicketingActivity", "connection thread start");
         thread.start();
         synchronized (thread){
@@ -74,8 +81,10 @@ public class MovieInfoActivity extends AppCompatActivity {
 
         Gson gson = new Gson();
 
+        setResult();
         // 서버에서 movie 최신 정보 가져옴
         loadMovieDetails();
+
         // 뒤로가기 버튼 등록
         setImageBack();
 
@@ -84,34 +93,43 @@ public class MovieInfoActivity extends AppCompatActivity {
         List<String> timeList= new ArrayList<>();
         TimesAdapter timesAdapter = new TimesAdapter();
 
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                movie = gson.fromJson(movieSP.getString(movieId, ""), Movie.class);
+        // 영화 목록에서 선택된 영화(=movie)를 찾음
+        movie = gson.fromJson(movieSP.getString(movieId, ""), Movie.class);
 
-                layoutSliderIndicators = findViewById(R.id.layoutSliderIndicators);
-                RoundedImageView imgMoviePoster = findViewById(R.id.imageMoviePoster);
+        layoutSliderIndicators = findViewById(R.id.layoutSliderIndicators);
+        RoundedImageView imgMoviePoster = findViewById(R.id.imageMoviePoster);
 
-                // 영화 포스터 등록
-                Picasso.get().load(movie.getImg()).into(imgMoviePoster);
-                //영화 디테일 정보 등록
-                setDetail();
-                // 뷰 페이저 (서브 이미지) 등록
-                setupSliderViewPager();
-                // 뷰 페이저 하단 인디케이터 등록
-                setupSliderIndicators(5);
+        // 영화 포스터 등록
+        Picasso.get().load(movie.getImg()).into(imgMoviePoster);
+        //영화 디테일 정보 등록
+        setDetail();
+        // 뷰 페이저 (서브 이미지) 등록
+        setupSliderViewPager();
+        // 뷰 페이저 하단 인디케이터 등록
+        setupSliderIndicators(5);
 
-                for(MoviePlayingInfo info: movie.getMoviePlayingInfoList()){
-                    timeList.add(info.getStartTime());
-                }
+        // 선택된 영화의 상영 정보 얻어와서 상영 시간 저장
+        for(MoviePlayingInfo info: movie.getMoviePlayingInfoList()){
+            timeList.add(info.getStartTime());
+        }
+        // 타임 어댑터에 등록
+        timesAdapter.setTimes(timeList, movie);
+        recyclerView.setAdapter(timesAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(MovieInfoActivity.this, RecyclerView.HORIZONTAL,false));
 
-                timesAdapter.setTimes(timeList, movie);
-                recyclerView.setAdapter(timesAdapter);
-                recyclerView.setLayoutManager(new LinearLayoutManager(MovieInfoActivity.this, RecyclerView.HORIZONTAL,false));
-            }
-        }, 500);
+    }
 
+    public static ActivityResultLauncher<Intent> launcher;
+
+    private void setResult(){
+        launcher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+//                        setResult(Activity.RESULT_OK);
+                        this.finish();
+                    }
+                });
     }
 
     @Override
@@ -255,10 +273,10 @@ public class MovieInfoActivity extends AppCompatActivity {
     }
 
     private static class ConnectionThread extends Thread {
-        private String id;
+        private final String movieCode;
 
-        public ConnectionThread(String movieId){
-            this.id = movieId;
+        public ConnectionThread(String movieCode){
+            this.movieCode = movieCode;
         }
 
         @Override
@@ -275,7 +293,7 @@ public class MovieInfoActivity extends AppCompatActivity {
             SharedPreferences.Editor editor = movieSP.edit();
 
             MovieApi service = MovieApi.retrofit.create(MovieApi.class);
-            service.getMoviePlayingInfo(id).enqueue(new Callback<Movie>() {
+            service.getMoviePlayingInfo(movieCode).enqueue(new Callback<Movie>() {
                 @Override
                 public void onResponse(Call<Movie> call, Response<Movie> response) {
                     Movie movie = response.body();
@@ -287,15 +305,23 @@ public class MovieInfoActivity extends AppCompatActivity {
 
                     Gson gson = new Gson();
                     // 서버에서 가져온 movie 정보를 다시 덮어씌워줌
+                    /*List<Movie> newMovieList = new ArrayList<>();
+                    List<Movie> movieList = gson.fromJson(movieSP.getString("general_ranking", ""), TypeToken.getParameterized(ArrayList.class, Movie.class).getType());
+                    for(Movie m: movieList){
+                        if(m.getTitle().equals(movie.getTitle())){
+                            newMovieList.add(movie);
+                            continue;
+                        }
+                        newMovieList.add(m);
+                    }*/
                     String movieId = movie.getMoviePlayingInfoByIndex(0).getMovieId()+"";
                     editor.putString(movieId, gson.toJson(movie));
                     editor.apply();
-                    // 이러면 최신 좌석 현황을 저장할 수 있음
                 }
 
                 @Override
                 public void onFailure(Call<Movie> call, Throwable t) {
-
+                    Log.e("MovieInfoActivity - getMoviesFromServer", "onFailure(): " + t.getMessage());
                 }
             });
         }

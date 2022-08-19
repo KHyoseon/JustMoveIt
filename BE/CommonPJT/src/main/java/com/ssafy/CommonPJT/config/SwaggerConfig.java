@@ -16,7 +16,8 @@ import java.util.List;
 
 import static springfox.documentation.builders.PathSelectors.regex;
 
-//http://localhost/justmoveit/swagger-ui/index.html
+//https://i7d207.p.ssafy.io/api/swagger-ui/index.html#/movie-recommend-controller/rankUsingPOST
+//http://localhost:8080/swagger-ui/index.html#/
 
 @Configuration
 @EnableSwagger2
@@ -31,7 +32,7 @@ public class SwaggerConfig {
                 .securityContexts(Arrays.asList(securityContext()))
                 .securitySchemes(Arrays.asList(apiKey()))
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.ssafy.CommonPJT.controller")).paths(regex("/api/.*")).build();
+                .apis(RequestHandlerSelectors.basePackage("com.ssafy.CommonPJT.controller")).paths(regex("/.*")).build();
     }
 
 

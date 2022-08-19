@@ -18,7 +18,7 @@ import java.util.List;
 @Slf4j
 @Api("MovieRecommendController")
 @RequiredArgsConstructor
-@RequestMapping("/recommend")
+@RequestMapping("/api/recommend")
 public class MovieRecommendController {
 
     private final MovieRecommendService movieRecommendService;

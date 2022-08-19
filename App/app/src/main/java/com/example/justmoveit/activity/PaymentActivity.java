@@ -2,8 +2,10 @@ package com.example.justmoveit.activity;
 
 import static com.example.justmoveit.activity.LoadingActivity.userSP;
 
+import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -114,7 +116,7 @@ public class PaymentActivity extends AppCompatActivity {
             String cid = "TC0ONETIME";
             String tid = tidPin;
             String partner_order_id = "1001";
-            String partner_user_id = "JustMoveIt";
+            String partner_user_id = "gorany";
             String pg_token = pgToken;
             Integer total_amount = PRODUCT_PRICE;
 
@@ -124,28 +126,15 @@ public class PaymentActivity extends AppCompatActivity {
                     if (response.isSuccessful()) {
                         Log.d("PaymentActivity - approvePayment", "onResponse(): successful");
 
-                        // 서버 통신 스레드 - 예매 완료 서버에 요청
-                        ConnectionThread thread = new ConnectionThread();
-                        Log.d("PaymentActivity", "connection thread start");
-                        thread.start();
-                        synchronized (thread) {
-                            try {
-                                Log.d("PaymentActivity", "main thread waiting");
-                                thread.wait();
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        }
-
+                        postTicketToServer(ticket);
                         Log.d("PaymentActivity", "payment done");
-                        Toast.makeText(PaymentActivity.this, "예매됨", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PaymentActivity.this, "예매가 완료되었습니다.", Toast.LENGTH_SHORT).show();
 
-                        Intent it = new Intent();
-                        it.setClassName("com.example.justmoveit", "com.example.justmoveit.activity.TicketInfoActivity");
-                        it.putExtra("ticket", new ReservedTicket(ticket));
-                        startActivity(it);
-
-                        finish();
+                        Handler handler = new Handler();
+                        handler.postDelayed(() -> {
+                            setResult(Activity.RESULT_OK);
+                            finish();
+                        }, 100);
                     } else {
                         Log.e("PaymentActivity - approvePayment", "onResponse(): response is not successful");
                     }
@@ -180,9 +169,30 @@ public class PaymentActivity extends AppCompatActivity {
             view.loadUrl(url);
             return false;
         }
+
+    }
+
+    private void postTicketToServer(Ticket ticket){
+        ConnectionThread thread = new ConnectionThread(ticket);
+        Log.d("PaymentActivity", "connection thread start");
+        thread.start();
+        synchronized (thread) {
+            try {
+                Log.d("PaymentActivity", "main thread waiting");
+                thread.wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private static class ConnectionThread extends Thread {
+        private final Ticket ticket;
+
+        public ConnectionThread(Ticket ticket){
+            this.ticket = ticket;
+        }
+
         @Override
         public void run() {
             synchronized (this) {
@@ -197,26 +207,25 @@ public class PaymentActivity extends AppCompatActivity {
             ticketService.reserveTicket(ticket).enqueue(new Callback<Ticket>() {
                 @Override
                 public void onResponse(Call<Ticket> call, Response<Ticket> response) {
-                    Ticket ticket = response.body();
-                    if(ticket == null){
-                        Log.e("PaymentActivity - reserveTicket", "response body is null");
+                    // ticketID가 포함된 객체 반환
+                    Ticket retTicket = response.body();
+                    if(retTicket == null){
+                        Log.e("PaymentActivity - reserveTicket", "response body is null: "+response.code());
                         return;
                     }
 
                     // 성공시 앱 캐시에도 저장
-                    // movieSP에 따로 저장할 필요없음. oncreate 때 계속 서버랑 통신하면서 최신 좌석 배치를 얻어올 테니까..
-                    // 그냥 유저 예매 내역에만 추가해주면 됨.
                     Gson gson = new Gson();
                     String json = userSP.getString("user_tickets", "");
 
-                    // 기존에 있던 예매 내역 리스트 담고
+                    // 기존에 있던 리스트 담고
                     ArrayList<ReservedTicket> reservedTickets = gson.fromJson(json, TypeToken.getParameterized(ArrayList.class, ReservedTicket.class).getType());
 
                     // 새로운 티켓 추가
                     if(reservedTickets == null){
                         reservedTickets = new ArrayList<>();
                     }
-                    reservedTickets.add(new ReservedTicket(ticket));
+                    reservedTickets.add(new ReservedTicket(retTicket));
 
                     // SP에 덮어쓰기
                     SharedPreferences.Editor editor = userSP.edit();

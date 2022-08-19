@@ -22,14 +22,21 @@ import com.example.justmoveit.activity.MainActivity;
 import com.example.justmoveit.adapters.MoviesAdapter;
 import com.example.justmoveit.model.Movie;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class ViewPagerFragment extends Fragment {
-    MainActivity activity;
-    ViewGroup rootView;
+    private int rankBy;  // general_ranking(0) or my_ranking(1)
+    private MainActivity activity;
+    private ViewGroup rootView;
+
+    public ViewPagerFragment(int rankBy){
+        this.rankBy = rankBy;
+    }
 
     // 화면이 붙을 때 작동
     @Override
@@ -73,30 +80,25 @@ public class ViewPagerFragment extends Fragment {
         moviesViewPager.setPageTransformer(compositePageTransformer);
 
         // SP에 저장된 무비 리스트 가져와서 어댑트
-        Map<String, ?> map = movieSP.getAll();
+        Gson gson = new Gson();
+        List<Movie> movies = new ArrayList<>();
+
+        if(rankBy == 1) {
+            movies = gson.fromJson(movieSP.getString("my_ranking", ""), TypeToken.getParameterized(ArrayList.class, Movie.class).getType());
+        } else {
+            Map<String, ?> map = movieSP.getAll();
+            Set<String> keys = map.keySet();
+            for(String key: keys){
+                if(key.equals("my_ranking"))    continue;
+                movies.add(gson.fromJson(movieSP.getString(key, ""), Movie.class));
+            }
+        }
         // 없으면 종료
-        if(map == null || map.size() == 0){
+        if(movies == null || movies.size() == 0){
             Log.e("setupMoviesViewPager", "there are no movies in SP");
             return;
         }
 
-        // 리스트에 옮겨담음
-        List<Movie> movies = new ArrayList<>();
-        Gson gson = new Gson();
-        for(String id: map.keySet()){
-            movies.add(gson.fromJson(movieSP.getString(id, ""), Movie.class));
-        }
-        /*String json = movieSP.getString("movie_list", "");
-        if (json.equals("")) {
-            Log.e("setupMoviesViewPager", "there are no movies in SP");
-            return;
-        }
-        Gson gson = new Gson();
-        List<Movie> movies = gson.fromJson(json, TypeToken.getParameterized(List.class, Movie.class).getType());
-        if (movies == null) {
-            Log.e("setupMoviesViewPager", "there are no movies in SP");
-            return;
-        }*/
         moviesViewPager.setAdapter(new MoviesAdapter(movies));
     }
 

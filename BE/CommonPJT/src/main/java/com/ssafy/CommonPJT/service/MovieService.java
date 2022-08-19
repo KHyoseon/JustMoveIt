@@ -37,8 +37,14 @@ public class MovieService {
         return movie1;
     }
 
+    public MovieDetailDto findByMovieCode(String movieCode) throws IllegalArgumentException{
+        Movie movie = movieRepository.findMovieByMovieCode(movieCode);
+        MovieDetailDto movie1 = new MovieDetailDto(movie);
+        return movie1;
+    }
+
     @Transactional
-    public void deleteById(Long movieId) {
-        movieRepository.deleteById(movieId);
+    public void deleteByMovieCode(String movieCode) {
+        movieRepository.deleteByMovieCode(movieCode);
     }
 }

@@ -4,6 +4,8 @@ spring:
     username: ssafy
     password: Ssafyd207
     driver-class-name: com.mysql.cj.jdbc.Driver
+
+
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
@@ -24,7 +26,7 @@ spring:
 server:
   port: 8081
   servlet:
-    contextPath: /api
+    contextPath: /
 
 
 logging:

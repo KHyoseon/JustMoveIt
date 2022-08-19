@@ -54,22 +54,34 @@ public class TicketInfoActivity extends AppCompatActivity {
         // 영화 예매 정보 뿌림
         getSetTexts(ticket);
 
+        // 이전 페이지
+        findViewById(R.id.ok_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
         // 예매 취소
         findViewById(R.id.reserve_cancel_button).setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
                 ConnectionThread thread = new ConnectionThread(ticket);
                 thread.start();
+                /*try {
+                    thread.join(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }*/
                 synchronized (thread) {
                     try {
                         thread.wait();
+                        Toast.makeText(TicketInfoActivity.this, "예매 취소가 완료되었습니다.", Toast.LENGTH_SHORT).show();
+                        finish();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                 }
-                Toast.makeText(TicketInfoActivity.this, "예매 취소가 완료되었습니다.", Toast.LENGTH_SHORT).show();
-
-                finish();
             }
         });
 
@@ -81,6 +93,15 @@ public class TicketInfoActivity extends AppCompatActivity {
         Gson gson = new Gson();
         ImageView poster = findViewById(R.id.movie_poster);
         Movie movie = gson.fromJson(movieSP.getString(ticket.getMovieId()+"", ""), Movie.class);
+
+        /*ArrayList<Movie> movies = gson.fromJson(movieSP.getString("general_ranking", ""), TypeToken.getParameterized(ArrayList.class, Movie.class).getType());
+        Movie movie = null;
+        for(Movie m: movies){
+            if(m.getTitle().equals(ticket.getMovieTitle())){
+                movie = m;
+            }
+        }*/
+
         Picasso.get().load(movie.getImg()).into(poster);
 
         ((TextView) findViewById(R.id.movie_title)).setText(ticket.getMovieTitle());

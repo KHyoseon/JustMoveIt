@@ -1,0 +1,65 @@
+.Seats h5 {
+  margin-top: 0px;
+  margin-bottom: 10px;
+}
+
+.screen {
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.seats {
+  display: flex;
+  flex-direction: row;
+  width: fit-content;
+  max-width: 700px;
+}
+.seat {
+  width: 30px;
+  height: 18px;
+  /* flex: 0 0 8%; */
+  margin: 4px 6px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: white;
+}
+.seat.occupied {
+  background-color: rgb(155, 155, 155) !important;
+}
+.seat.selected {
+  background-color: rgb(235, 64, 64) !important;
+}
+.Seats .seat:not(.occupied):hover {
+  background-color: lightblue;
+  cursor: pointer;
+  transform: scale(1.2);
+}
+.Seats .seat:not(.occupied):focus {
+  opacity: 0.7;
+  background-color: lightblue;
+}
+.seat:nth-of-type(8n + 3) {
+  margin-left: 30px;
+}
+
+.seat:nth-of-type(8n + 7) {
+  margin-left: 30px;
+}
+
+.total {
+  display: flex;
+  margin-top: 40px;
+}
+
+.total span {
+  margin-right: 30px;
+}
+
+.seats-section {
+  height: fit-content;
+  align-self: center;
+  text-align: center;
+}

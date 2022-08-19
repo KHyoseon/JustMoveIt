@@ -5,6 +5,7 @@ import static com.example.justmoveit.activity.LoadingActivity.userSP;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,8 +56,10 @@ public class TicketListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.e("ticketList fragment", "onResume()");
-        adaptTicketList();
+        Log.d("ticketList fragment", "onResume()");
+
+        Handler handler = new Handler();
+        handler.postDelayed(this::adaptTicketList, 100);
     }
 
     private void adaptTicketList(){
@@ -74,7 +77,7 @@ public class TicketListFragment extends Fragment {
         processingTicketList(ticketListFromSP);
 
         // 예매 티켓 어댑트
-        Log.e("adapter", "티켓 어댑트");
+        Log.d("adapter", "티켓 어댑트");
         TicketListAdapter adapter = new TicketListAdapter(activity, ticketListFromSP);
         ListView list = rootView.findViewById(R.id.list);
         list.setAdapter(adapter);
