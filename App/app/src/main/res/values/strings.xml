@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">JustMoveIt</string>
+    <string name="science_fiction" />
+    <string name="december_14_2016" />
+    <string name="read_less">접기</string>
+    <string name="read_more">더보기</string>
+    <string name="bar">&#160;&#160;|&#160;&#160;</string>
+    <string name="director">"감독: "</string>
+    <string name="actor">"배우: "</string>
+    <string name="char_star">\U+2605</string>
+</resources>

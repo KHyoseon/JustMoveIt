@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/SSAFY/S07P12D207/App/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.321" />
+        <entry key="..\:/SSAFY/S07P12D207/App/app/src/main/res/drawable-v24/seat_button.xml" value="0.122" />
+        <entry key="..\:/SSAFY/S07P12D207/App/app/src/main/res/drawable/background_slider_indicator_active.xml" value="0.255" />
+        <entry key="..\:/SSAFY/S07P12D207/App/app/src/main/res/drawable/background_slider_indicator_inactive.xml" value="0.255" />
+        <entry key="..\:/SSAFY/S07P12D207/App/app/src/main/res/drawable/background_spinner_item.xml" value="0.321" />
+        <entry key="..\:/SSAFY/S07P12D207/App/app/src/main/res/drawable/ic_arrow_down.xml" value="0.321" />
+        <entry key="..\:/SSAFY/S07P12D207/App/app/src/main/res/drawable/ic_back.xml" value="0.321" />
+        <entry key="..\:/SSAFY/S07P12D207/App/app/src/main/res/drawable/ic_baseline_face_24.xml" value="0.321" />
+        <entry key="..\:/SSAFY/S07P12D207/App/app/src/main/res/drawable/ic_face.xml" value="0.321" />
+        <entry key="..\:/SSAFY/S07P12D207/App/app/src/main/res/drawable/ic_launcher_background.xml" value="0.321" />
+        <entry key="..\:/SSAFY/S07P12D207/App/app/src/main/res/layout-v29/activity_ticketing.xml" value="0.30104166666666665" />
+        <entry key="..\:/SSAFY/S07P12D207/App/app/src/main/res/layout/activity_loading.xml" value="0.27447916666666666" />
+        <entry key="..\:/SSAFY/S07P12D207/App/app/src/main/res/layout/activity_login.xml" value="0.22" />
+        <entry key="..\:/SSAFY/S07P12D207/App/app/src/main/res/layout/activity_main.xml" value="0.22" />
+        <entry key="..\:/SSAFY/S07P12D207/App/app/src/main/res/layout/activity_my_ticket_list.xml" value="0.1" />
+        <entry key="..\:/SSAFY/S07P12D207/App/app/src/main/res/layout/activity_mytickets_list.xml" value="0.16" />
+        <entry key="..\:/SSAFY/S07P12D207/App/app/src/main/res/layout/activity_payment.xml" value="0.20307823856348867" />
+        <entry key="..\:/SSAFY/S07P12D207/App/app/src/main/res/layout/activity_prev_payment.xml" value="0.2171868319794784" />
+        <entry key="..\:/SSAFY/S07P12D207/App/app/src/main/res/layout/activity_reserve_done.xml" value="0.2" />
+        <entry key="..\:/SSAFY/S07P12D207/App/app/src/main/res/layout/activity_seat.xml" value="0.22659256092347158" />
+        <entry key="..\:/SSAFY/S07P12D207/App/app/src/main/res/layout/activity_show_detail.xml" value="0.2" />
+        <entry key="..\:/SSAFY/S07P12D207/App/app/src/main/res/layout/activity_ticketing.xml" value="0.2" />
+        <entry key="..\:/SSAFY/S07P12D207/App/app/src/main/res/layout/fragment_blank.xml" value="0.2126019945602901" />
+        <entry key="..\:/SSAFY/S07P12D207/App/app/src/main/res/layout/fragment_seat.xml" value="0.358695652173913" />
+        <entry key="..\:/SSAFY/S07P12D207/App/app/src/main/res/layout/fragment_ticket_list.xml" value="0.1" />
+        <entry key="..\:/SSAFY/S07P12D207/App/app/src/main/res/layout/fragment_view_page.xml" value="0.1" />
+        <entry key="..\:/SSAFY/S07P12D207/App/app/src/main/res/layout/item_container_movie.xml" value="0.25" />
+        <entry key="..\:/SSAFY/S07P12D207/App/app/src/main/res/layout/item_container_slider_image.xml" value="0.2" />
+        <entry key="..\:/SSAFY/S07P12D207/App/app/src/main/res/layout/item_container_time.xml" value="0.24739583333333334" />
+        <entry key="..\:/SSAFY/S07P12D207/App/app/src/main/res/layout/prev_next_button.xml" value="0.22" />
+        <entry key="..\:/SSAFY/S07P12D207/App/app/src/main/res/layout/ranked_poster.xml" value="0.25" />
+        <entry key="..\:/SSAFY/S07P12D207/App/app/src/main/res/layout/reserved_ticket.xml" value="0.30055579307396324" />
+        <entry key="..\:/SSAFY/S07P12D207/App/app/src/main/res/layout/seat_button.xml" value="0.22573749465583584" />
+        <entry key="..\:/SSAFY/S07P12D207/App/app/src/main/res/layout/seat_chart.xml" value="0.2997007268063275" />
+        <entry key="..\:/SSAFY/S07P12D207/App/app/src/main/res/layout/spinner_dropdown_item.xml" value="0.20778110303548525" />
+        <entry key="..\:/SSAFY/S07P12D207/App/app/src/main/res/layout/ticket_item.xml" value="0.25" />
+        <entry key="..\:/SSAFY/S07P12D207/App/app/src/main/res/layout/user_profile.xml" value="0.20307823856348867" />
+        <entry key="..\:/SSAFY/S07P12D207/App/app/src/main/res/menu/menu.xml" value="0.30055579307396324" />
+        <entry key="..\:/SSAFY/S07P12D207/App/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.321" />
+        <entry key="..\:/ssafy/App/app/src/main/res/layout/activity_login.xml" value="0.159375" />
+        <entry key="..\:/ssafy/App/app/src/main/res/layout/activity_phone_number.xml" value="0.11200000000000002" />
+        <entry key="..\:/ssafy/App/app/src/main/res/layout/activity_ticketing.xml" value="0.14447463768115942" />
+        <entry key="..\:/ssafy/App/app/src/main/res/layout/item_container_movie.xml" value="0.159375" />
+        <entry key="..\:/ssafy/S07P12D207/App/app/src/main/res/drawable-v24/ic_arrow_back_white_24dp.xml" value="0.161" />
+        <entry key="..\:/ssafy/S07P12D207/App/app/src/main/res/drawable/custom_spinner.xml" value="0.161" />
+        <entry key="..\:/ssafy/S07P12D207/App/app/src/main/res/drawable/gradient.xml" value="0.161" />
+        <entry key="..\:/ssafy/S07P12D207/App/app/src/main/res/drawable/ic_back.xml" value="0.161" />
+        <entry key="..\:/ssafy/S07P12D207/App/app/src/main/res/drawable/ic_face.xml" value="0.2005" />
+        <entry key="..\:/ssafy/S07P12D207/App/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2005" />
+        <entry key="..\:/ssafy/S07P12D207/App/app/src/main/res/layout-w936dp/activity_pay.xml" value="0.1" />
+        <entry key="..\:/ssafy/S07P12D207/App/app/src/main/res/layout/activity_login.xml" value="0.1" />
+        <entry key="..\:/ssafy/S07P12D207/App/app/src/main/res/layout/activity_main.xml" value="0.2" />
+        <entry key="..\:/ssafy/S07P12D207/App/app/src/main/res/layout/activity_mytickets_list.xml" value="0.15625" />
+        <entry key="..\:/ssafy/S07P12D207/App/app/src/main/res/layout/activity_payment.xml" value="0.19635416666666666" />
+        <entry key="..\:/ssafy/S07P12D207/App/app/src/main/res/layout/activity_payment_done.xml" value="0.128" />
+        <entry key="..\:/ssafy/S07P12D207/App/app/src/main/res/layout/activity_reserve_done.xml" value="0.11197916666666667" />
+        <entry key="..\:/ssafy/S07P12D207/App/app/src/main/res/layout/ticket_item.xml" value="0.1" />
+        <entry key="..\:/ssafy/S07P12D207/App/app/src/main/res/layout/user_profile.xml" value="0.14673913043478262" />
+        <entry key="..\:/ssafy/S07P12D207/App/app/src/main/res/menu/menu.xml" value="0.264" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK" />
+</project>

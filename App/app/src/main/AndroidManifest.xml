@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.justmoveit">
+
+    <!-- 인터넷 사용 권한 설정-->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- 휴대폰 번호 권한 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"
+        android:maxSdkVersion="29" />
+    <uses-permission android:name="android.permission.READ_PHONE_NUMBERS" />
+
+    <!-- android:requestLegacyExternalStorage="true" -->
+    <application
+        android:allowBackup="false"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@drawable/ic_launcher_70"
+        android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
+        android:roundIcon="@drawable/ic_launcher_70"
+        android:usesCleartextTraffic="true"
+        android:supportsRtl="true"
+        android:name=".application.LoginApplication"
+        android:theme="@style/Theme.JustMoveIt"
+        tools:targetApi="31">
+
+        <meta-data
+            android:name="com.kakao.sdk.AppKey"
+            android:value="49c6556724f6f52f48324cc25d1aa31c" />
+
+        <activity
+            android:name=".activity.LoadingActivity"
+            android:exported="true"
+            android:theme="@style/FullScreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".activity.MainActivity"
+            android:exported="true"
+            android:theme="@style/FullScreen" />
+        <activity
+            android:name=".activity.MovieInfoActivity"
+            android:exported="true"
+            android:theme="@style/FullScreen" />
+        <activity
+            android:name=".activity.TicketingActivity"
+            android:exported="true"
+            android:theme="@style/FullScreen" />
+        <activity
+            android:name=".activity.LoginActivity"
+            android:exported="true"
+            android:theme="@style/FullScreen" />
+        <activity
+            android:name=".activity.MyTicketListActivity"
+            android:exported="true"
+            android:theme="@style/FullScreen" />
+        <activity
+            android:name=".activity.TicketInfoActivity"
+            android:exported="true"
+            android:theme="@style/FullScreen" />
+        <activity
+            android:name=".activity.PaymentActivity"
+            android:exported="true"
+            android:theme="@style/FullScreen" />
+        <activity
+            android:name=".activity.PhoneNumberActivity"
+            android:exported="true"
+            android:theme="@style/FullScreen" />
+    </application>
+
+</manifest>
