@@ -1,2 +1,2 @@
 # JustMoveIt
-ssafy 공통 프로젝트 IoT 도메인 Just Move It
+영화 키오스크, 안드로이드 어플리케이션 Just Move It
